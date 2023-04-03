@@ -1,7 +1,7 @@
 module.exports = {
   title: 'An Osmium Site',
   description: 'Lorem ipsum dolor sit amet.',
-  link: 'https://osmium.vercel.app',
+  link: 'https://osmium-blog.vercel.app',
   since: 2023,
   author: 'Osmium user',
   email: 'osmium@example.com',

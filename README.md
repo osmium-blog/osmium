@@ -39,7 +39,7 @@
 - In Notion
   - Duplicate this [Notion Database](https://silentdepth.notion.site/ffa2e3ae717d4cb982281814bb6c0801), and share to web **(optional but recommended)**
   - In the newly created database, find **Config** and open it
-  - Open the [Osmium configurator](https://osmium.vercel.app/-/configurator), fill the form with your preferences and click the top-right button to copy your config
+  - Open the [Osmium configurator](https://osmium-blog.vercel.app/-/configurator), fill the form with your preferences and click the top-right button to copy your config
   - Back to the page **Config** in Notion, remove the content of the code block and paste your config into it
 - In [Vercel](https://vercel.com/?utm_source=Osmium&utm_campaign=oss) **(recommended)** or other platform you choose to deploy to
   - If you use Vercel, create a new project and link to your Osmium fork, then set the following environment variables:
@@ -51,11 +51,11 @@
 
 ## Migrate from Nobelium
 
-See https://osmium.vercel.app/migrate-from-nobelium
+See https://osmium-blog.vercel.app/migrate-from-nobelium
 
 # FAQs
 
-See https://osmium.vercel.app/faqs
+See https://osmium-blog.vercel.app/faqs
 
 # License
 
