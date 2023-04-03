@@ -32,12 +32,12 @@ void async function main () {
   // Get the first page whose `type` is `Config`
   const configRecord =
     Object.entries(everything.block)
-      .find(([id, { value }]) => getTextContent(value.properties?.[typePropId]) === 'Config')
+      .find(([id, { value }]) => getTextContent(value?.properties?.[typePropId]) === 'Config')
   if (!configRecord) abort('Cannot find a remote config!')
   const [, { value: configPage }] = configRecord
 
   // We only treat the first code block as config source
-  const configCodeBlockId = configPage.content?.find(id => everything.block[id].value.type === 'code')
+  const configCodeBlockId = configPage.content?.find(id => everything.block[id].value?.type === 'code')
   if (!configCodeBlockId) abort('Cannot find a code block!')
 
   const configCodeBlock = everything.block[configCodeBlockId].value
