@@ -7,8 +7,11 @@ import { getTextContent } from 'notion-utils'
 
 const ROOT = resolve(fileURLToPath(import.meta.url), '../..')
 const CONFIG_FILE = resolve(ROOT, 'osmium-config.json')
+const CACHE_FILE = resolve(ROOT, 'osmium-cache.json')
 
 void async function main () {
+  /* Config */
+
   // Only fetch config from Notion when no local config file is found
   if (fs.existsSync(CONFIG_FILE)) return
 
@@ -56,6 +59,11 @@ void async function main () {
   )
 
   console.log('Remote config fetched successfully')
+
+  /* Cache */
+
+  // Create a cache file to mark build phase
+  fs.writeFileSync(CACHE_FILE, '{}', 'utf-8')
 }()
 
 function abort (message: string): never {
