@@ -1,11 +1,10 @@
 import { resolve } from 'node:path'
-import { fileURLToPath } from 'node:url'
 import fs from 'node:fs'
 import { loadEnvConfig } from '@next/env'
 import { NotionAPI } from 'notion-client'
 import { getTextContent } from 'notion-utils'
 
-const ROOT = resolve(fileURLToPath(import.meta.url), '../..')
+const ROOT = process.cwd()
 const CONFIG_FILE = resolve(ROOT, 'osmium-config.json')
 const CACHE_FILE = resolve(ROOT, 'osmium-cache.json')
 
@@ -58,7 +57,7 @@ void async function main () {
     'utf-8',
   )
 
-  console.log('Remote config fetched successfully')
+  console.log(`Remote config fetched successfully to \`${CONFIG_FILE}\``)
 
   /* Cache */
 

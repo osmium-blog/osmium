@@ -1,8 +1,7 @@
-import fs from 'node:fs'
 import { resolve } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import fs from 'node:fs'
 
-const ROOT = resolve(fileURLToPath(import.meta.url), '../..')
+const ROOT = process.cwd()
 const CACHE_FILE = resolve(ROOT, 'osmium-cache.json')
 
-fs.unlinkSync(CACHE_FILE)
+fs.writeFileSync(CACHE_FILE, '{}', 'utf-8')

@@ -18,7 +18,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "prebuild": "jiti scripts/prebuild.ts",
+    "prebuild": "BUILDING=1 jiti scripts/prebuild.ts",
     "build": "next build",
     "postbuild": "jiti scripts/postbuild.ts && next-sitemap --config next-sitemap.config.js",
     "start": "next start",
