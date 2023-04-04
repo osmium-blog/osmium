@@ -21,6 +21,8 @@
 .vscode/*
 !.vscode/extensions.json
 *.pem
+/pages/playground.js
+/pages/playground.jsx
 /osmium-config.json
 /osmium-cache.json
 
