@@ -150,10 +150,6 @@ pre[class*='language-'] {
   border-top-color: rgba(255, 255, 255, 0.13);
 }
 
-.notion-list {
-  width: 100%;
-}
-
 .notion-collection {
   @apply max-w-full;
 }
@@ -190,32 +186,52 @@ pre[class*='language-'] {
   padding-right: 2px;
 }
 
-.notion-list {
-  padding-inline-start: 28px;
-}
-
-.notion-list > li {
-  padding-left: 2px;
-  padding-right: 2px;
-}
-
 /* Every block */
 
 .osmium-block {
-  @apply my-0.5;
   /* OVERRIDES */
+  @apply my-0.5;
 }
 
 .osmium-block .osmium-block {
   @apply mt-1 mb-0;
 }
 
+/* List block */
+
+.osmium-list {
+  > li {
+    @apply flex items-start;
+
+    &::before {
+      @apply flex-none w-6 h-6 leading-none mr-0.5 flex justify-center items-center;
+      font-size: 1.5em;
+      font-family: Arial;
+    }
+
+    @at-root .osmium-list-item {
+      @apply flex-1;
+    }
+  }
+
+  @at-root ol#{&} > li::before {
+    content: var(--list-item-index);
+    font-size: unset;
+    width: unset;
+    min-width: 1.5rem;
+  }
+}
+
+.osmium-list-disc > li::before { content: '•'; }
+.osmium-list-circle > li::before { content: '◦'; }
+.osmium-list-square > li::before { content: '▪'; }
+
 /* Toggle block */
 
 .osmium-toggle {
   @apply w-full;
-  @apply py-0;
   /* OVERRIDES */
+  @apply py-0;
 }
 
 .osmium-toggle ::marker {
@@ -231,7 +247,7 @@ pre[class*='language-'] {
 }
 
 .osmium-toggle-triangle {
-  @apply flex-none w-7 text-center;
+  @apply flex-none w-6 mr-0.5 text-center;
   line-height: inherit;
 }
 
@@ -257,12 +273,13 @@ pre[class*='language-'] {
 }
 
 .osmium-toggle-content {
-  @apply pl-7 mt-0.5;
+  @apply mt-0.5;
+  padding-left: 1.625rem;
 }
 
 .osmium-toggle-content > * {
-  @apply my-0.5;
   /* OVERRIDES */
+  @apply my-0.5;
 }
 
 .osmium-toggle-content > :last-child {
