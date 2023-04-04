@@ -99,7 +99,7 @@ export default function Header ({ navBarTitle, fullWidth }) {
           />
         </svg>
         <div className="flex items-center">
-          <Link href="/" aria-label={BLOG.title}>
+          <Link href={BLOG.path || '/'} aria-label={BLOG.title}>
             <Image
               src={favicon}
               width={32}

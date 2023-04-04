@@ -39,8 +39,6 @@ export async function getStaticProps ({ params: { slug } }) {
 
 export default function PagePost ({ post, blockMap, emailHash }) {
   const router = useRouter()
-  const BLOG = useConfig()
-  const locale = useLocale()
 
   // TODO: It would be better to render something
   if (router.isFallback) return null
@@ -63,35 +61,6 @@ export default function PagePost ({ post, blockMap, emailHash }) {
         emailHash={emailHash}
         fullWidth={fullWidth}
       />
-
-      {/* Back and Top */}
-      <div
-        className={cn(
-          'px-4 flex justify-between font-medium text-gray-500 dark:text-gray-400 my-5',
-          fullWidth ? 'md:px-24' : 'mx-auto max-w-2xl',
-        )}
-      >
-        <a>
-          <button
-            onClick={() => router.push(BLOG.path || '/')}
-            className="mt-2 cursor-pointer hover:text-black dark:hover:text-gray-100"
-          >
-            ← {locale.POST.BACK}
-          </button>
-        </a>
-        <a>
-          <button
-            onClick={() => window.scrollTo({
-              top: 0,
-              behavior: 'smooth',
-            })}
-            className="mt-2 cursor-pointer hover:text-black dark:hover:text-gray-100"
-          >
-            ↑ {locale.POST.TOP}
-          </button>
-        </a>
-      </div>
-
       <Comments post={post}/>
     </Container>
   )

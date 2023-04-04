@@ -9,10 +9,6 @@
     "PREV": "Prev",
     "NEXT": "Next"
   },
-  "POST": {
-    "BACK": "Back",
-    "TOP": "Top"
-  },
   "PAGE": {
     "ERROR_404": {
       "MESSAGE": "Nothing here"
