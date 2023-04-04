@@ -27,6 +27,9 @@ export default {
           'sans-serif',
         ],
       },
+      borderRadius: {
+        DEFAULT: '3px',
+      },
     },
   },
 }

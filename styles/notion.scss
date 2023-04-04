@@ -232,56 +232,64 @@ pre[class*='language-'] {
   @apply w-full;
   /* OVERRIDES */
   @apply py-0;
-}
 
-.osmium-toggle ::marker {
-  content: '';
-}
+  ::marker {
+    @apply content-none;
+  }
 
-.osmium-toggle > summary {
-  @apply cursor-pointer flex items-start;
-}
+  > summary {
+    @apply cursor-pointer grid grid-cols-[24px_1fr] gap-x-0.5;
 
-.osmium-toggle-empty > summary {
-  @apply cursor-default;
-}
+    @at-root .osmium-toggle-empty > summary {
+      @apply cursor-default;
+    }
 
-.osmium-toggle-triangle {
-  @apply flex-none w-6 mr-0.5 text-center;
-  line-height: inherit;
-}
+    @at-root .osmium-toggle-triangle {
+      @apply w-6 text-center rounded transition duration-75 ease-in flex justify-center items-center;
+      line-height: inherit;
 
-.osmium-toggle-triangle svg {
-  @apply inline-block fill-current;
-  width: 0.6875em;
-  height: 0.6875em;
-  backface-visibility: hidden;
-  transition: transform 200ms ease-out 0s;
-  transform: rotateZ(90deg);
-}
+      @at-root summary:hover > & {
+        background: rgba(55, 53, 47, 0.08);
 
-.osmium-toggle[open]:not(.osmium-toggle-empty) > * > .osmium-toggle-triangle svg {
-  transform: rotateZ(180deg);
-}
+        @at-root .osmium-toggle-empty > & {
+          @apply bg-transparent;
+        }
+      }
 
-.osmium-toggle-empty > * > .osmium-toggle-triangle svg {
-  @apply opacity-50;
-}
+      svg {
+        @apply inline-block fill-current;
+        width: 0.6875em;
+        height: 0.6875em;
+        backface-visibility: hidden;
+        transition: transform 200ms ease-out 0s;
+        transform: rotateZ(90deg);
 
-.osmium-toggle-title {
-  @apply flex-1;
-}
+        @at-root .osmium-toggle[open]:not(.osmium-toggle-empty) > * > & {
+          transform: rotateZ(180deg);
+        }
 
-.osmium-toggle-content {
-  @apply mt-0.5;
-  padding-left: 1.625rem;
-}
+        @at-root .osmium-toggle-empty > * > & {
+          @apply opacity-50;
+        }
+      }
+    }
 
-.osmium-toggle-content > * {
-  /* OVERRIDES */
-  @apply my-0.5;
-}
+    @at-root .osmium-toggle-title {
+      @apply flex-1;
+    }
+  }
 
-.osmium-toggle-content > :last-child {
-  @apply mb-0;
+  @at-root .osmium-toggle-content {
+    @apply mt-0.5;
+    padding-left: 1.625rem;
+
+    > * {
+      /* OVERRIDES */
+      @apply my-0.5;
+    }
+
+    > :last-child {
+      @apply mb-0;
+    }
+  }
 }

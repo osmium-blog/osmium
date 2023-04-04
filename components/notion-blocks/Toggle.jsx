@@ -4,6 +4,7 @@ import cn from 'classnames'
 export default function Toggle ({ block, children }) {
   return (
     <details
+      data-block-id={process.env.NODE_ENV === 'development' ? block.id : null}
       className={cn(
         'osmium-block osmium-toggle',
         { 'osmium-toggle-empty': !children },
