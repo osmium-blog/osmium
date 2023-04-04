@@ -1,9 +1,9 @@
-import { forwardRef, useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import defu from 'defu'
 import { useConfig } from '@/lib/config'
 import { useLocale } from '@/lib/locale'
-import useTheme from '@/lib/theme'
 
 const NavBar = () => {
   const BLOG = useConfig()
@@ -35,19 +35,6 @@ const NavBar = () => {
 
 export default function Header ({ navBarTitle, fullWidth }) {
   const BLOG = useConfig()
-  const { dark } = useTheme()
-
-  // Favicon
-
-  const resolveFavicon = fallback => !fallback && dark ? '/osmium.dark.svg' : '/osmium.svg'
-  const [favicon, _setFavicon] = useState(resolveFavicon())
-  const setFavicon = fallback => _setFavicon(resolveFavicon(fallback))
-
-  useEffect(
-    () => setFavicon(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [dark],
-  )
 
   const navRef = useRef(/** @type {HTMLDivElement} */ undefined)
   const sentinelRef = useRef(/** @type {HTMLDivElement} */ undefined)
@@ -69,10 +56,8 @@ export default function Header ({ navBarTitle, fullWidth }) {
     }
   }, [handler, sentinelRef])
 
-  const titleRef = useRef(/** @type {HTMLParagraphElement} */ undefined)
-
   function handleClickHeader (/** @type {MouseEvent} */ ev) {
-    if (![navRef.current, titleRef.current].includes(ev.target)) return
+    if (ev.target !== navRef.current) return
 
     window.scrollTo({
       top: 0,
@@ -99,22 +84,12 @@ export default function Header ({ navBarTitle, fullWidth }) {
           />
         </svg>
         <div className="flex items-center">
-          <Link href={BLOG.path || '/'} aria-label={BLOG.title}>
-            <Image
-              src={favicon}
-              width={32}
-              height={32}
-              alt={BLOG.title}
-              onError={() => setFavicon(true)}
-            />
-          </Link>
-          <HeaderName
-            ref={titleRef}
-            siteTitle={BLOG.title}
-            siteDescription={BLOG.description}
-            postTitle={navBarTitle}
-            onClick={handleClickHeader}
-          />
+          {BLOG.logo && (
+            <Link href={BLOG.path || '/'} aria-label={BLOG.title}>
+              <Image src={(BLOG.path || '/') + BLOG.logo} alt={'The logo of ' + BLOG.title} width={32} height={32}/>
+            </Link>
+          )}
+          <HeaderName postTitle={navBarTitle}/>
         </div>
         <NavBar/>
       </div>
@@ -122,18 +97,21 @@ export default function Header ({ navBarTitle, fullWidth }) {
   )
 }
 
-const HeaderName = forwardRef(function HeaderName ({ siteTitle, siteDescription, postTitle, onClick }, ref) {
+function HeaderName ({ postTitle }) {
+  const { path, title, description } = defu(useConfig(), { path: '/' })
+  const locale = useLocale()
+
   return (
-    <p
-      ref={ref}
+    <Link
+      href={path}
       className="header-name ml-2 font-medium text-gray-600 dark:text-gray-300 capture-pointer-events grid-rows-1 grid-cols-1"
-      onClick={onClick}
     >
       {postTitle && <span className="post-title row-start-1 col-start-1">{postTitle}</span>}
       <span className="row-start-1 col-start-1">
-        <span className="site-title">{siteTitle}</span>
-        <span className="site-description font-normal">, {siteDescription}</span>
+        <span className="site-title">{title}</span>
+        <span className="site-description font-normal">, {description}</span>
       </span>
-    </p>
+      <span className="ui-back-to-home row-start-1 col-start-1">← {locale.NAV.BACK_TO_HOME}</span>
+    </Link>
   )
-})
+}

@@ -12,7 +12,7 @@ export default function MyDocument () {
   return (
     <Html lang={config.lang} className={cn(initialColorScheme)}>
       <Head>
-        <link rel="icon" href="/osmium.svg"/>
+        <link rel="icon" href="/favicon.png"/>
         <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="/-/feed"></link>
         {config.appearance === 'auto'
           ? (

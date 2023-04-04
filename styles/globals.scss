@@ -52,7 +52,7 @@
 
   .sticky-nav {
     @apply max-w-3xl sticky -top-px z-10 bg-white/40 dark:bg-night/60 border-b-transparent backdrop-blur-lg;
-    @apply transition-all duration-500 ease-in-out;
+    @apply transition-all duration-300 ease-in-out;
   }
 
   .remove-sticky {
@@ -87,7 +87,7 @@
 
     .site-title,
     .post-title {
-      @apply transition duration-500;
+      @apply transition duration-75;
     }
 
     .site-description {
@@ -96,7 +96,7 @@
     }
 
     .sticky-nav-full .site-description {
-      @apply opacity-100 transition duration-500;
+      @apply opacity-100 transition duration-75;
     }
 
     .post-title {
@@ -113,6 +113,22 @@
 
     .sticky-nav-full .post-title ~ span .site-title {
       @apply opacity-0;
+    }
+
+    .ui-back-to-home {
+      @apply opacity-0 transition duration-75 ease-linear;
+    }
+
+    .header-name:hover {
+      .site-title,
+      .site-description,
+      .post-title {
+        @apply opacity-0;
+      }
+
+      .ui-back-to-home {
+        @apply opacity-100;
+      }
     }
   }
 

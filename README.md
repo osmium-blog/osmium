@@ -1,7 +1,6 @@
 <div align="center">
   <h1>
-    <img src="./public/osmium.svg#gh-light-mode-only" alt="Osmium logo" width="100" height="100">
-    <img src="./public/osmium.dark.svg#gh-dark-mode-only" alt="Osmium logo" width="100" height="100">
+    <img src="./.github/logo.svg" alt="Osmium logo" width="100" height="100">
     <div>Osmium</div>
   </h1>
   <p>A static blog site builder. Powered by <a href="https://notion.so/">Notion</a> and <a href="https://nextjs.org/">Next.js</a></p>
@@ -41,6 +40,7 @@
   - In the newly created database, find **Config** and open it
   - Open the [Osmium configurator](https://osmium-blog.vercel.app/-/configurator), fill the form with your preferences and click the top-right button to copy your config
   - Back to the page **Config** in Notion, remove the content of the code block and paste your config into it
+  - _(Optional)_ Change the icon of the **Config** page. You can choose whichever type you like, no matter emoji or icon or image. That will be the logo and favicon of you blog
 - In [Vercel](https://vercel.com/?utm_source=Osmium&utm_campaign=oss) **(recommended)** or other platform you choose to deploy to
   - If you use Vercel, create a new project and link to your Osmium fork, then set the following environment variables:
     - `NOTION_DATABASE_ID`: The ID of the Notion Database you just created, usually a 32-digit or 36-digit hex code. You can find it from the page link in the share menu of the page. If you find two IDs, use the first one
