@@ -1,5 +1,4 @@
-import { useNotionContext } from 'react-notion-x'
-import { getTextContent } from 'notion-utils'
+import { Text, useNotionContext } from 'react-notion-x'
 import cn from 'classnames'
 
 export default function List ({ block, children, ...props }) {
@@ -25,7 +24,7 @@ export default function List ({ block, children, ...props }) {
       <li>
         <div className="osmium-list-item">
           <span className="osmium-list-title">
-            {getTextContent(block.properties?.title)}
+            <Text value={block.properties?.title}/>
           </span>
           <div className="osmium-list-content">
             {children}
