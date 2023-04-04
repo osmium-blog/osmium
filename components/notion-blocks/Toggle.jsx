@@ -1,12 +1,12 @@
 import { Text } from 'react-notion-x'
 import cn from 'classnames'
 
-export default function Toggle ({ block, children }) {
+export default function Toggle ({ block, children, ...props }) {
   return (
     <details
-      data-block-id={process.env.NODE_ENV === 'development' ? block.id : null}
+      {...props}
       className={cn(
-        'osmium-block osmium-toggle',
+        'osmium-toggle',
         { 'osmium-toggle-empty': !children },
         block.format?.block_color && `notion-${block.format.block_color}`,
       )}

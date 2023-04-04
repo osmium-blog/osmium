@@ -1,24 +1,25 @@
-import cn from 'classnames'
+import { useNotionContext } from 'react-notion-x'
 import { getTextContent } from 'notion-utils'
+import cn from 'classnames'
 
-export default function List ({ block, blockMap, children }) {
+export default function List ({ block, children, ...props }) {
+  const { recordMap } = useNotionContext()
+
   let ListElement
   switch (block.type) {
     case 'bulleted_list':
-    case 'bulleted_list_osmium':
       ListElement = BulletedList
       break
     case 'numbered_list':
-    case 'numbered_list_osmium':
       ListElement = NumberedList
       break
   }
 
   return (
     <ListElement
+      {...props}
       block={block}
-      blockMap={blockMap}
-      data-block-id={process.env.NODE_ENV === 'development' && block.id}
+      blockMap={recordMap.block}
       className="osmium-block osmium-list"
     >
       <li>
@@ -39,7 +40,7 @@ function BulletedList ({ block, blockMap, className, children, ...props }) {
   const type = resolveBulletType(block, blockMap)
 
   return (
-    <ul className={cn(className, `osmium-list-${type}`)} {...props}>
+    <ul {...props} className={cn(className, `osmium-list-${type}`)}>
       {children}
     </ul>
   )
@@ -62,9 +63,9 @@ function NumberedList ({ block, blockMap, className, children, ...props }) {
 
   return (
     <ol
+      {...props}
       className={cn(className, `osmium-list-${type}`)}
       style={{ '--list-item-index': `"${index}."` }}
-      {...props}
     >
       {children}
     </ol>
