@@ -44,10 +44,11 @@ void async function main () {
 
   const configCodeBlock = everything.block[configCodeBlockId].value
   const config = (() => {
+    const raw = getTextContent(configCodeBlock.properties.title)
     try {
-      return JSON.parse(getTextContent(configCodeBlock.properties.title))
+      return eval(`(module => { ${/^[\s\n]*\{/.test(raw) ? 'module.exports =' : ''} ${raw}; return module.exports })({})`)
     } catch {
-      abort('The content of the first code block is not a valid JSON!')
+      abort('The content of the first code block is not a valid config!')
     }
   })()
 
