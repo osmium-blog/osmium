@@ -41,6 +41,7 @@ const overrides = {
       ['', 'configurator.entry.analytics.provider.option.null'],
       ['ga', 'Google Analytics'],
       ['ackee', 'Ackee'],
+      ['vercel', 'Vercel'],
     ],
   },
   'analytics.gaConfig': { when: ['analytics.provider', 'ga'] },
