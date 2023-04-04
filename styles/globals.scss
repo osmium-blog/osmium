@@ -33,14 +33,6 @@
     }
   }
 
-  .color-scheme-unset, .color-scheme-unset body {
-    background-color: theme('colors.day.DEFAULT') !important;
-
-    @media (prefers-color-scheme: dark) {
-      background-color: theme('colors.night.DEFAULT') !important;
-    }
-  }
-
   ::selection {
     background: rgba(45, 170, 219, 0.3);
   }

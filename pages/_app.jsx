@@ -7,8 +7,16 @@ import { ConfigProvider } from '@/lib/config'
 import { LocaleProvider } from '@/lib/locale'
 import { ThemeProvider } from '@/lib/theme'
 import Analytics from '@/components/analytics'
+import { useEffect } from 'react'
 
 export default function MyApp ({ Component, pageProps, config, locale }) {
+  useEffect(() => {
+    document.body.classList.remove('fouc')
+    document.body.addEventListener('transitionend', () => {
+      document.body.classList.remove('fouc-transition')
+    }, { once: true })
+  }, [])
+
   return (
     <ConfigProvider value={config}>
       <LocaleProvider value={locale}>
