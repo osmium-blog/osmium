@@ -1,7 +1,7 @@
 {
-  "name": "@silentdepth/osmium",
-  "version": "0.1.0",
-  "homepage": "https://github.com/SilentDepth/osmium",
+  "name": "@osmium-blog/osmium",
+  "version": "1.0.0",
+  "homepage": "https://github.com/osmium-blog/osmium",
   "license": "MIT",
   "author": {
     "name": "SilentDepth",
