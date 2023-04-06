@@ -1,11 +1,15 @@
 type BasicProps = {
   className?: string
-  style?: import('react').CSSProperties
+  style?: Record<string, number | string>
   children?: import('react').ReactNode
+}
+
+declare namespace Notion {
+  export { Block, BlockMap } from 'notion-types'
 }
 
 declare namespace Block {
   type Props = BasicProps & {
-    block: import('notion-types').Block
+    block: Notion.Block
   }
 }

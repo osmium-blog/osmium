@@ -1,7 +1,8 @@
 import { Text, useNotionContext } from 'react-notion-x'
 import cn from 'classnames'
+import Block from './Block'
 
-export default function List ({ block, children, ...props }) {
+export default function List ({ block, children }: Block.Props) {
   const { recordMap } = useNotionContext()
 
   let ListElement
@@ -12,19 +13,20 @@ export default function List ({ block, children, ...props }) {
     case 'numbered_list':
       ListElement = NumberedList
       break
+    default:
+      throw new Error('This should not happen')
   }
 
   return (
     <ListElement
-      {...props}
       block={block}
       blockMap={recordMap.block}
-      className="osmium-block osmium-list"
+      className="osmium-list"
     >
       <li>
         <div className="osmium-list-item">
           <span className="osmium-list-title">
-            <Text value={block.properties?.title}/>
+            <Text value={block.properties?.title} block={block}/>
           </span>
           {children && (
             <div className="osmium-list-content">
@@ -37,19 +39,19 @@ export default function List ({ block, children, ...props }) {
   )
 }
 
-function BulletedList ({ block, blockMap, className, children, ...props }) {
+function BulletedList ({ block, blockMap, className, children }: Block.Props & { blockMap: Notion.BlockMap }) {
   const type = resolveBulletType(block, blockMap)
 
   return (
-    <ul {...props} className={cn(className, `osmium-list-${type}`)}>
+    <Block tag="ul" block={block} className={cn(className, `osmium-list-${type}`)}>
       {children}
-    </ul>
+    </Block>
   )
 }
 
 const BULLET_TYPES = ['disc', 'circle', 'square']
 
-function resolveBulletType (block, blockMap) {
+function resolveBulletType (block: Notion.Block, blockMap: Notion.BlockMap) {
   const [firstItem] = findFirstItem(block, blockMap)
   const type = firstItem.format?.bullet_list_format
   if (type) return type
@@ -58,24 +60,25 @@ function resolveBulletType (block, blockMap) {
   return BULLET_TYPES[level % BULLET_TYPES.length]
 }
 
-function NumberedList ({ block, blockMap, className, children, ...props }) {
+function NumberedList ({ block, blockMap, className, children }: Block.Props & { blockMap: Notion.BlockMap }) {
   const type = resolveNumberType(block, blockMap)
   const index = transformIndexNumber(resolveIndexNumber(block, blockMap), type)
 
   return (
-    <ol
-      {...props}
+    <Block
+      tag="ol"
+      block={block}
       className={cn(className, `osmium-list-${type}`)}
       style={{ '--list-item-index': `"${index}."` }}
     >
       {children}
-    </ol>
+    </Block>
   )
 }
 
 const NUMBER_TYPES = ['numbers', 'letters', 'roman']
 
-function resolveNumberType (block, blockMap) {
+function resolveNumberType (block: Notion.Block, blockMap: Notion.BlockMap) {
   const [firstItem] = findFirstItem(block, blockMap)
   const type = firstItem.format?.list_format
   if (type) return type
@@ -84,7 +87,7 @@ function resolveNumberType (block, blockMap) {
   return NUMBER_TYPES[level % NUMBER_TYPES.length]
 }
 
-function resolveIndexNumber (block, blockMap) {
+function resolveIndexNumber (block: Notion.Block, blockMap: Notion.BlockMap) {
   const [firstItem, firstItemIdx, fromIdx] = findFirstItem(block, blockMap)
   // console.log(block.id, firstItem.id, firstItemIdx, fromIdx)
   return (firstItem.format?.list_start_index ?? 1) + (fromIdx - firstItemIdx)
@@ -106,7 +109,7 @@ const ROMAN_NUMBERS = {
   i: 1,
 }
 
-function transformIndexNumber (num, type) {
+function transformIndexNumber (num: number, type: string) {
   switch (type) {
     case 'letters': {
       const result = []
@@ -132,7 +135,7 @@ function transformIndexNumber (num, type) {
   }
 }
 
-function findFirstItem (block, blockMap) {
+function findFirstItem (block: Notion.Block, blockMap: Notion.BlockMap) {
   const siblingIds = blockMap[block.parent_id]?.value?.content
   const fromIdx = siblingIds?.indexOf(block.id)
 
@@ -150,7 +153,7 @@ function findFirstItem (block, blockMap) {
   return [block, fromIdx, fromIdx]
 }
 
-function findTopItem (block, blockMap) {
+function findTopItem (block: Notion.Block, blockMap: Notion.BlockMap) {
   let level = 0
   while (true) {
     const parentId = blockMap[block.id]?.value?.parent_id

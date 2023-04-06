@@ -2,7 +2,7 @@ import Toggle from './Toggle'
 import List from './List'
 import Quote from './Quote'
 
-export default function Block ({ block, children }) {
+export default function Block ({ block, children }: Block.Props) {
   // Remove custom renderer suffix for easy reading
   block.type = block.type.replace(/_osmium$/, '')
 
@@ -20,15 +20,10 @@ export default function Block ({ block, children }) {
     case 'quote':
       BlockComponent = Quote
       break
+
+    default:
+      throw new Error('This should not happen')
   }
 
-  return ['toggle', 'quote'].includes(block.type) ? <BlockComponent block={block}>{children}</BlockComponent> : (
-    <BlockComponent
-      block={block}
-      data-block-id={process.env.NODE_ENV === 'development' ? block.id : null}
-      className="osmium-block"
-    >
-      {children}
-    </BlockComponent>
-  )
+  return <BlockComponent block={block}>{children}</BlockComponent>
 }
