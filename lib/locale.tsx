@@ -1,10 +1,16 @@
 import { createContext, useContext, useEffect } from 'react'
+import type { ReactNode } from 'react'
 import { useConfig } from '@/lib/config'
 import { setDefaultTimezone } from '@/lib/dayjs'
 
-const LocaleContext = createContext(undefined)
+const LocaleContext = createContext<Osmium.LocaleData | undefined>(undefined)
 
-export function LocaleProvider ({ value, children }) {
+type Props = {
+  value: Osmium.LocaleData
+  children: ReactNode
+}
+
+export function LocaleProvider ({ value, children }: Props) {
   const { timezone } = useConfig()
 
   useEffect(() => {
@@ -18,4 +24,4 @@ export function LocaleProvider ({ value, children }) {
   )
 }
 
-export const useLocale = () => useContext(LocaleContext)
+export const useLocale = () => useContext(LocaleContext)!

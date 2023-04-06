@@ -1,7 +1,7 @@
 /**
  * A simplified version of `Lodash.get()`
  */
-export function get (obj, keyPath, defValue) {
+export function get<T, O extends Record<string, any>> (obj: O, keyPath: string | string[], defValue: T) {
   if (typeof keyPath === 'string') {
     keyPath = keyPath.split('.')
   }
@@ -16,13 +16,13 @@ export function get (obj, keyPath, defValue) {
 /**
  * A simplified version of `Lodash.set()`
  */
-export function set (obj, keyPath, value) {
+export function set<T, O extends Record<string, any>> (obj: O, keyPath: string | string[], value: T) {
   if (typeof keyPath === 'string') {
     keyPath = keyPath.split('.')
   }
   keyPath = keyPath.slice()
-  const lastKey = keyPath.pop()
-  let current = obj
+  const lastKey = keyPath.pop()!
+  let current: any = obj
   for (const key of keyPath) {
     current[key] ??= {}
     current = current[key]
@@ -34,6 +34,6 @@ export function set (obj, keyPath, value) {
 /**
  * Stupidly clone a JSON object
  */
-export function clone (obj) {
+export function clone<O> (obj: O): O {
   return JSON.parse(JSON.stringify(obj))
 }

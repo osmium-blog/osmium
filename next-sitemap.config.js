@@ -1,4 +1,4 @@
-const { config } = require('./lib/server/config')
+const config = require('./osmium-config.json')
 
 module.exports = {
   siteUrl: config.link,

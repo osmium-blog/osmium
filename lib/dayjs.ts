@@ -5,7 +5,7 @@ import timezone from 'dayjs/plugin/timezone'
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
-export function setDefaultTimezone (timezone) {
+export function setDefaultTimezone (timezone: string) {
   dayjs.tz.setDefault(timezone)
 }
 

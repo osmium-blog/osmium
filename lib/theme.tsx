@@ -1,15 +1,20 @@
 import { createContext, useContext, useEffect } from 'react'
+import type { ReactNode } from 'react'
 import { useMedia } from 'react-use'
 import { useConfig } from '@/lib/config'
 
-const ThemeContext = createContext({ dark: true })
+const ThemeContext = createContext<{ dark: boolean | null }>({ dark: true })
 
-export function ThemeProvider ({ children }) {
+type Props = {
+  children: ReactNode
+}
+
+export function ThemeProvider ({ children }: Props) {
   const { appearance } = useConfig()
 
   // `defaultState` should normally be a boolean. But it causes initial loading flashes in slow
   // rendering. Setting it to `null` so that we can differentiate the initial loading phase
-  const prefersDark = useMedia('(prefers-color-scheme: dark)', null)
+  const prefersDark = useMedia('(prefers-color-scheme: dark)', null as any as boolean) as boolean | null
   const dark = appearance === 'dark' || (appearance === 'auto' && prefersDark)
 
   useEffect(() => {

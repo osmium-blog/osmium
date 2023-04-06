@@ -13,3 +13,10 @@ declare namespace Block {
     block: Notion.Block
   }
 }
+
+declare namespace Osmium {
+  // FIXME: Replace this any
+  type Config = Record<string, any>
+
+  type LocaleData = Record<string, string | LocaleData>
+}
