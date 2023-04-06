@@ -1,5 +1,6 @@
 import { extname, resolve } from 'node:path'
 import { promises as fs } from 'node:fs'
+import { execSync } from 'node:child_process'
 import { loadEnvConfig } from '@next/env'
 import type { PageBlock, BlockMap, CodeBlock } from 'notion-types'
 import { NotionAPI } from 'notion-client'
@@ -8,6 +9,7 @@ import { defaultMapImageUrl } from 'react-notion-x'
 import { ofetch } from 'ofetch'
 import * as cheerio from 'cheerio'
 import sharp from 'sharp'
+import destr from 'destr'
 
 const ROOT = process.cwd()
 
@@ -35,9 +37,10 @@ void async function main () {
   if (!configRecord) abort('Cannot find a remote config!')
   const [, { value: configPage }] = configRecord
 
-  const logo = await prepareLogo(configPage as PageBlock)
-
-  await prepareConfig(configPage as PageBlock, everything.block, { logo })
+  await prepareConfig(configPage as PageBlock, everything.block, {
+    version: await prepareVersion(),
+    logo: await prepareLogo(configPage as PageBlock),
+  })
 
   await prepareCache()
 }()
@@ -45,6 +48,7 @@ void async function main () {
 const CONFIG_FILE = resolve(ROOT, 'osmium-config.json')
 
 type Extra = {
+  version?: string
   logo?: string
 }
 
@@ -64,15 +68,28 @@ async function prepareConfig (page: PageBlock, blockMap: BlockMap, extra: Extra)
   })()
 
   // Append extra entries
-  Object.assign(config, {
-    logo: extra.logo,
-  })
+  Object.assign(config, extra)
 
   await fs.writeFile(
     CONFIG_FILE,
     JSON.stringify(config, null, 2),
     'utf-8',
   )
+}
+
+const PACKAGE_FILE = resolve(ROOT, 'package.json')
+
+async function prepareVersion (): Promise<string | undefined> {
+  const pkg = destr(await fs.readFile(PACKAGE_FILE, 'utf-8'))
+  if (!pkg.version) return
+  if (/^\d+\.\d+\.\d+$/.test(pkg.version)) return pkg.version
+
+  // If the version is not a valid semver, try to use current git commit hash instead
+  try {
+    return execSync('git log -1 --format=format:%h HEAD', { stdio: [null, null, 'ignore'], encoding: 'ascii' })
+  } catch {
+    return
+  }
 }
 
 async function prepareLogo (page: PageBlock) {
