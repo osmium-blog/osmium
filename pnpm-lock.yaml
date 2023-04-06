@@ -83,6 +83,9 @@ devDependencies:
   '@next/env':
     specifier: ^13.2.4
     version: 13.2.4
+  '@types/react':
+    specifier: ^18.0.33
+    version: 18.0.33
   '@typescript-eslint/parser':
     specifier: ^5.56.0
     version: 5.56.0(eslint@8.36.0)(typescript@5.0.2)
@@ -483,15 +486,13 @@ packages:
 
   /@types/prop-types@15.7.5:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
-    dev: false
 
-  /@types/react@18.0.28:
-    resolution: {integrity: sha512-RD0ivG1kEztNBdoAK7lekI9M+azSnitIn85h4iOiaLjaTrMjzslhaqCGaI4IyCJ1RljWiLCEu4jyrLLgqxBTew==}
+  /@types/react@18.0.33:
+    resolution: {integrity: sha512-sHxzVxeanvQyQ1lr8NSHaj0kDzcNiGpILEVt69g9S31/7PfMvNCKLKcsHw4lYKjs3cGNJjXSP4mYzX43QlnjNA==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
       csstype: 3.1.1
-    dev: false
 
   /@types/responselike@1.0.0:
     resolution: {integrity: sha512-85Y2BjiufFzaMIlvJDvTTB8Fxl2xfLo4HgmHzVBz08w4wDePCTjYw66PdrolO0kzli3yam/YCgRufyo1DdQVTA==}
@@ -501,7 +502,6 @@ packages:
 
   /@types/scheduler@0.16.2:
     resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
-    dev: false
 
   /@typescript-eslint/parser@5.56.0(eslint@8.36.0)(typescript@5.0.2):
     resolution: {integrity: sha512-sn1OZmBxUsgxMmR8a8U5QM/Wl+tyqlH//jTqCg8daTAmhAk26L2PFhcqPLlYBhYUJMZJK276qLXlHN3a83o2cg==}
@@ -1164,7 +1164,6 @@ packages:
 
   /csstype@3.1.1:
     resolution: {integrity: sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==}
-    dev: false
 
   /cytoscape-cose-bilkent@4.1.0(cytoscape@3.23.0):
     resolution: {integrity: sha512-wgQlVIUJF13Quxiv5e1gstZ08rnZj2XaLHGoFMYXz7SkNfCDOOteKBE6SYRfA9WxxI/iBc3ajfDoc6hb/MRAHQ==}
@@ -2896,7 +2895,7 @@ packages:
   /merge-refs@1.1.2:
     resolution: {integrity: sha512-t+FvJw2LXHnNTMRmNB2HY04uVdvCW8AbfwZi0DgUxFEoP20rnvXxZmePRML1nDiLO5KKE0p4GDu1qHhrig/Jpg==}
     dependencies:
-      '@types/react': 18.0.28
+      '@types/react': 18.0.33
     dev: false
 
   /merge-stream@2.0.0:

@@ -51,6 +51,7 @@
   },
   "devDependencies": {
     "@next/env": "^13.2.4",
+    "@types/react": "^18.0.33",
     "@typescript-eslint/parser": "^5.56.0",
     "autoprefixer": "^10.4.14",
     "eslint": "^8.36.0",

@@ -95,6 +95,7 @@ const components = {
   toggle_osmium: customBlockRenderer,
   bulleted_list_osmium: customBlockRenderer,
   numbered_list_osmium: customBlockRenderer,
+  quote_osmium: customBlockRenderer,
 }
 
 const mapPageUrl = id => `https://www.notion.so/${id.replace(/-/g, '')}`
@@ -121,6 +122,7 @@ export default function NotionRenderer (props) {
         case 'toggle':
         case 'bulleted_list':
         case 'numbered_list':
+        case 'quote':
           block.type += '_osmium'
           break
       }

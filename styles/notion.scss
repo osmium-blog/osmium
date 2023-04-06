@@ -229,6 +229,7 @@ pre[class*='language-'] {
 /* Every block */
 
 .osmium-block {
+  padding: 3px 2px;
   /* OVERRIDES */
   @apply my-0.5;
 }
@@ -333,5 +334,19 @@ pre[class*='language-'] {
     > :last-child {
       @apply mb-0;
     }
+  }
+}
+
+/* Quote block */
+
+.osmium-quote {
+  > div {
+    padding-left: 14px;
+    padding-right: 14px;
+    border-left: 3px solid currentColor;
+  }
+
+  @at-root .osmium-quote-large {
+    font-size: 1.2em;
   }
 }
