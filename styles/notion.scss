@@ -226,6 +226,8 @@ pre[class*='language-'] {
   padding-right: 2px;
 }
 
+/* react-notion-x code block */
+
 .notion-code-copy {
   top: 10px;
   right: 10px;
@@ -237,7 +239,14 @@ pre[class*='language-'] {
   svg {
     @apply w-4 h-4;
   }
+
+  @at-root .dark & {
+    color: inherit;
+    background: #424242;
+  }
 }
+
+@import './prismjs.scss';
 
 /* Every block */
 
