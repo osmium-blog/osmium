@@ -115,8 +115,12 @@ export default function NotionRenderer (props) {
     'serif': FONTS_SERIF,
   }[config.font]
 
-  // Mark block types to be custom rendered by appending a suffix
   if (props.recordMap) {
+    // Prevent page properties from being rendered
+    for (const it of Object.values(props.recordMap.collection)[0].value.format?.property_visibility) {
+      it.visibility = 'hide'
+    }
+    // Mark block types to be custom rendered by appending a suffix
     for (const { value: block } of Object.values(props.recordMap.block)) {
       switch (block?.type) {
         case 'toggle':
