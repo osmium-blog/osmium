@@ -22,7 +22,7 @@ export default function Block ({ block, children }) {
       break
   }
 
-  return block.type === 'quote' ? <BlockComponent block={block}>{children}</BlockComponent> : (
+  return ['toggle', 'quote'].includes(block.type) ? <BlockComponent block={block}>{children}</BlockComponent> : (
     <BlockComponent
       block={block}
       data-block-id={process.env.NODE_ENV === 'development' ? block.id : null}

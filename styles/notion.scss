@@ -281,7 +281,7 @@ pre[class*='language-'] {
   }
 
   > summary {
-    @apply cursor-pointer grid grid-cols-[24px_1fr] gap-x-0.5;
+    @apply relative cursor-pointer grid grid-cols-[24px_1fr] gap-x-0.5;
 
     @at-root .osmium-toggle-empty > summary {
       @apply cursor-default;
