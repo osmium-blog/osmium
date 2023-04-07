@@ -103,7 +103,7 @@ function HeaderName ({ postTitle }) {
 
   return (
     <Link
-      href={path}
+      href={path || '/'}
       className="header-name ml-2 font-medium text-gray-600 dark:text-gray-300 capture-pointer-events grid-rows-1 grid-cols-1"
     >
       {postTitle && <span className="post-title row-start-1 col-start-1">{postTitle}</span>}
