@@ -3,7 +3,12 @@ import { FONTS_SANS, FONTS_SERIF } from './consts'
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-  content: ['./{components,layouts,lib,pages}/**/*.{js,jsx,tsx}'],
+  content: [
+    './components/**/*.{js,jsx,tsx}',
+    './layouts/**/*.{js,jsx,tsx}',
+    './lib/**/*.{js,jsx,tsx}',
+    './pages/**/*.{js,jsx,tsx}',
+  ],
   darkMode: 'class',
   theme: {
     extend: {
