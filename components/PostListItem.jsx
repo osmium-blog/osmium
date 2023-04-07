@@ -4,7 +4,7 @@ import FormattedDate from '@/components/FormattedDate'
 
 export default function PostListItem ({ post }) {
   const { path } = useConfig()
-  const href = `${path || ''}/${post.slug}`.replaceAll(/\/{2,}/g, '/')
+  const href = `${path}/${post.slug}`.replaceAll(/\/{2,}/g, '/')
 
   return (
     <Link href={href}>
