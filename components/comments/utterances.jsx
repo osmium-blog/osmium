@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { useConfig } from '@/lib/config'
 
 export default function Utterances ({ config, post }) {
@@ -8,16 +9,24 @@ export default function Utterances ({ config, post }) {
     dark: 'github-dark',
   }[appearance]
 
+  const container = useRef()
+
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.setAttribute('src', 'https://utteranc.es/client.js')
+    script.setAttribute('crossorigin', 'anonymous')
+    script.setAttribute('async', '')
+    script.setAttribute('repo', config.repo)
+    script.setAttribute('issue-term', post.id)
+    script.setAttribute('theme', theme)
+
+    const _container = container.current
+    _container.appendChild(script)
+
+    return () => void (_container.innerHTML = '')
+  }, [config.repo, post.id, theme])
+
   return (
-    <div id="comments" className="md:-ml-16">
-      <script
-        src="https://utteranc.es/client.js"
-        crossorigin="anonymous"
-        repo={config.repo}
-        issue-term={post.id}
-        theme={theme}
-        async
-      />
-    </div>
+    <div ref={container} className="md:-ml-16"/>
   )
 }
