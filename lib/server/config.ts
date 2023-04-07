@@ -1,8 +1,14 @@
 import fs from 'node:fs'
 import { resolve } from 'node:path'
-import defu from 'defu'
+import { createDefu } from 'defu'
 
-const config: Osmium.Config = defu(
+const applyDefaults = createDefu((obj, key, value) => {
+  if (value === '') {
+    return true
+  }
+})
+
+const config: Osmium.Config = applyDefaults(
   JSON.parse(fs.readFileSync(resolve(process.cwd(), 'osmium-config.json'), 'utf-8')),
   {
     path: '/',
