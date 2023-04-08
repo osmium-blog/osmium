@@ -18,7 +18,7 @@ const config: Osmium.Config = applyDefaults(
 // If we need to stripe out some private fields
 const clientConfig = config
 
-module.exports = {
+export {
   config,
   clientConfig,
 }

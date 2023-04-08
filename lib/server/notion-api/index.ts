@@ -1,14 +1,14 @@
 import fs from 'fs'
 import { resolve } from 'path'
 import { getAllPosts as _getAllPosts } from './getAllPosts'
-import filterPublishedPosts from './filterPublishedPosts'
+import { filterPublishedPosts } from './utils'
 
-export { getAllTagsFromPosts } from './getAllTagsFromPosts'
+export { getAllTagsFromPosts } from './utils'
 export { getPostBlocks } from './getPostBlocks'
 
 const CACHE_FILE = resolve(process.cwd(), 'osmium-cache.json')
 
-export async function getAllPosts ({ includePages }) {
+export async function getAllPosts ({ includePages = false }) {
   const cache = new Cache()
 
   let posts
@@ -16,7 +16,7 @@ export async function getAllPosts ({ includePages }) {
     posts = cache.get('records')
   } else {
     if (cache.get('fetchingRecords')) {
-      await new Promise(resolve => {
+      await new Promise<void>(resolve => {
         setInterval(() => {
           posts = cache.get('records')
           if (posts) resolve()
@@ -29,10 +29,13 @@ export async function getAllPosts ({ includePages }) {
       cache.set('fetchingRecords', false)
     }
   }
-  return filterPublishedPosts({ posts, includePages })
+  return filterPublishedPosts(posts, includePages)
 }
 
 class Cache {
+  data: Record<string, any>
+  isEnabled: boolean
+
   constructor () {
     this.data = {}
     this.isEnabled = process.env.OSMIUM_CACHE === '1'
@@ -55,12 +58,12 @@ class Cache {
     }
   }
 
-  get (key) {
+  get (key: string) {
     this.read()
     return this.data[key]
   }
 
-  set (key, value) {
+  set (key: string, value: any) {
     this.read()
     this.data[key] = value
     this.write()

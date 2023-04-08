@@ -1,17 +1,17 @@
 import { idToUuid } from 'notion-utils'
 import dayjs from 'dayjs'
 import { config as BLOG } from '@/lib/server/config'
-import api from '@/lib/server/notion-client'
-import getAllPageIds from './getAllPageIds'
+import api from '../notion-client'
+import { filterPublishedPosts, getAllPageIds } from './utils'
 import getPageProperties from './getPageProperties'
-import filterPublishedPosts from './filterPublishedPosts'
 
 const { NOTION_DATABASE_ID } = process.env
 
 /**
- * @param {{ includePages: boolean }} - false: posts only / true: include pages
+ * @param includePages - false: posts only / true: include pages
  */
 export async function getAllPosts ({ includePages = false }) {
+  // TODO: To support url form
   const id = idToUuid(NOTION_DATABASE_ID)
 
   const response = await api.getPage(id)
@@ -53,11 +53,12 @@ export async function getAllPosts ({ includePages = false }) {
           : dayjs(block[id].value?.created_time)
       ).valueOf()
 
+      // TODO: Better not to write normalized values in-place
       data.push(properties)
     }
 
     // remove all the items doesn't meet requirements
-    const posts = filterPublishedPosts({ posts: data, includePages })
+    const posts = filterPublishedPosts(data, includePages)
 
     // Sort by date
     if (BLOG.sortByDate) {
