@@ -51,7 +51,7 @@
   /* Site nav */
 
   .sticky-nav {
-    @apply max-w-3xl sticky -top-px z-10 bg-white/40 dark:bg-night/60 border-b-transparent backdrop-blur-lg;
+    @apply max-w-3xl sticky -top-px z-10 bg-day/80 dark:bg-night/80 border-b-transparent backdrop-blur-lg;
     @apply transition-all duration-300 ease-in-out;
   }
 

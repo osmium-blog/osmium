@@ -25,57 +25,45 @@ export default function Post (props) {
   const { dark } = useTheme()
 
   return (
-    <article className={cn('flex flex-col', fullWidth ? 'md:px-24' : 'items-center')}>
-      <h1
-        className={cn(
-          'w-full font-bold text-3xl text-black dark:text-white',
-          { 'max-w-2xl px-4': !fullWidth },
-        )}
-      >
-        {post.title}
-      </h1>
-      {post.type[0] !== 'Page' && (
-        <nav
-          className={cn(
-            'w-full flex mt-7 items-start text-gray-500 dark:text-gray-400',
-            { 'max-w-2xl px-4': !fullWidth },
-          )}
-        >
-          <div className="flex mb-4">
-            <a href={BLOG.socialLink || '#'} className="flex">
-              <Image
-                alt={BLOG.author}
-                width={24}
-                height={24}
-                src={`https://gravatar.com/avatar/${emailHash}`}
-                className="rounded-full"
-              />
-              <p className="ml-2 md:block">{BLOG.author}</p>
-            </a>
-            <span className="block">&nbsp;/&nbsp;</span>
-          </div>
-          <div className="mr-2 mb-4 md:ml-0">
-            <FormattedDate date={post.date}/>
-          </div>
-          {post.tags && (
-            <div className="flex flex-nowrap max-w-full overflow-x-auto article-tags">
-              {post.tags.map(tag => (
-                <TagItem key={tag} tag={tag}/>
-              ))}
+    <article className={cn('grid grid-cols-[0_1fr_0]', fullWidth ? 'md:grid-cols-[80px_minmax(0,calc(var(--content-width)-80px*2))_auto]' : 'md:grid-cols-[1fr_42rem_1fr]')}>
+      <div className="row-start-1 col-start-2 px-4">
+        <h1 className={cn('font-bold text-3xl text-black dark:text-white')}>{post.title}</h1>
+        {post.type[0] !== 'Page' && (
+          <nav className={cn('w-full flex mt-7 items-start text-gray-500 dark:text-gray-400')}>
+            <div className="flex mb-4">
+              <a href={BLOG.socialLink || '#'} className="flex">
+                <Image
+                  alt={BLOG.author}
+                  width={24}
+                  height={24}
+                  src={`https://gravatar.com/avatar/${emailHash}`}
+                  className="rounded-full"
+                />
+                <p className="ml-2 md:block">{BLOG.author}</p>
+              </a>
+              <span className="block">&nbsp;/&nbsp;</span>
             </div>
-          )}
-        </nav>
-      )}
-      <div className="self-stretch -mt-4 flex flex-col items-center lg:flex-row lg:items-stretch">
-        {!fullWidth && <div className="flex-1 hidden lg:block"/>}
-        <div className={fullWidth ? 'flex-1 pr-4' : 'flex-none w-full max-w-2xl px-4'}>
-          <NotionRenderer recordMap={blockMap} fullPage={false} darkMode={dark}/>
-        </div>
-        <div className={cn('order-first lg:order-[unset] w-full lg:w-auto max-w-2xl lg:max-w-[unset] lg:min-w-[160px]', fullWidth ? 'flex-none' : 'flex-1')}>
-          {/* `65px` is the height of expanded nav */}
-          {/* TODO: Remove the magic number */}
-          <TableOfContents blockMap={blockMap} className="pt-3 sticky" style={{ top: '65px' }}/>
-        </div>
+            <div className="mr-2 mb-4 md:ml-0">
+              <FormattedDate date={post.date}/>
+            </div>
+            {post.tags && (
+              <div className="flex flex-nowrap max-w-full overflow-x-auto article-tags">
+                {post.tags.map(tag => (
+                  <TagItem key={tag} tag={tag}/>
+                ))}
+              </div>
+            )}
+          </nav>
+        )}
+      </div>
+      <div className={cn('row-start-3 lg:row-start-2 col-start-2 px-4')}>
+        <NotionRenderer recordMap={blockMap} fullPage={false} darkMode={dark}/>
+      </div>
+      <div className={cn('row-start-2 col-start-2 lg:col-start-3 px-4 lg:px-0', { 'lg:min-w-[160px] lg:max-w-[320px]': fullWidth })}>
+        {/* `65px` is the height of expanded nav */}
+        {/* Plus 16px to keep margin */}
+        {/* TODO: Remove the magic number */}
+        <TableOfContents blockMap={blockMap} className="lg:inline-block sticky lg:mr-4" style={{ top: 65 + 16 + 'px' }}/>
       </div>
     </article>
   )

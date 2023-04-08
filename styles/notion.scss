@@ -146,6 +146,23 @@ pre[class*='language-'] {
   @apply text-gray-500 dark:text-gray-400;
 }
 
+.notion-asset-wrapper-image {
+  @apply max-w-full;
+
+  > div {
+    @apply -mx-4;
+    width: var(--content-width) !important;
+    max-width: unset !important;
+
+    @media (min-width: theme('screens.lg')) {
+      @at-root .notion-full-width & {
+        align-self: flex-start !important;
+        margin-left: -96px;
+      }
+    }
+  }
+}
+
 .notion-asset-wrapper-tweet iframe {
   @apply bg-day dark:bg-night;
 }

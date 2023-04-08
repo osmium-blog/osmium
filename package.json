@@ -1,6 +1,6 @@
 {
   "name": "@osmium-blog/osmium",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "homepage": "https://github.com/osmium-blog/osmium",
   "license": "MIT",
   "author": {
@@ -25,6 +25,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-hookz/web": "^23.0.0",
     "@vercel/analytics": "^0.1.11",
     "cheerio": "1.0.0-rc.12",
     "classnames": "^2.3.2",
