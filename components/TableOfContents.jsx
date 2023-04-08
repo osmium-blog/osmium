@@ -27,7 +27,7 @@ export default function TableOfContents ({ blockMap, className, style }) {
 
   return (
     <aside
-      className={cn(className, 'pl-4 text-sm text-zinc-700/70 dark:text-neutral-400')}
+      className={cn(className, 'lg:px-2 text-sm text-zinc-700/70 dark:text-neutral-400 bg-day/80 dark:bg-night/80 rounded backdrop-blur-lg')}
       style={style}
     >
       {nodes.map(node => (

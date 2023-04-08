@@ -5,6 +5,7 @@ import '@/styles/notion.scss'
 import loadLocale from '@/assets/i18n'
 import { ConfigProvider } from '@/lib/config'
 import { LocaleProvider } from '@/lib/locale'
+import { SensorProvider } from '@/lib/sensor'
 import { ThemeProvider } from '@/lib/theme'
 import Analytics from '@/components/analytics'
 import { useEffect } from 'react'
@@ -20,10 +21,12 @@ export default function MyApp ({ Component, pageProps, config, locale }) {
   return (
     <ConfigProvider value={config}>
       <LocaleProvider value={locale}>
-        <ThemeProvider>
-          {process.env.NODE_ENV === 'production' && <Analytics/>}
-          <Component {...pageProps}/>
-        </ThemeProvider>
+        <SensorProvider>
+          <ThemeProvider>
+            {process.env.NODE_ENV === 'production' && <Analytics/>}
+            <Component {...pageProps}/>
+          </ThemeProvider>
+        </SensorProvider>
       </LocaleProvider>
     </ConfigProvider>
   )
