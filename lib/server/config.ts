@@ -8,10 +8,12 @@ const applyDefaults = createDefu((obj, key, value) => {
   }
 })
 
+const raw = JSON.parse(fs.readFileSync(resolve(process.cwd(), 'osmium-config.json'), 'utf-8'))
 const config: Osmium.Config = applyDefaults(
-  JSON.parse(fs.readFileSync(resolve(process.cwd(), 'osmium-config.json'), 'utf-8')),
+  raw,
   {
     path: '/',
+    ogImageGenerateURL: `${raw.link}/api/og-image?title=$title`,
   },
 )
 

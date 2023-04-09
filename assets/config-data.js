@@ -18,7 +18,7 @@ module.exports = {
   showAbout: true,
 
   path: '',
-  ogImageGenerateURL: 'https://og-image-craigary.vercel.app',
+  ogImageGenerateURL: '',
   seo: {
     keywords: ['Blog', 'Website', 'Notion'],
     googleSiteVerification: '',
