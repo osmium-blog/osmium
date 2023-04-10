@@ -1,30 +1,50 @@
-import { clientConfig } from '@/lib/server/config'
+import { config, clientConfig } from '@/lib/server/config'
 
 import { useRouter } from 'next/router'
-import cn from 'classnames'
-import { getAllPosts, getPage } from 'lib/server/notion-api'
-import { useLocale } from '@/lib/locale'
-import { useConfig } from '@/lib/config'
+import { getAllPosts, getPage } from '@/lib/server/notion-api'
+import Page from '@/lib/server/notion-api/page'
 import { createHash } from 'crypto'
 import Container from '@/components/Container'
 import Post from '@/components/Post'
 import Comments from '@/components/comments'
+import { parsePageId } from 'notion-utils'
 
 export async function getStaticPaths () {
+  if (process.env.NODE_ENV === 'development') return { paths: [], fallback: true }
+
   const posts = await getAllPosts({ includePages: true })
   return {
-    paths: posts.map(row => `${clientConfig.path}/${row.slug}`.replaceAll(/\/{2,}/g, '/')),
+    // TODO: Pre-building only latest posts should be enough
+    paths: posts.map(post => ({ params: { slug: post.slug } })),
     fallback: true,
   }
 }
 
 export async function getStaticProps ({ params: { slug } }) {
-  const posts = await getAllPosts({ includePages: true })
-  const post = posts.find(t => t.slug === slug)
+  let id = parsePageId(slug)
+  /** @type {PageMeta} */
+  let post
+  let blockMap
+  if (id) {
+    blockMap = await getPage(id)
+    const pageBlock = blockMap.block[id].value
+    if (pageBlock) {
+      const collectionId = pageBlock.parent_id
+      if (collectionId === config.collectionId) {
+        const collection = blockMap.collection[collectionId].value
+        post = new Page(pageBlock, collection.schema).toJson()
+      }
+    }
+  } else {
+    const posts = await getAllPosts({ includePages: true })
+    post = posts.find(t => t.slug === slug)
+    if (post) {
+      blockMap = await getPage(post.id)
+    }
+  }
 
   if (!post) return { notFound: true }
 
-  const blockMap = await getPage(post.id)
   const emailHash = createHash('md5')
     .update(clientConfig.email)
     .digest('hex')

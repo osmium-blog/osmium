@@ -2,9 +2,9 @@ import { extname, resolve } from 'node:path'
 import { promises as fs } from 'node:fs'
 import { execSync } from 'node:child_process'
 import { loadEnvConfig } from '@next/env'
-import type { PageBlock, BlockMap, CodeBlock } from 'notion-types'
+import type { PageBlock, BlockMap, CodeBlock, CollectionViewPageBlock } from 'notion-types'
 import { NotionAPI } from 'notion-client'
-import { getTextContent } from 'notion-utils'
+import { getTextContent, parsePageId } from 'notion-utils'
 import { defaultMapImageUrl } from 'react-notion-x'
 import { ofetch } from 'ofetch'
 import * as cheerio from 'cheerio'
@@ -16,12 +16,13 @@ const ROOT = process.cwd()
 void async function main () {
   loadEnvConfig(ROOT)
   const { NOTION_DATABASE_ID, NOTION_ACCESS_TOKEN } = process.env
+  const databaseId = parsePageId(NOTION_DATABASE_ID)
 
-  if (!NOTION_DATABASE_ID) abort('NOTION_DATABASE_ID is not set!')
+  if (!databaseId) abort('NOTION_DATABASE_ID is not set or valid!')
 
   console.log('Fetching config...')
   const api = new NotionAPI({ authToken: NOTION_ACCESS_TOKEN })
-  const everything = await api.getPage(NOTION_DATABASE_ID)
+  const everything = await api.getPage(databaseId)
 
   // Get the ID of database prop `type`
   const typeProp =
@@ -38,6 +39,8 @@ void async function main () {
   const [, { value: configPage }] = configRecord
 
   await prepareConfig(configPage as PageBlock, everything.block, {
+    databaseId,
+    collectionId: (everything.block[databaseId].value as CollectionViewPageBlock).collection_id!,
     version: await prepareVersion(),
     logo: await prepareLogo(configPage as PageBlock),
   })
@@ -48,6 +51,8 @@ void async function main () {
 const CONFIG_FILE = resolve(ROOT, 'osmium-config.json')
 
 type Extra = {
+  databaseId: string
+  collectionId: string
   version?: string
   logo?: string
 }

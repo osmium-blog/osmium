@@ -45,7 +45,7 @@ export default class Page {
 
   toJson () {
     return pickBy(this, (value, key) => {
-      return value !== undefined && ['block', 'id', 'title', 'slug', 'summary', 'tags', 'date', 'fullWidth'].includes(key)
+      return value !== undefined && ['id', 'type', 'title', 'slug', 'summary', 'tags', 'date', 'fullWidth', 'status'].includes(key)
     })
   }
 

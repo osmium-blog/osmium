@@ -17,8 +17,8 @@ const config: Osmium.Config = applyDefaults(
   },
 )
 
-// If we need to stripe out some private fields
-const clientConfig = config
+// Stripe out some private fields
+const { databaseId, collectionId, ...clientConfig } = config
 
 export {
   config,

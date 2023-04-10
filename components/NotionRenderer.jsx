@@ -117,7 +117,7 @@ export default function NotionRenderer (props) {
 
   if (props.recordMap) {
     // Prevent page properties from being rendered
-    for (const it of Object.values(props.recordMap.collection)[0].value.format?.property_visibility) {
+    for (const it of Object.values(props.recordMap.collection)[0].value.format?.property_visibility || []) {
       it.visibility = 'hide'
     }
     // Mark block types to be custom rendered by appending a suffix
