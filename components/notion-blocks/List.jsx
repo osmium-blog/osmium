@@ -26,9 +26,11 @@ export default function List ({ block, children, ...props }) {
           <span className="osmium-list-title">
             <Text value={block.properties?.title}/>
           </span>
-          <div className="osmium-list-content">
-            {children}
-          </div>
+          {children && (
+            <div className="osmium-list-content">
+              {children}
+            </div>
+          )}
         </div>
       </li>
     </ListElement>

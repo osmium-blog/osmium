@@ -146,20 +146,26 @@ pre[class*='language-'] {
   @apply text-gray-500 dark:text-gray-400;
 }
 
-.notion-asset-wrapper-image.notion-asset-wrapper-full {
-  @apply max-w-full;
+.notion-asset-wrapper-image {
+  &.notion-asset-wrapper-full {
+    @apply max-w-full;
 
-  > div {
-    @apply -mx-4;
-    width: var(--content-width) !important;
-    max-width: unset !important;
+    > div {
+      @apply -mx-4;
+      width: var(--content-width) !important;
+      max-width: unset !important;
 
-    @media (min-width: theme('screens.lg')) {
-      @at-root .notion-full-width & {
-        align-self: flex-start !important;
-        margin-left: -96px;
+      @media (min-width: theme('screens.lg')) {
+        @at-root .notion-full-width & {
+          align-self: flex-start !important;
+          margin-left: -96px;
+        }
       }
     }
+  }
+
+  @at-root .osmium-block &:not(.notion-asset-wrapper-full) > div {
+    height: 100% !important;
   }
 }
 
@@ -172,8 +178,7 @@ pre[class*='language-'] {
 }
 
 .notion-page {
-  @apply w-auto;
-  @apply px-0;
+  @apply w-auto px-0 items-stretch;
 }
 
 .notion-quote {
@@ -244,8 +249,10 @@ pre[class*='language-'] {
       font-family: Arial;
     }
 
-    @at-root .osmium-list-item {
-      @apply flex-1;
+    @at-root {
+      .osmium-list-item {
+        @apply flex-1 min-w-0;
+      }
     }
   }
 

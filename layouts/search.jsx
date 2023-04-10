@@ -1,10 +1,13 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
+import { useLocale } from '@/lib/locale'
 import PostListItem from '@/components/PostListItem'
 import Container from '@/components/Container'
 import Tags from '@/components/Tags'
-import PropTypes from 'prop-types'
 
-const SearchLayout = ({ tags, posts, currentTag }) => {
+export default function SearchLayout ({ tags, posts, currentTag }) {
+  const locale = useLocale()
+
   const [searchValue, setSearchValue] = useState('')
   let filteredBlogPosts = []
   if (posts) {
@@ -21,7 +24,9 @@ const SearchLayout = ({ tags, posts, currentTag }) => {
         <input
           type="text"
           placeholder={
-            currentTag ? `Search in #${currentTag}` : 'Search Articles'
+            currentTag
+              ? locale.PAGE.SEARCH.INPUT_PLACEHOLDER.SEARCH_IN_TAG.replace('%s', currentTag)
+              : locale.PAGE.SEARCH.INPUT_PLACEHOLDER.SEARCH_ARTICLES
           }
           className="block w-full border px-4 py-2 border-black bg-white text-black dark:bg-night dark:border-white dark:text-white"
           onChange={e => setSearchValue(e.target.value)}
@@ -47,7 +52,7 @@ const SearchLayout = ({ tags, posts, currentTag }) => {
       />
       <div className="article-container my-8">
         {!filteredBlogPosts.length && (
-          <p className="text-gray-500 dark:text-gray-300">No posts found.</p>
+          <p className="text-gray-500 dark:text-gray-300">{locale.PAGE.SEARCH.NO_DATA}</p>
         )}
         <ul className="divide-y divide-gray-300 dark:divide-gray-700">
           {filteredBlogPosts.slice(0, 20).map(post => (
@@ -60,9 +65,9 @@ const SearchLayout = ({ tags, posts, currentTag }) => {
     </Container>
   )
 }
+
 SearchLayout.propTypes = {
   posts: PropTypes.array.isRequired,
   tags: PropTypes.object.isRequired,
   currentTag: PropTypes.string,
 }
-export default SearchLayout

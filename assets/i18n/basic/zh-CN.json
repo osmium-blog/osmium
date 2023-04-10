@@ -11,6 +11,13 @@
     "NEXT": "下一页"
   },
   "PAGE": {
+    "SEARCH": {
+      "INPUT_PLACEHOLDER": {
+        "SEARCH_ARTICLES": "搜索文章",
+        "SEARCH_IN_TAG": "在 #%s 中搜索"
+      },
+      "NO_DATA": "无匹配结果"
+    },
     "ERROR_404": {
       "MESSAGE": "什么也没有"
     }
