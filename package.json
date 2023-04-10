@@ -34,6 +34,7 @@
     "destr": "^1.2.2",
     "feed": "^4.2.2",
     "gitalk": "^1.7.2",
+    "lodash": "^4.17.21",
     "mermaid": "^10.0.2",
     "next": "^13.3.0",
     "notion-client": "^6.16.0",
@@ -53,6 +54,7 @@
   },
   "devDependencies": {
     "@next/env": "^13.3.0",
+    "@types/lodash": "^4.14.192",
     "@types/react": "^18.0.33",
     "@typescript-eslint/parser": "^5.56.0",
     "autoprefixer": "^10.4.14",

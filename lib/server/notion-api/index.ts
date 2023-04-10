@@ -1,10 +1,10 @@
-import fs from 'fs'
-import { resolve } from 'path'
+import fs from 'node:fs'
+import { resolve } from 'node:path'
 import { getAllPosts as _getAllPosts } from './getAllPosts'
 import { filterPublishedPosts } from './utils'
 
 export { getAllTagsFromPosts } from './utils'
-export { getPostBlocks } from './getPostBlocks'
+export { getPage } from './getPage'
 
 const CACHE_FILE = resolve(process.cwd(), 'osmium-cache.json')
 

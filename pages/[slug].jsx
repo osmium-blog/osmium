@@ -2,7 +2,7 @@ import { clientConfig } from '@/lib/server/config'
 
 import { useRouter } from 'next/router'
 import cn from 'classnames'
-import { getAllPosts, getPostBlocks } from 'lib/server/notion-api'
+import { getAllPosts, getPage } from 'lib/server/notion-api'
 import { useLocale } from '@/lib/locale'
 import { useConfig } from '@/lib/config'
 import { createHash } from 'crypto'
@@ -24,7 +24,7 @@ export async function getStaticProps ({ params: { slug } }) {
 
   if (!post) return { notFound: true }
 
-  const blockMap = await getPostBlocks(post.id)
+  const blockMap = await getPage(post.id)
   const emailHash = createHash('md5')
     .update(clientConfig.email)
     .digest('hex')

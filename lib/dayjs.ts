@@ -10,3 +10,8 @@ export function setDefaultTimezone (timezone: string) {
 }
 
 export default dayjs
+
+export function withTimezone (timezone: string) {
+  setDefaultTimezone(timezone)
+  return dayjs
+}

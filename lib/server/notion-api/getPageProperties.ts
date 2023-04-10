@@ -7,12 +7,12 @@ import type {
   UserFormat,
 } from 'notion-types'
 import api from '../notion-client'
-import type { PostMeta } from './utils'
+import type { PageMeta } from './utils'
 
 export default async function getPageProperties (id: string, block: BlockMap, schema: CollectionPropertySchemaMap) {
   const rawProperties = Object.entries(block?.[id]?.value?.properties || [])
   const excludeProperties = ['date', 'select', 'multi_select', 'person']
-  const properties = {} as PostMeta
+  const properties = {} as PageMeta
   for (const [key, val] of rawProperties) {
     properties.id = id
     if (schema[key]?.type && !excludeProperties.includes(schema[key].type)) {

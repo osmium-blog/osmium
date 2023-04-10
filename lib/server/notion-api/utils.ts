@@ -1,5 +1,5 @@
 import { idToUuid } from 'notion-utils'
-import type { BasePageBlock, ExtendedRecordMap } from 'notion-types'
+import type { BasePageBlock, ExtendedRecordMap, PageBlock, CollectionPropertySchemaMap } from 'notion-types'
 
 export function getAllPageIds (collectionQuery: ExtendedRecordMap['collection_query'], viewId?: string): string[] {
   const views = Object.values(collectionQuery)[0]
@@ -15,10 +15,9 @@ export function getAllPageIds (collectionQuery: ExtendedRecordMap['collection_qu
   }
 }
 
-// TODO: complete the definition
-export type PostMeta = Record<string, any> & { id: string }
+export type PageMeta = Record<string, any>
 
-export function filterPublishedPosts (posts?: PostMeta[], includePages: boolean = false): PostMeta[] {
+export function filterPublishedPosts (posts?: PageMeta[], includePages: boolean = false): PageMeta[] {
   if (!posts?.length) return []
 
   return posts.filter(post =>
@@ -27,13 +26,13 @@ export function filterPublishedPosts (posts?: PostMeta[], includePages: boolean 
     post.title &&
     post.slug &&
     post.status?.[0] === 'Published' &&
-    post.date <= new Date()
+    post.date <= new Date().getTime()
   )
 }
 
-export function getAllTagsFromPosts (posts: PostMeta[]): Record<string, number> {
+export function getAllTagsFromPosts (posts: PageMeta[]): Record<string, number> {
   const taggedPosts = posts.filter(post => post?.tags)
-  const tags = taggedPosts.map(post => post.tags).flat()
+  const tags = taggedPosts.map(post => post.tags ?? []).flat()
   const result = {} as Record<string, number>
   for (const tag of tags) {
     result[tag] ??= 0
