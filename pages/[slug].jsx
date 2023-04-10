@@ -27,7 +27,7 @@ export async function getStaticProps ({ params: { slug } }) {
   let blockMap
   if (id) {
     blockMap = await getPage(id)
-    const pageBlock = blockMap.block[id].value
+    const pageBlock = /** @type {import('notion-types').PageBlock} */ blockMap.block[id].value
     if (pageBlock) {
       const collectionId = pageBlock.parent_id
       if (collectionId === config.collectionId) {

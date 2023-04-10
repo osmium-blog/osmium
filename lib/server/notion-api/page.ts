@@ -1,7 +1,8 @@
 import { getDateValue, getTextContent } from 'notion-utils'
-import type { Block, CollectionPropertySchemaMap } from 'notion-types'
+import type { CollectionPropertySchemaMap, PageBlock } from 'notion-types'
 import { pickBy } from 'lodash'
 import { clientConfig } from '@/lib/server/config'
+import api from '@/lib/server/notion-client'
 import { withTimezone } from '@/lib/dayjs'
 
 const dayjs = withTimezone(clientConfig.timezone)
@@ -22,8 +23,12 @@ export default class Page {
   fullWidth: boolean = false
   status?: PageStatus
 
-  constructor (public block: Block, public schema: CollectionPropertySchemaMap) {
+  constructor (public block: PageBlock, public schema: CollectionPropertySchemaMap) {
     this.id = block.id
+    this.init()
+  }
+
+  init (block: PageBlock = this.block, schema: CollectionPropertySchemaMap = this.schema) {
     const props = Page.simplifyProperties(block.properties, schema)
 
     VALID_TYPES.includes(props.type) && (this.type = props.type)
@@ -43,15 +48,22 @@ export default class Page {
     this.fullWidth = block.format?.page_full_width ?? false
   }
 
+  async sync () {
+    const { block: blockMap, collection: collectionMap } = await api.getPage(this.id)
+    const block = blockMap[this.id].value as PageBlock
+    const schema = collectionMap[block.parent_id].value.schema
+    this.init(block, schema)
+  }
+
   toJson () {
     return pickBy(this, (value, key) => {
       return value !== undefined && ['id', 'type', 'title', 'slug', 'summary', 'tags', 'date', 'fullWidth', 'status'].includes(key)
     })
   }
 
-  static simplifyProperties (properties: Block['properties'], schema: CollectionPropertySchemaMap) {
+  static simplifyProperties (properties: PageBlock['properties'], schema: CollectionPropertySchemaMap) {
     return Object.fromEntries(
-      Object.entries(properties)
+      Object.entries(properties || {})
         .map(([key, value]) => {
           const prop = schema[key]
           let propValue: any
