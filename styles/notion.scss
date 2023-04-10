@@ -172,8 +172,7 @@ pre[class*='language-'] {
 }
 
 .notion-page {
-  @apply w-auto;
-  @apply px-0;
+  @apply w-auto px-0 items-stretch;
 }
 
 .notion-quote {
@@ -244,8 +243,10 @@ pre[class*='language-'] {
       font-family: Arial;
     }
 
-    @at-root .osmium-list-item {
-      @apply flex-1;
+    @at-root {
+      .osmium-list-item {
+        @apply flex-1 min-w-0;
+      }
     }
   }
 
