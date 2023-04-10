@@ -1,15 +1,21 @@
 import { config, clientConfig } from '@/lib/server/config'
 
+import type { GetStaticPaths, InferGetStaticPropsType } from 'next'
 import { useRouter } from 'next/router'
+import { parsePageId } from 'notion-utils'
+import type { PageBlock } from 'notion-types'
+import { createHash } from 'crypto'
 import { getAllPosts, getPage } from '@/lib/server/notion-api'
 import Page from '@/lib/server/notion-api/page'
-import { createHash } from 'crypto'
 import Container from '@/components/Container'
 import Post from '@/components/Post'
 import Comments from '@/components/comments'
-import { parsePageId } from 'notion-utils'
 
-export async function getStaticPaths () {
+type Params = {
+  slug: string
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
   if (process.env.NODE_ENV === 'development') return { paths: [], fallback: true }
 
   const posts = await getAllPosts({ includePages: true })
@@ -20,14 +26,14 @@ export async function getStaticPaths () {
   }
 }
 
-export async function getStaticProps ({ params: { slug } }) {
+export const getStaticProps = async ({ params: { slug } }: { params: Params }) => {
   let id = parsePageId(slug)
   /** @type {PageMeta} */
   let post
   let blockMap
   if (id) {
     blockMap = await getPage(id)
-    const pageBlock = /** @type {import('notion-types').PageBlock} */ blockMap.block[id].value
+    const pageBlock = blockMap.block[id].value as PageBlock
     if (pageBlock) {
       const collectionId = pageBlock.parent_id
       if (collectionId === config.collectionId) {
@@ -57,7 +63,7 @@ export async function getStaticProps ({ params: { slug } }) {
   }
 }
 
-export default function PagePost ({ post, blockMap, emailHash }) {
+export default function PagePost ({ post, blockMap, emailHash }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter()
 
   // TODO: It would be better to render something
@@ -77,7 +83,7 @@ export default function PagePost ({ post, blockMap, emailHash }) {
     >
       <Post
         post={post}
-        blockMap={blockMap}
+        blockMap={blockMap!}
         emailHash={emailHash}
         fullWidth={fullWidth}
       />
