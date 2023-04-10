@@ -4,7 +4,7 @@
     <div>Osmium</div>
   </h1>
   <p>A static blog site builder. Powered by <a href="https://notion.so/">Notion</a> and <a href="https://nextjs.org/">Next.js</a></p>
-  <p><em>Osmium is a heavily-modded version of the awesome <a href="https://github.com/cragiary/nobelium">Nobelium</a></em></p>
+  <p><em>Osmium is a heavily-modded version of the awesome <a href="https://github.com/craigary/nobelium">Nobelium</a></em></p>
   <p>
     <a href="https://vercel.com/?utm_source=Osmium&utm_campaign=oss" title="Powered by Vercel" aria-label="Powered by Vercel">
       <img src="https://images.ctfassets.net/e5382hct74si/78Olo8EZRdUlcDUFQvnzG7/fa4cdb6dc04c40fceac194134788a0e2/1618983297-powered-by-vercel.svg" alt="Powered by Vercel">
