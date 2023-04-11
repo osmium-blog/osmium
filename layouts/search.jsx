@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useLocale } from '@/lib/locale'
-import PostListItem from '@/components/PostListItem'
+import PostList from '@/components/PostList'
 import Container from '@/components/Container'
 import Tags from '@/components/Tags'
 
@@ -54,13 +54,7 @@ export default function SearchLayout ({ tags, posts, currentTag }) {
         {!filteredBlogPosts.length && (
           <p className="text-gray-500 dark:text-gray-300">{locale.PAGE.SEARCH.NO_DATA}</p>
         )}
-        <ul className="divide-y divide-gray-300 dark:divide-gray-700">
-          {filteredBlogPosts.slice(0, 20).map(post => (
-            <li key={post.id} className="py-5">
-              <PostListItem post={post}/>
-            </li>
-          ))}
-        </ul>
+        <PostList posts={filteredBlogPosts.slice(0, 20)}/>
       </div>
     </Container>
   )

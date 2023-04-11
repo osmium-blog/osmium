@@ -1,7 +1,7 @@
 import { clientConfig } from '@/lib/server/config'
 
 import Container from '@/components/Container'
-import PostListItem from '@/components/PostListItem'
+import PostList from '@/components/PostList'
 import Pagination from '@/components/Pagination'
 import { getAllPosts } from 'lib/server/notion-api'
 import { useConfig } from '@/lib/config'
@@ -26,13 +26,7 @@ export default function PageIndex ({ postsToShow, page, showNext }) {
 
   return (
     <Container title={title} description={description}>
-      <ul className="divide-y divide-gray-300 dark:divide-gray-700">
-        {postsToShow.map(post => (
-          <li key={post.id} className="py-5">
-            <PostListItem post={post}/>
-          </li>
-        ))}
-      </ul>
+      <PostList posts={postsToShow}/>
       {showNext && <Pagination page={page} showNext={showNext}/>}
     </Container>
   )
