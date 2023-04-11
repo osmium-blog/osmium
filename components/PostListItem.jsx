@@ -3,10 +3,11 @@ import { useConfig } from '@/lib/config'
 import FormattedDate from '@/components/FormattedDate'
 
 export default function PostListItem ({ post }) {
-  const BLOG = useConfig()
+  const { path } = useConfig()
+  const href = `${path || ''}/${post.slug}`.replaceAll(/\/{2,}/g, '/')
 
   return (
-    <Link href={`${BLOG.path || ''}/${post.slug}`}>
+    <Link href={href}>
       <article key={post.id}>
         <header className="flex flex-col justify-between md:flex-row md:items-baseline">
           <h2 className="text-lg md:text-xl font-medium mb-2 cursor-pointer text-black dark:text-gray-100">
