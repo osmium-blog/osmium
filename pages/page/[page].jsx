@@ -1,7 +1,7 @@
 import { config } from '@/lib/server/config'
 
 import Container from '@/components/Container'
-import PostListItem from '@/components/PostListItem'
+import PostList from '@/components/PostList'
 import Pagination from '@/components/Pagination'
 import { getAllPosts } from 'lib/server/notion-api'
 
@@ -40,8 +40,7 @@ export async function getStaticProps (context) {
 export default function PagePage ({ postsToShow, page, showNext }) {
   return (
     <Container>
-      {postsToShow &&
-        postsToShow.map(post => <PostListItem key={post.id} post={post}/>)}
+      <PostList posts={postsToShow}/>
       <Pagination page={page} showNext={showNext}/>
     </Container>
   )

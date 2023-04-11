@@ -13,7 +13,7 @@ import Comments from '@/components/comments'
 export async function getStaticPaths () {
   const posts = await getAllPosts({ includePages: true })
   return {
-    paths: posts.map(row => `${clientConfig.path || ''}/${row.slug}`),
+    paths: posts.map(row => `${clientConfig.path || ''}/${row.slug}`.replaceAll(/\/{2,}/g, '/')),
     fallback: true,
   }
 }
