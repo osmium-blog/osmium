@@ -1,5 +1,5 @@
 import { getDateValue, getTextContent } from 'notion-utils'
-import type { CollectionPropertySchemaMap, PageBlock } from 'notion-types'
+import type { CollectionPropertySchemaMap, ExtendedRecordMap, PageBlock } from 'notion-types'
 import { pickBy } from 'lodash'
 import { clientConfig } from '@/lib/server/config'
 import api from '@/lib/server/notion-client'
@@ -22,6 +22,8 @@ export default class Page {
   date: number = 0
   fullWidth: boolean = false
   status?: PageStatus
+
+  recordMap?: ExtendedRecordMap
 
   constructor (public block: PageBlock, public schema: CollectionPropertySchemaMap) {
     this.id = block.id
@@ -49,7 +51,7 @@ export default class Page {
   }
 
   async sync () {
-    const { block: blockMap, collection: collectionMap } = await api.getPage(this.id)
+    const { block: blockMap, collection: collectionMap } = this.recordMap = await api.getPage(this.id)
     const block = blockMap[this.id].value as PageBlock
     const schema = collectionMap[block.parent_id].value.schema
     this.init(block, schema)

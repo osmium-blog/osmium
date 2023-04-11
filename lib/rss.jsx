@@ -11,6 +11,7 @@ const createFeedContent = async post => {
       <NotionRenderer recordMap={await getPage(post.id)}/>,
     </ConfigProvider>
   )
+  // FIXME: Need a better solution
   const regexExp = /<div class="notion-collection-row"><div class="notion-collection-row-body"><div class="notion-collection-row-property"><div class="notion-collection-column-title"><svg.*?class="notion-collection-column-title-icon">.*?<\/svg><div class="notion-collection-column-title-body">.*?<\/div><\/div><div class="notion-collection-row-value">.*?<\/div><\/div><\/div><\/div>/g
   return content.replace(regexExp, '')
 }
@@ -20,6 +21,7 @@ export async function generateRss (posts) {
   const feed = new Feed({
     title: config.title,
     description: config.description,
+    // FIXME: Need to normalize
     id: `${config.link}/${config.path || ''}`,
     link: `${config.link}/${config.path || ''}`,
     language: config.lang,

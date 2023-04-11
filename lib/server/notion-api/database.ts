@@ -3,6 +3,7 @@ import type {
   CollectionPropertySchemaMap,
   CollectionViewPageBlock,
   ExtendedRecordMap,
+  PageBlock,
 } from 'notion-types'
 import api from '../notion-client'
 import Page from './page'
@@ -14,10 +15,10 @@ export default class Database {
   recordMap?: ExtendedRecordMap
   schema?: CollectionPropertySchemaMap
 
-  pages: string[] = []
-  posts: string[] = []
+  pages: Page[] = []
+  posts: Page[] = []
   pageMap: Record<string, Page> = {}
-  tags: string[] = []
+  tagMap: Record<string, number> = {}
 
   constructor (id: string) {
     this.id = parsePageId(id)
@@ -26,7 +27,7 @@ export default class Database {
   async syncAll () {
     const { block: blockMap, collection: collectionMap, collection_query } = this.recordMapRaw = await api.getPage(this.id)
 
-    const databasePage = blockMap[this.id].value
+    const databasePage = blockMap[this.id].value as CollectionViewPageBlock
     // Check if this is a valid database
     if (
       databasePage.type !== 'collection_view_page' &&
@@ -53,9 +54,8 @@ export default class Database {
     )]
 
     // Store valid pages
-    const tagSet = new Set<string>()
     for (const id of allPageIds) {
-      const block = blockMap[id].value
+      const block = blockMap[id].value as PageBlock
       if (!block) continue
 
       const page = new Page(block, this.schema!)
@@ -64,18 +64,20 @@ export default class Database {
 
       switch (page.type) {
         case 'Page':
-          this.pages.push(id)
+          this.pages.push(page)
           break
         case 'Post':
-          this.posts.push(id)
+          this.posts.push(page)
           break
       }
 
       if (page.tags?.length) {
-        page.tags.forEach(tag => tagSet.add(tag))
+        page.tags.forEach(tag => {
+          this.tagMap[tag] ??= 0
+          this.tagMap[tag]++
+        })
       }
     }
-    this.tags = [...tagSet]
 
     this.generateRecordMap()
   }

@@ -1,12 +1,13 @@
-import { config, clientConfig } from '@/lib/server/config'
+import { createHash } from 'node:crypto'
+import { parsePageId } from 'notion-utils'
+import { clientConfig, config } from '@/lib/server/config'
+import { getPage } from '@/lib/server/notion-api'
+import Database from '@/lib/server/notion-api/database'
+import Page from '@/lib/server/notion-api/page'
 
 import type { GetStaticPaths, InferGetStaticPropsType } from 'next'
 import { useRouter } from 'next/router'
-import { parsePageId } from 'notion-utils'
 import type { PageBlock } from 'notion-types'
-import { createHash } from 'crypto'
-import { getAllPosts, getPage } from '@/lib/server/notion-api'
-import Page from '@/lib/server/notion-api/page'
 import Container from '@/components/Container'
 import Post from '@/components/Post'
 import Comments from '@/components/comments'
@@ -18,19 +19,21 @@ type Params = {
 export const getStaticPaths: GetStaticPaths = async () => {
   if (process.env.NODE_ENV === 'development') return { paths: [], fallback: true }
 
-  const posts = await getAllPosts({ includePages: true })
+  const db = new Database(config.databaseId)
+  await db.syncAll()
+  // TODO: Pre-building only latest posts should be enough
+  const paths = Object.values(db.pageMap).map(page => ({ params: { slug: page.slug } }))
   return {
-    // TODO: Pre-building only latest posts should be enough
-    paths: posts.map(post => ({ params: { slug: post.slug } })),
+    paths,
     fallback: true,
   }
 }
 
 export const getStaticProps = async ({ params: { slug } }: { params: Params }) => {
-  let id = parsePageId(slug)
-  /** @type {PageMeta} */
+  const id = parsePageId(slug)
   let post
   let blockMap
+
   if (id) {
     blockMap = await getPage(id)
     const pageBlock = blockMap.block[id].value as PageBlock
@@ -38,13 +41,16 @@ export const getStaticProps = async ({ params: { slug } }: { params: Params }) =
       const collectionId = pageBlock.parent_id
       if (collectionId === config.collectionId) {
         const collection = blockMap.collection[collectionId].value
-        post = new Page(pageBlock, collection.schema).toJson()
+        post = new Page(pageBlock, collection.schema)
       }
     }
   } else {
-    const posts = await getAllPosts({ includePages: true })
-    post = posts.find(t => t.slug === slug)
+    // TODO: Only when user provided an unfamiliar slug should this be executed
+    const db = new Database(config.databaseId)
+    await db.syncAll()
+    post = db.posts.find(page => page.slug === slug)
     if (post) {
+      // TODO: Is this necessary?
       blockMap = await getPage(post.id)
     }
   }
@@ -58,7 +64,7 @@ export const getStaticProps = async ({ params: { slug } }: { params: Params }) =
     .toLowerCase()
 
   return {
-    props: { post, blockMap, emailHash },
+    props: { post: post.toJson(), blockMap, emailHash },
     revalidate: 1,
   }
 }
