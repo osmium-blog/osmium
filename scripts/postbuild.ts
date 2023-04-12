@@ -1,7 +1,10 @@
-import { resolve } from 'node:path'
 import fs from 'node:fs'
+import { resolve } from 'node:path'
 
 const ROOT = process.cwd()
 const CACHE_FILE = resolve(ROOT, 'osmium-cache.json')
 
-fs.writeFileSync(CACHE_FILE, '{}', 'utf-8')
+if (fs.existsSync(CACHE_FILE)) {
+  // Why Vercel needs this?
+  fs.writeFileSync(CACHE_FILE, '{}', 'utf-8')
+}

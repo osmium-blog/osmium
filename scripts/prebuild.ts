@@ -3,7 +3,6 @@ import { promises as fs } from 'node:fs'
 import { execSync } from 'node:child_process'
 import { loadEnvConfig } from '@next/env'
 import type { PageBlock, BlockMap, CodeBlock, CollectionViewPageBlock } from 'notion-types'
-import { NotionAPI } from 'notion-client'
 import { getTextContent, parsePageId } from 'notion-utils'
 import { defaultMapImageUrl } from 'react-notion-x'
 import { ofetch } from 'ofetch'
@@ -11,17 +10,18 @@ import * as cheerio from 'cheerio'
 import sharp from 'sharp'
 import destr from 'destr'
 
+import api from '../lib/server/notion-client'
+
 const ROOT = process.cwd()
 
 void async function main () {
   loadEnvConfig(ROOT)
-  const { NOTION_DATABASE_ID, NOTION_ACCESS_TOKEN } = process.env
+  const { NOTION_DATABASE_ID } = process.env
   const databaseId = parsePageId(NOTION_DATABASE_ID)
 
   if (!databaseId) abort('NOTION_DATABASE_ID is not set or valid!')
 
   console.log('Fetching config...')
-  const api = new NotionAPI({ authToken: NOTION_ACCESS_TOKEN })
   const everything = await api.getPage(databaseId)
 
   // Get the ID of database prop `type`
@@ -44,8 +44,6 @@ void async function main () {
     version: await prepareVersion(),
     logo: await prepareLogo(configPage as PageBlock),
   })
-
-  await prepareCache()
 }()
 
 const CONFIG_FILE = resolve(ROOT, 'osmium-config.json')
@@ -158,12 +156,6 @@ async function prepareLogo (page: PageBlock) {
   await sharp(data).resize(32, 32).toFormat('png').toFile(resolve(ROOT, 'public/favicon.png'))
 
   return filename
-}
-
-const CACHE_FILE = resolve(ROOT, 'osmium-cache.json')
-
-async function prepareCache () {
-  await fs.writeFile(CACHE_FILE, '{}', 'utf-8')
 }
 
 function abort (message: string): never {

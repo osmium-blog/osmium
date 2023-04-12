@@ -1,7 +1,7 @@
 import { Feed } from 'feed'
 import ReactDOMServer from 'react-dom/server'
 import { clientConfig, config } from '@/lib/server/config'
-import { getPage } from '@/lib/server/notion-api'
+import getPage from '@/lib/server/notion-api/getPage'
 import { ConfigProvider } from '@/lib/config'
 import NotionRenderer from '@/components/NotionRenderer'
 

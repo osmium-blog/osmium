@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto'
 import { parsePageId } from 'notion-utils'
 import { clientConfig, config } from '@/lib/server/config'
-import { getPage } from '@/lib/server/notion-api'
+import getPage from '@/lib/server/notion-api/getPage'
 import Database from '@/lib/server/notion-api/database'
 import Page from '@/lib/server/notion-api/page'
 
