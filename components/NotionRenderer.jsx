@@ -3,6 +3,7 @@ import { NotionRenderer as Renderer } from 'react-notion-x'
 import { getTextContent } from 'notion-utils'
 import { FONTS_SANS, FONTS_SERIF } from '@/consts'
 import { useConfig } from '@/lib/config'
+import { usePageMap } from '@/lib/pageMap'
 import Block from '@/components/notion-blocks'
 
 const customBlockRenderer = ({ block, children }) => <Block block={block}>{children}</Block>
@@ -98,8 +99,6 @@ const components = {
   quote_osmium: customBlockRenderer,
 }
 
-const mapPageUrl = id => `https://www.notion.so/${id.replace(/-/g, '')}`
-
 /**
  * Notion page renderer
  *
@@ -131,6 +130,12 @@ export default function NotionRenderer (props) {
           break
       }
     }
+  }
+
+  const pageMap = usePageMap()
+  const mapPageUrl = id => {
+    const slug = pageMap[id]
+    return slug ? '/' + slug : 'https://notion.so/' + id.replaceAll('-', '')
   }
 
   return (

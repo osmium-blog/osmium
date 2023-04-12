@@ -5,6 +5,7 @@ import type {
   ExtendedRecordMap,
   PageBlock,
 } from 'notion-types'
+import { config } from '../config'
 import api from '../notion-client'
 import Page from './page'
 
@@ -20,7 +21,7 @@ export default class Database {
   pageMap: Record<string, Page> = {}
   tagMap: Record<string, number> = {}
 
-  constructor (id: string) {
+  constructor (id: string = config.databaseId) {
     this.id = parsePageId(id)
   }
 
