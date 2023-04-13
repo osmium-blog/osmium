@@ -109,39 +109,36 @@ function NavBar () {
     userPages = userPages.filter(p => p.slug !== 'about')
   }
 
-  type NavLink = { name: string, to: string, external?: boolean, show: boolean }
+  type NavLink = { name: string, to: string, external?: boolean }
   const links: NavLink[] = [
-    { name: locale.NAV.INDEX, to: '/', show: true },
-    { name: locale.NAV.ABOUT, to: '/about', show: showAbout },
+    { name: locale.NAV.INDEX, to: '/' },
+    showAbout && { name: locale.NAV.ABOUT, to: '/about' },
     ...userPages.map(p => {
       const external = Boolean(parseURL(p.slug).protocol)
       return {
         name: p.title!,
         to: external ? p.slug! : '/' + (p.slug || p.hash),
         external,
-        show: true,
       }
     }),
-    { name: locale.NAV.RSS, to: '/-/feed', show: true },
-    { name: locale.NAV.SEARCH, to: '/search', show: true },
-  ]
+    { name: locale.NAV.RSS, to: '/-/feed' },
+    { name: locale.NAV.SEARCH, to: '/search' },
+  ].filter(Boolean)
 
   return (
     <nav className="flex-shrink-0">
       <ul className="flex flex-row space-x-4">
-        {links.map((link, idx) =>
-          link.show && (
-            <li key={idx} className="block text-black dark:text-gray-50 nav">
-              <Link
-                href={link.to}
-                target={link.external ? '_blank' : undefined}
-                className="hover:underline underline-offset-4"
-              >
-                {link.name}
-              </Link>
-            </li>
-          ),
-        )}
+        {links.map((link, idx) => (
+          <li key={idx} className="block text-black dark:text-gray-50 nav">
+            <Link
+              href={link.to}
+              target={link.external ? '_blank' : undefined}
+              className="hover:underline underline-offset-4"
+            >
+              {link.name}
+            </Link>
+          </li>
+        ))}
       </ul>
     </nav>
   )
