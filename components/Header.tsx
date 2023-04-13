@@ -126,7 +126,7 @@ function NavBar () {
   ].filter(Boolean)
 
   return (
-    <nav className="flex-shrink-0">
+    <nav className="flex-shrink-0 ml-4">
       <ul className="flex flex-row space-x-4">
         {links.map((link, idx) => (
           <li key={idx} className="block text-black dark:text-gray-50 nav">
