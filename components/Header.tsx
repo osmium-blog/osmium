@@ -98,14 +98,16 @@ function SiteTitle ({ pageTitle }: SiteTitleProps) {
 }
 
 function NavBar () {
-  const BLOG = useConfig()
+  const { path, showAbout } = useConfig()
   const locale = useLocale()
+
   const links = [
-    { id: 0, name: locale.NAV.INDEX, to: BLOG.path || '/', show: true },
-    { id: 1, name: locale.NAV.ABOUT, to: '/about', show: BLOG.showAbout },
+    { id: 0, name: locale.NAV.INDEX, to: path || '/', show: true },
+    { id: 1, name: locale.NAV.ABOUT, to: '/about', show: showAbout },
     { id: 2, name: locale.NAV.RSS, to: '/-/feed', show: true },
     { id: 3, name: locale.NAV.SEARCH, to: '/search', show: true },
   ]
+
   return (
     <div className="flex-shrink-0">
       <ul className="flex flex-row">
