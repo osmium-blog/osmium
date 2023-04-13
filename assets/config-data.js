@@ -19,6 +19,7 @@ module.exports = {
 
   path: '',
   ogImageGenerateURL: '',
+  rss: true,
   seo: {
     keywords: ['Blog', 'Website', 'Notion'],
     googleSiteVerification: '',

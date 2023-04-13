@@ -99,7 +99,7 @@ function SiteTitle ({ pageTitle }: SiteTitleProps) {
 }
 
 function NavBar () {
-  const { showAbout } = useConfig()
+  const { showAbout, rss } = useConfig()
   const locale = useLocale()
 
   let userPages = usePages()
@@ -121,7 +121,7 @@ function NavBar () {
         external,
       }
     }),
-    { name: locale.NAV.RSS, to: '/-/feed' },
+    rss && { name: locale.NAV.RSS, to: '/-/feed' },
     { name: locale.NAV.SEARCH, to: '/search' },
   ].filter(Boolean)
 
