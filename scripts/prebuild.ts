@@ -1,8 +1,8 @@
 import { extname, resolve } from 'node:path'
-import { promises as fs } from 'node:fs'
+import fs from 'node:fs'
 import { execSync } from 'node:child_process'
 import { loadEnvConfig } from '@next/env'
-import type { PageBlock, BlockMap, CodeBlock, CollectionViewPageBlock } from 'notion-types'
+import type { BlockMap, CodeBlock, CollectionViewPageBlock, PageBlock } from 'notion-types'
 import { getTextContent, parsePageId } from 'notion-utils'
 import { defaultMapImageUrl } from 'react-notion-x'
 import { ofetch } from 'ofetch'
@@ -13,6 +13,10 @@ import destr from 'destr'
 import api from '../lib/server/notion-client'
 
 const ROOT = process.cwd()
+const CACHE_FILE = resolve(ROOT, 'osmium-cache.json')
+if (fs.existsSync(CACHE_FILE)) {
+  fs.unlinkSync(CACHE_FILE)
+}
 
 void async function main () {
   loadEnvConfig(ROOT)
@@ -73,7 +77,7 @@ async function prepareConfig (page: PageBlock, blockMap: BlockMap, extra: Extra)
   // Append extra entries
   Object.assign(config, extra)
 
-  await fs.writeFile(
+  fs.writeFileSync(
     CONFIG_FILE,
     JSON.stringify(config, null, 2),
     'utf-8',
@@ -83,7 +87,7 @@ async function prepareConfig (page: PageBlock, blockMap: BlockMap, extra: Extra)
 const PACKAGE_FILE = resolve(ROOT, 'package.json')
 
 async function prepareVersion (): Promise<string | undefined> {
-  const pkg = destr(await fs.readFile(PACKAGE_FILE, 'utf-8'))
+  const pkg = destr(fs.readFileSync(PACKAGE_FILE, 'utf-8'))
   if (!pkg.version) return
   if (/^\d+\.\d+\.\d+$/.test(pkg.version)) return pkg.version
 
@@ -150,7 +154,7 @@ async function prepareLogo (page: PageBlock) {
   console.log('Fetching logo...')
   const filename = 'logo' + ext
   const data = await ofetch(url, { responseType: 'arrayBuffer' })
-  await fs.writeFile(resolve(ROOT, `public/${filename}`), Buffer.from(data))
+  fs.writeFileSync(resolve(ROOT, `public/${filename}`), Buffer.from(data))
 
   // Generate favicon from the logo
   await sharp(data).resize(32, 32).toFormat('png').toFile(resolve(ROOT, 'public/favicon.png'))

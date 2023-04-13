@@ -1,6 +1,7 @@
 import { getDateValue, getTextContent } from 'notion-utils'
 import type { CollectionPropertySchemaMap, ExtendedRecordMap, PageBlock } from 'notion-types'
 import { hash } from 'ohash'
+import { parseURL } from 'ufo'
 import { pickBy } from 'lodash'
 import { clientConfig } from '@/lib/server/config'
 import api from '@/lib/server/notion-client'
@@ -13,7 +14,23 @@ const VALID_TYPES: PageType[] = ['Page', 'Post']
 type PageStatus = 'Published'
 const VALID_STATUS: PageStatus[] = ['Published']
 
-export default class Page {
+export interface PageProps {
+  id: string
+  hash: string
+  date: number
+
+  type?: string
+  title?: string
+  slug?: string
+  summary?: string
+  tags?: string[]
+  status?: PageStatus
+
+  fullWidth: boolean
+  hasContent: boolean
+}
+
+export default class Page implements PageProps {
   id: string
   hash: string
   type?: PageType
@@ -42,7 +59,10 @@ export default class Page {
 
     VALID_STATUS.includes(props.status) && (this.status = props.status)
     this.title = props.title
-    this.slug = Page.normalizeSlug(props.slug)
+    // Normalize slug, but only if it's not a page with a protocol-prefixed url
+    this.slug = this.type === 'Page' && !parseURL(props.slug).protocol
+      ? Page.normalizeSlug(props.slug)
+      : props.slug
     this.date = props.date || block.created_time
     // Criteria for a post to be displayed:
     //   * title is not blank
@@ -66,10 +86,10 @@ export default class Page {
     this.init(block, schema)
   }
 
-  toJson () {
+  toJson (): PageProps {
     return pickBy(this, (value, key) => {
       return value !== undefined && ['id', 'hash', 'type', 'title', 'slug', 'summary', 'tags', 'date', 'fullWidth', 'hasContent', 'status'].includes(key)
-    })
+    }) as PageProps
   }
 
   static simplifyProperties (properties: PageBlock['properties'], schema: CollectionPropertySchemaMap) {

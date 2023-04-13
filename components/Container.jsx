@@ -68,7 +68,7 @@ const Container = ({ children, layout, fullWidth, ...customMeta }) => {
         className={`wrapper ${BLOG.font === 'serif' ? 'font-serif' : 'font-sans'
         }`}
       >
-        <Header navBarTitle={layout === 'blog' ? meta.title : undefined} fullWidth={fullWidth}/>
+        <Header navBarTitle={layout === 'blog' ? meta.title : undefined}/>
         <main
           className={cn(
             'flex-grow transition-all',

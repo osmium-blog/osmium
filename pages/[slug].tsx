@@ -56,7 +56,7 @@ export const getStaticProps = async ({ params: { slug } }: { params: Params }) =
   else {
     db = new Database()
     await db.syncAll()
-    post = db.posts.find(page => (page.slug || page.hash) === slug)
+    post = Object.values(db.pageMap).find(page => (page.slug || page.hash) === slug)
     if (post) {
       blockMap = await getPage(post.id)
     }
@@ -64,7 +64,7 @@ export const getStaticProps = async ({ params: { slug } }: { params: Params }) =
 
   if (!post) return NOT_FOUND
 
-  pageMap = Object.fromEntries(db.posts.map(post => [post.id, post.slug!]))
+  pageMap = Object.fromEntries(Object.values(db.pageMap).map(post => [post.id, post.slug || post.hash]))
 
   return {
     props: {

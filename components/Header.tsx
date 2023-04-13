@@ -3,16 +3,16 @@ import type { MouseEvent } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Image from 'next/image'
-import { joinURL } from 'ufo'
+import { joinURL, parseURL } from 'ufo'
 import { useConfig } from '@/lib/config'
 import { useLocale } from '@/lib/locale'
+import { usePages } from '@/contexts/pages'
 
 type Props = {
   navBarTitle?: string
-  fullWidth?: boolean
 }
 
-export default function Header ({ navBarTitle, fullWidth }: Props) {
+export default function Header ({ navBarTitle }: Props) {
   const navRef = useRef<HTMLDivElement>(null)
   const sentinelRef = useRef<HTMLDivElement>(null)
   const handler = useCallback<IntersectionObserverCallback>(([entry]) => {
@@ -102,28 +102,47 @@ function NavBar () {
   const { showAbout } = useConfig()
   const locale = useLocale()
 
-  const links = [
-    { id: 0, name: locale.NAV.INDEX, to: '/', show: true },
-    { id: 1, name: locale.NAV.ABOUT, to: '/about', show: showAbout },
-    { id: 2, name: locale.NAV.RSS, to: '/-/feed', show: true },
-    { id: 3, name: locale.NAV.SEARCH, to: '/search', show: true },
+  let userPages = usePages()
+  // Remove `/about` if user is using `showAbout` to avoid conflicts
+  // TODO: Remove in v2.0
+  if (typeof showAbout === 'boolean') {
+    userPages = userPages.filter(p => p.slug !== 'about')
+  }
+
+  type NavLink = { name: string, to: string, external?: boolean, show: boolean }
+  const links: NavLink[] = [
+    { name: locale.NAV.INDEX, to: '/', show: true },
+    { name: locale.NAV.ABOUT, to: '/about', show: showAbout },
+    ...userPages.map(p => {
+      const external = Boolean(parseURL(p.slug).protocol)
+      return {
+        name: p.title!,
+        to: external ? p.slug! : '/' + (p.slug || p.hash),
+        external,
+        show: true,
+      }
+    }),
+    { name: locale.NAV.RSS, to: '/-/feed', show: true },
+    { name: locale.NAV.SEARCH, to: '/search', show: true },
   ]
 
   return (
-    <div className="flex-shrink-0">
-      <ul className="flex flex-row">
-        {links.map(
-          link =>
-            link.show && (
-              <li
-                key={link.id}
-                className="block ml-4 text-black dark:text-gray-50 nav"
+    <nav className="flex-shrink-0">
+      <ul className="flex flex-row space-x-4">
+        {links.map((link, idx) =>
+          link.show && (
+            <li key={idx} className="block text-black dark:text-gray-50 nav">
+              <Link
+                href={link.to}
+                target={link.external ? '_blank' : undefined}
+                className="hover:underline underline-offset-4"
               >
-                <Link href={link.to}>{link.name}</Link>
-              </li>
-            ),
+                {link.name}
+              </Link>
+            </li>
+          ),
         )}
       </ul>
-    </div>
+    </nav>
   )
 }
