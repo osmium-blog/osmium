@@ -121,7 +121,7 @@ function NavBar () {
         external,
       }
     }),
-    rss && { name: locale.NAV.RSS, to: '/-/feed' },
+    rss && { name: locale.NAV.RSS, to: '/-/feed', external: true },
     { name: locale.NAV.SEARCH, to: '/search' },
   ].filter(Boolean)
 
