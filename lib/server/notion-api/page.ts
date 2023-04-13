@@ -1,5 +1,6 @@
 import { getDateValue, getTextContent } from 'notion-utils'
 import type { CollectionPropertySchemaMap, ExtendedRecordMap, PageBlock } from 'notion-types'
+import { hash } from 'ohash'
 import { pickBy } from 'lodash'
 import { clientConfig } from '@/lib/server/config'
 import api from '@/lib/server/notion-client'
@@ -14,6 +15,7 @@ const VALID_STATUS: PageStatus[] = ['Published']
 
 export default class Page {
   id: string
+  hash: string
   type?: PageType
   title?: string
   slug?: string
@@ -21,12 +23,14 @@ export default class Page {
   tags?: string[]
   date: number = 0
   fullWidth: boolean = false
+  hasContent: boolean = true
   status?: PageStatus
 
   recordMap?: ExtendedRecordMap
 
   constructor (public block: PageBlock, public schema: CollectionPropertySchemaMap) {
     this.id = block.id
+    this.hash = hash(block.id)
     this.init()
   }
 
@@ -40,7 +44,11 @@ export default class Page {
     this.title = props.title
     this.slug = Page.normalizeSlug(props.slug)
     this.date = props.date || block.created_time
-    if (!(this.title && this.slug && this.date <= new Date().getTime())) {
+    // Criteria for a post to be displayed:
+    //   * title is not blank
+    //   * date is not future
+    // FIXME: Pages are excluded?
+    if (!(this.title && this.date <= new Date().getTime())) {
       this.status = undefined
       return
     }
@@ -48,6 +56,7 @@ export default class Page {
     this.summary = props.summary
     props.tags?.length && (this.tags = props.tags)
     this.fullWidth = block.format?.page_full_width ?? false
+    this.hasContent = Boolean(block.content?.length)
   }
 
   async sync () {
@@ -59,7 +68,7 @@ export default class Page {
 
   toJson () {
     return pickBy(this, (value, key) => {
-      return value !== undefined && ['id', 'type', 'title', 'slug', 'summary', 'tags', 'date', 'fullWidth', 'status'].includes(key)
+      return value !== undefined && ['id', 'hash', 'type', 'title', 'slug', 'summary', 'tags', 'date', 'fullWidth', 'hasContent', 'status'].includes(key)
     })
   }
 

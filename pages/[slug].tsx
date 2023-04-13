@@ -1,6 +1,5 @@
-import { createHash } from 'node:crypto'
 import { parsePageId } from 'notion-utils'
-import { clientConfig, config } from '@/lib/server/config'
+import { config } from '@/lib/server/config'
 import getPage from '@/lib/server/notion-api/getPage'
 import Database from '@/lib/server/notion-api/database'
 import Page from '@/lib/server/notion-api/page'
@@ -23,7 +22,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const db = new Database()
   await db.syncAll()
   // TODO: Pre-building only latest posts should be enough
-  const paths = Object.values(db.pageMap).map(page => ({ params: { slug: page.slug } }))
+  const paths = Object.values(db.pageMap).map(page => ({ params: { slug: page.slug || page.hash } }))
   return {
     paths,
     fallback: true,
@@ -39,6 +38,7 @@ export const getStaticProps = async ({ params: { slug } }: { params: Params }) =
   let db
   let pageMap
 
+  // If it's a UUID access
   if (id) {
     blockMap = await getPage(id)
     const pageBlock = blockMap.block[id].value as PageBlock
@@ -51,10 +51,12 @@ export const getStaticProps = async ({ params: { slug } }: { params: Params }) =
     post = new Page(pageBlock, collection.schema)
     db = new Database()
     await db.syncAll()
-  } else {
+  }
+  // It's a normal slug access
+  else {
     db = new Database()
     await db.syncAll()
-    post = db.posts.find(page => page.slug === slug)
+    post = db.posts.find(page => (page.slug || page.hash) === slug)
     if (post) {
       blockMap = await getPage(post.id)
     }
@@ -62,32 +64,23 @@ export const getStaticProps = async ({ params: { slug } }: { params: Params }) =
 
   if (!post) return NOT_FOUND
 
-  const emailHash = createHash('md5')
-    .update(clientConfig.email)
-    .digest('hex')
-    .trim()
-    .toLowerCase()
-
   pageMap = Object.fromEntries(db.posts.map(post => [post.id, post.slug!]))
 
   return {
     props: {
       post: post.toJson(),
       blockMap,
-      emailHash,
       pageMap,
     },
     revalidate: 1,
   }
 }
 
-export default function PagePost ({ post, blockMap, emailHash, pageMap }: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function PagePost ({ post, blockMap, pageMap }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter()
 
   // TODO: It would be better to render something
   if (router.isFallback) return null
-
-  const fullWidth = post.fullWidth ?? false
 
   return (
     <Container
@@ -97,15 +90,10 @@ export default function PagePost ({ post, blockMap, emailHash, pageMap }: InferG
       slug={post.slug}
       // date={new Date(post.publishedAt).toISOString()}
       type="article"
-      fullWidth={fullWidth}
+      fullWidth={post.fullWidth}
     >
       <PageMapProvider pageMap={pageMap}>
-        <Post
-          post={post}
-          blockMap={blockMap!}
-          emailHash={emailHash}
-          fullWidth={fullWidth}
-        />
+        <Post post={post} blockMap={blockMap!}/>
       </PageMapProvider>
       <Comments post={post}/>
     </Container>
