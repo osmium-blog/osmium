@@ -44,11 +44,12 @@ export default (async function handler (req, res) {
       backgroundSize: '100% 162%',
     }}>
       {logo && (
+        // eslint-disable-next-line @next/next/no-img-element,jsx-a11y/alt-text
         <img
           src={logo}
           width={HEIGHT / 10}
           height={HEIGHT / 10}
-          style={{ position: 'absolute', top: '10vh', right: '10vw', boxShadow: '1px 2px 4px #0004' }}
+          style={{ position: 'absolute', top: '10vh', right: '10vw' }}
         />
       )}
       {author && (
@@ -61,13 +62,14 @@ export default (async function handler (req, res) {
           fontSize: '40px',
           lineHeight: '1.2',
           color: '#fff',
-          textShadow: '1px 2px 4px #0004',
+          textShadow: '4px 2px 4px #0004',
         }}>
+          {/* eslint-disable-next-line @next/next/no-img-element,jsx-a11y/alt-text */}
           <img
             src={`https://gravatar.com/avatar/${emailHash}`}
             width={48}
             height={48}
-            style={{ marginRight: '0.25em', borderRadius: 9999, boxShadow: '1px 2px 4px #0004' }}
+            style={{ marginRight: '0.25em', borderRadius: 9999, boxShadow: '4px 2px 4px #0004' }}
           />
           <div>{author}</div>
         </div>
@@ -78,7 +80,7 @@ export default (async function handler (req, res) {
         fontWeight: 'bold',
         textAlign: 'center',
         color: '#fff',
-        textShadow: '1px 2px 4px #0004',
+        textShadow: '4px 2px 4px #0004',
       }}>{title}</div>
     </div>,
     { width: WIDTH, height: HEIGHT, fonts },
