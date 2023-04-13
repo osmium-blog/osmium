@@ -3,6 +3,7 @@ import type { MouseEvent } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Image from 'next/image'
+import { joinURL } from 'ufo'
 import { useConfig } from '@/lib/config'
 import { useLocale } from '@/lib/locale'
 
@@ -75,10 +76,10 @@ function SiteTitle ({ pageTitle }: SiteTitleProps) {
   const locale = useLocale()
 
   return (
-    <Link href={path} aria-label={title} className="site-block-title">
+    <Link href="/" aria-label={title} className="site-block-title">
       {logo && (
         <Image
-          src={path + logo}
+          src={joinURL(path, logo)}
           alt={'Logo of ' + title}
           width={32}
           height={32}
@@ -98,11 +99,11 @@ function SiteTitle ({ pageTitle }: SiteTitleProps) {
 }
 
 function NavBar () {
-  const { path, showAbout } = useConfig()
+  const { showAbout } = useConfig()
   const locale = useLocale()
 
   const links = [
-    { id: 0, name: locale.NAV.INDEX, to: path || '/', show: true },
+    { id: 0, name: locale.NAV.INDEX, to: '/', show: true },
     { id: 1, name: locale.NAV.ABOUT, to: '/about', show: showAbout },
     { id: 2, name: locale.NAV.RSS, to: '/-/feed', show: true },
     { id: 3, name: locale.NAV.SEARCH, to: '/search', show: true },

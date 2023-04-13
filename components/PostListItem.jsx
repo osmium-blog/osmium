@@ -14,11 +14,8 @@ export default function PostListItem ({ post }) {
 }
 
 function NormalPost ({ post }) {
-  const { path } = useConfig()
-  const href = `${path}/${post.slug || post.hash}`.replaceAll(/\/{2,}/g, '/')
-
   return (
-    <Link href={href}>
+    <Link href={post.slug || post.hash}>
       <article className="py-5">
         <header className="flex flex-col justify-between md:flex-row md:items-baseline">
           <h2 className="text-lg md:text-xl font-medium mb-2 cursor-pointer text-black dark:text-gray-100">

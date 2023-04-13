@@ -51,6 +51,7 @@
     "react-use": "^17.4.0",
     "satori": "^0.4.7",
     "sharp": "^0.32.0",
+    "ufo": "^1.1.1",
     "use-ackee": "^3.0.1"
   },
   "devDependencies": {

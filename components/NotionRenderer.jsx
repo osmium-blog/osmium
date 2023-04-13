@@ -134,8 +134,7 @@ export default function NotionRenderer (props) {
 
   const pageMap = usePageMap()
   const mapPageUrl = id => {
-    const slug = pageMap[id]
-    return slug ? '/' + slug : 'https://notion.so/' + id.replaceAll('-', '')
+    return pageMap[id] || 'https://notion.so/' + id.replaceAll('-', '')
   }
 
   return (

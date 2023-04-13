@@ -1,9 +1,9 @@
+const config = require('./osmium-config.json')
+
 module.exports = {
+  basePath: config.path,
   images: {
     domains: ['gravatar.com'],
-  },
-  eslint: {
-    // dirs: ['components', 'layouts', 'lib', 'pages']
   },
   async headers () {
     return [
