@@ -18,7 +18,7 @@ module.exports = {
   showAbout: true,
 
   path: '',
-  ogImageGenerateURL: '',
+  ogImageGenerateURL: '/api/og-image?title={title}',
   rss: true,
   seo: {
     keywords: ['Blog', 'Website', 'Notion'],

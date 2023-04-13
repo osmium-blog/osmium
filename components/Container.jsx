@@ -4,7 +4,7 @@ import { useConfig } from '@/lib/config'
 import Head from 'next/head'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
-// import PostListItem from './PostListItem'
+import { execTemplate } from '@/lib/utils'
 
 const Container = ({ children, layout, fullWidth, ...customMeta }) => {
   const BLOG = useConfig()
@@ -21,7 +21,7 @@ const Container = ({ children, layout, fullWidth, ...customMeta }) => {
       // Backward compatibility
       // TODO: remove in v2.0
       ? `${BLOG.ogImageGenerateURL}/${encodeURIComponent(meta.title)}.png?theme=dark&md=1&fontSize=125px&images=https%3A%2F%2Fnobelium.vercel.app%2Flogo-for-dark-bg.svg`
-      : BLOG.ogImageGenerateURL.replace(/\$title\b/, meta.title)
+      : execTemplate(BLOG.ogImageGenerateURL, { title: meta.title })
   )
 
   return (

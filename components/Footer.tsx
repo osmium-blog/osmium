@@ -1,4 +1,5 @@
 import { useConfig } from '@/lib/config'
+import { execTemplate } from '@/lib/utils'
 
 type Props = {
   fullWidth: boolean
@@ -45,8 +46,4 @@ function getSinceText (since: string | number): string {
   since = +since
   const now = new Date().getFullYear()
   return Number.isNaN(since) || since === now ? String(since) : `${since} - ${now}`
-}
-
-function execTemplate (template: string, vars: Record<string, string>): string {
-  return template.replaceAll(/\{(\S+?)}/g, (_, p) => vars[p] || p)
 }

@@ -37,3 +37,10 @@ export function set<T, O extends Record<string, any>> (obj: O, keyPath: string |
 export function clone<O> (obj: O): O {
   return JSON.parse(JSON.stringify(obj))
 }
+
+/**
+ * Simple template interpolation
+ */
+export function execTemplate (template: string, vars: Record<string, string>): string {
+  return template.replaceAll(/\{(\S+?)}/g, (_, p) => vars[p] || p)
+}
