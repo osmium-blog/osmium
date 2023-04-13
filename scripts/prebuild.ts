@@ -75,7 +75,11 @@ async function prepareConfig (page: PageBlock, blockMap: BlockMap, extra: Extra)
   })()
 
   // Append extra entries
-  Object.assign(config, extra)
+  Object.assign(config, {
+    // TODO: Should we validate the value?
+    since: config.since || new Date().getFullYear(),
+    ...extra,
+  })
 
   fs.writeFileSync(
     CONFIG_FILE,
