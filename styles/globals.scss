@@ -48,89 +48,143 @@
     flex-direction: column;
   }
 
-  /* Site nav */
+  /* Site header */
 
   .sticky-nav {
     @apply max-w-3xl sticky -top-px z-10 bg-day/80 dark:bg-night/80 border-b-transparent backdrop-blur-lg;
     @apply transition-all duration-300 ease-in-out;
   }
 
-  .remove-sticky {
-    position: unset;
-  }
-
   .sticky-nav-full {
     @apply border-b border-opacity-50 border-gray-200 dark:border-gray-600 dark:border-opacity-50 cursor-pointer;
+
+    @media (min-width: theme('screens.md')) {
+      @apply max-w-full border-b border-opacity-50 border-gray-200 dark:border-gray-600 dark:border-opacity-50;
+    }
   }
 
+  // Site header: back to top
   .sticky-nav:not(.sticky-nav-full) .caret {
     opacity: 0 !important;
   }
 
-  .header-name {
-    display: none;
-    overflow: hidden;
-  }
+  // Site header: title block
+  .site-block-title {
+    @apply flex items-center;
 
-  .sticky-nav-full .nav {
-    @apply text-gray-600 dark:text-gray-300;
-  }
+    > span {
+      @apply hidden ml-2 font-medium text-gray-600 dark:text-gray-300;
 
-  @media (min-width: theme('screens.md')) {
-    .sticky-nav-full {
-      @apply max-w-full border-b border-opacity-50 border-gray-200 dark:border-gray-600 dark:border-opacity-50;
+      @media (min-width: theme('screens.md')) {
+        @apply grid grid-rows-1 grid-cols-1;
+      }
+
+      > * {
+        @apply row-start-1 col-start-1 transition duration-75;
+      }
+
+      > *,
+      .site-description {
+        @apply transition duration-75;
+      }
     }
 
-    .header-name {
-      display: grid;
-    }
+    @at-root {
+      .site-title {
+        @at-root .site-description {
+          @apply before:content-[',_'] font-normal opacity-0;
 
-    .site-title,
-    .post-title {
-      @apply transition duration-75;
-    }
+          @at-root .page-title ~ * & {
+            @apply hidden;
+          }
+        }
+      }
 
-    .site-description {
-      opacity: 0;
-      transition: opacity 0.5s cubic-bezier(0.4, 0, 0, 1);
-    }
+      .page-title {
+        @apply truncate;
+      }
 
-    .sticky-nav-full .site-description {
-      @apply opacity-100 transition duration-75;
-    }
+      .back-to-home {
+        @apply before:content-['←_'];
+      }
 
-    .post-title {
-      @apply opacity-0;
-    }
-
-    .post-title ~ span .site-description {
-      @apply hidden;
-    }
-
-    .sticky-nav-full .post-title {
-      @apply opacity-100;
-    }
-
-    .sticky-nav-full .post-title ~ span .site-title {
-      @apply opacity-0;
-    }
-
-    .ui-back-to-home {
-      @apply opacity-0 transition duration-75 ease-linear;
-    }
-
-    .header-name:hover {
-      .site-title,
-      .site-description,
-      .post-title {
+      .page-title,
+      .back-to-home {
         @apply opacity-0;
       }
 
-      .ui-back-to-home {
+      .sticky-nav-full {
+        .site-description,
+        .page-title {
+          @apply opacity-100;
+        }
+
+        .page-title ~ * .site-name {
+          @apply opacity-0;
+        }
+      }
+    }
+
+    &:hover {
+      .back-to-home ~ {
+        .site-title,
+        .page-title {
+          @apply opacity-0;
+        }
+      }
+
+      .back-to-home {
         @apply opacity-100;
       }
     }
   }
+
+  // Site header: nav
+  .sticky-nav-full .nav {
+    @apply text-gray-600 dark:text-gray-300;
+  }
+
+  /* Post list */
+
+  .post-list {
+    .post-type-proverb {
+      @apply relative -mx-4 py-5 px-4 -my-px text-black dark:text-neutral-100 bg-neutral-50 dark:bg-neutral-800 border-t border-b border-gray-300 dark:border-gray-700;
+
+      &::before {
+        @apply block w-16 h-16 absolute right-4 top-4 bg-no-repeat bg-cover opacity-10 blur-sm;
+        content: '';
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath d='M6.45455 19L2 22.5V4C2 3.44772 2.44772 3 3 3H21C21.5523 3 22 3.44772 22 4V18C22 18.5523 21.5523 19 21 19H6.45455Z' fill='%23000'%3E%3C/path%3E%3C/svg%3E");
+
+        @at-root .dark & {
+          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath d='M6.45455 19L2 22.5V4C2 3.44772 2.44772 3 3 3H21C21.5523 3 22 3.44772 22 4V18C22 18.5523 21.5523 19 21 19H6.45455Z' fill='%23fff'%3E%3C/path%3E%3C/svg%3E");
+        }
+      }
+
+      > * {
+        @apply relative;
+      }
+
+      @apply grid grid-cols-1 md:grid-cols-2 auto-rows-auto gap-2;
+
+      .post-author {
+        @apply text-neutral-500 dark:text-neutral-400 flex items-center;
+      }
+
+      .post-author-avatar {
+        @apply mr-2 rounded-full;
+      }
+
+      .post-title {
+        @apply col-span-full text-lg md:text-xl;
+      }
+
+      .post-date {
+        @apply md:row-start-1 md:col-start-2 md:text-right text-neutral-600 dark:text-neutral-400;
+      }
+    }
+  }
+
+  /* --- */
 
   nav {
     flex-wrap: wrap;

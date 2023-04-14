@@ -17,6 +17,9 @@
       "since": {
         "description": "Site creation year"
       },
+      "footerText": {
+        "description": "Site footer text. For detail usage, see <a href=\"https://osmium-blog.vercel.app/osmium-v1.1#f5c9e1c2b39a45cca68f832c1e225bc4\" target=\"_blank\">here</a>"
+      },
       "author": {
         "description": "Author name"
       },
@@ -59,14 +62,14 @@
       "sortByDate": {
         "description": "Sort by date"
       },
-      "showAbout": {
-        "description": "Display “About” link"
-      },
       "path": {
         "description": "Site root path. If you want to mount the site under a certain path of another site, you need to fill in this item."
       },
       "ogImageGenerateURL": {
         "description": "OG image generation service address (don’t add a slash at the end)"
+      },
+      "rss": {
+        "description": "Enable RSS"
       },
       "seo": {
         "description": "SEO configuration",

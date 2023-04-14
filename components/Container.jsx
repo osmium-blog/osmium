@@ -4,7 +4,7 @@ import { useConfig } from '@/lib/config'
 import Head from 'next/head'
 import PropTypes from 'prop-types'
 import cn from 'classnames'
-// import PostListItem from './PostListItem'
+import { execTemplate } from '@/lib/utils'
 
 const Container = ({ children, layout, fullWidth, ...customMeta }) => {
   const BLOG = useConfig()
@@ -15,6 +15,15 @@ const Container = ({ children, layout, fullWidth, ...customMeta }) => {
     type: 'website',
     ...customMeta,
   }
+
+  const ogImageService = BLOG.ogImageGenerateURL && (
+    BLOG.ogImageGenerateURL === 'https://og-image-craigary.vercel.app'
+      // Backward compatibility
+      // TODO: remove in v2.0
+      ? `${BLOG.ogImageGenerateURL}/${encodeURIComponent(meta.title)}.png?theme=dark&md=1&fontSize=125px&images=https%3A%2F%2Fnobelium.vercel.app%2Flogo-for-dark-bg.svg`
+      : execTemplate(BLOG.ogImageGenerateURL, { title: meta.title })
+  )
+
   return (
     <div>
       <Head>
@@ -39,22 +48,12 @@ const Container = ({ children, layout, fullWidth, ...customMeta }) => {
           property="og:url"
           content={meta.slug ? `${url}/${meta.slug}` : url}
         />
-        <meta
-          property="og:image"
-          content={`${BLOG.ogImageGenerateURL}/${encodeURIComponent(
-            meta.title,
-          )}.png?theme=dark&md=1&fontSize=125px&images=https%3A%2F%2Fnobelium.vercel.app%2Flogo-for-dark-bg.svg`}
-        />
+        {ogImageService && <meta property="og:image" content={ogImageService}/>}
         <meta property="og:type" content={meta.type}/>
         <meta name="twitter:card" content="summary_large_image"/>
         <meta name="twitter:description" content={meta.description}/>
         <meta name="twitter:title" content={meta.title}/>
-        <meta
-          name="twitter:image"
-          content={`${BLOG.ogImageGenerateURL}/${encodeURIComponent(
-            meta.title,
-          )}.png?theme=dark&md=1&fontSize=125px&images=https%3A%2F%2Fnobelium.vercel.app%2Flogo-for-dark-bg.svg`}
-        />
+        {ogImageService && <meta name="twitter:image" content={ogImageService}/>}
         {meta.type === 'article' && (
           <>
             <meta
@@ -69,10 +68,7 @@ const Container = ({ children, layout, fullWidth, ...customMeta }) => {
         className={`wrapper ${BLOG.font === 'serif' ? 'font-serif' : 'font-sans'
         }`}
       >
-        <Header
-          navBarTitle={layout === 'blog' ? meta.title : null}
-          fullWidth={fullWidth}
-        />
+        <Header navBarTitle={layout === 'blog' ? meta.title : undefined}/>
         <main
           className={cn(
             'flex-grow transition-all',

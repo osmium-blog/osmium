@@ -65,7 +65,7 @@
   color: inherit;
 }
 
-svg.notion-page-icon {
+.notion-page-title > .notion-page-icon-inline {
   @apply hidden;
 }
 
@@ -210,7 +210,7 @@ pre[class*='language-'] {
   @apply px-0 #{!important};
 }
 
-.notion-collection-row {
+.notion-collection-page-properties {
   @apply hidden;
 }
 
@@ -226,9 +226,32 @@ pre[class*='language-'] {
   padding-right: 2px;
 }
 
+/* react-notion-x code block */
+
+.notion-code-copy {
+  top: 10px;
+  right: 10px;
+}
+
+.notion-code-copy-button {
+  padding: 5px;
+
+  svg {
+    @apply w-4 h-4;
+  }
+
+  @at-root .dark & {
+    color: inherit;
+    background: #424242;
+  }
+}
+
+@import './prismjs.scss';
+
 /* Every block */
 
 .osmium-block {
+  padding: 3px 2px;
   /* OVERRIDES */
   @apply my-0.5;
 }
@@ -280,7 +303,7 @@ pre[class*='language-'] {
   }
 
   > summary {
-    @apply cursor-pointer grid grid-cols-[24px_1fr] gap-x-0.5;
+    @apply relative cursor-pointer grid grid-cols-[24px_1fr] gap-x-0.5;
 
     @at-root .osmium-toggle-empty > summary {
       @apply cursor-default;
@@ -333,5 +356,19 @@ pre[class*='language-'] {
     > :last-child {
       @apply mb-0;
     }
+  }
+}
+
+/* Quote block */
+
+.osmium-quote {
+  > div {
+    padding-left: 14px;
+    padding-right: 14px;
+    border-left: 3px solid currentColor;
+  }
+
+  @at-root .osmium-quote-large {
+    font-size: 1.2em;
   }
 }

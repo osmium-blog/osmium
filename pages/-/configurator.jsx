@@ -1,5 +1,6 @@
 import { clientConfig } from '@/lib/server/config'
 
+import css from './configurator.module.scss'
 import { createContext, useContext, useEffect, useState } from 'react'
 import { useCopyToClipboard } from 'react-use'
 import cn from 'classnames'
@@ -20,6 +21,7 @@ const overrides = {
   lightBackground: { type: 'color' },
   darkBackground: { type: 'color' },
   lang: { type: 'select', options: langs },
+  footerText: { richText: true },
   appearance: {
     type: 'select',
     options: [
@@ -280,8 +282,12 @@ function ConfigEntry ({ entry: [name, value], parent = [] }) {
           <div className="text-sm">
             <code style={{ paddingLeft: INDENT * level + 'px' }}>{name}</code>
             {description && (
-              <p className="opacity-50" style={{ paddingLeft: INDENT * level + 'px' }}>
-                {description}
+              <p
+                className={cn(css.entryDescription, 'opacity-50')}
+                style={{ paddingLeft: INDENT * level + 'px' }}
+                dangerouslySetInnerHTML={override?.richText ? { __html: description } : null}
+              >
+                {override?.richText ? null : description}
               </p>
             )}
           </div>
@@ -294,10 +300,18 @@ function ConfigEntry ({ entry: [name, value], parent = [] }) {
     }
   }
 
-  return content && <ConfigEntryLayout name={name} parent={parent}>{content}</ConfigEntryLayout>
+  return content && (
+    <ConfigEntryLayout
+      name={name}
+      parent={parent}
+      richText={override?.richText}
+    >
+      {content}
+    </ConfigEntryLayout>
+  )
 }
 
-function ConfigEntryLayout ({ name, parent = [], children }) {
+function ConfigEntryLayout ({ name, parent = [], richText = false, children }) {
   const locale = useContext(LocaleContext)
   const description = get(locale, ['configurator', 'entry', ...parent, name, 'description'])
   const level = parent.length
@@ -307,8 +321,12 @@ function ConfigEntryLayout ({ name, parent = [], children }) {
       <div className="flex-[1.5_1.5_0] text-sm">
         <code style={{ paddingLeft: INDENT * level + 'px' }}>{name}</code>
         {description && (
-          <p className="pr-5 opacity-50" style={{ paddingLeft: INDENT * level + 'px' }}>
-            {description}
+          <p
+            className={cn(css.entryDescription, 'pr-5 opacity-50')}
+            style={{ paddingLeft: INDENT * level + 'px' }}
+            dangerouslySetInnerHTML={richText ? { __html: description } : null}
+          >
+            {richText ? null : description}
           </p>
         )}
       </div>

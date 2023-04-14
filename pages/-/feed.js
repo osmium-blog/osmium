@@ -1,17 +1,27 @@
-import { getAllPosts } from 'lib/server/notion-api'
+import { config } from '@/lib/server/config'
+import Database from '@/lib/server/notion-api/database'
 import { generateRss } from '@/lib/rss'
 
+const NOTHING = { props: {} }
+
 export async function getServerSideProps ({ res }) {
+  const { databaseId, rss } = config
+
+  if (!rss) {
+    res.statusCode = 204
+    res.end()
+    return NOTHING
+  }
+
+  const db = new Database(databaseId)
+  await db.syncAll()
+
+  const posts = db.posts.map(post => post.toJson())
+  const xmlFeed = await generateRss(posts.slice(0, 10))
   res.setHeader('Content-Type', 'text/xml')
-  const posts = await getAllPosts({ includePages: false })
-  const latestPosts = posts.slice(0, 10)
-  const xmlFeed = await generateRss(latestPosts)
   res.write(xmlFeed)
   res.end()
-  return {
-    props: {},
-  }
+  return NOTHING
 }
 
-const feed = () => null
-export default feed
+export default function TheFeed () {}

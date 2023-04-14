@@ -1,21 +1,21 @@
-import { clientConfig } from '@/lib/server/config'
+import { clientConfig, config } from '@/lib/server/config'
+import Database from '@/lib/server/notion-api/database'
 
 import Container from '@/components/Container'
 import PostList from '@/components/PostList'
 import Pagination from '@/components/Pagination'
-import { getAllPosts } from 'lib/server/notion-api'
 import { useConfig } from '@/lib/config'
 
 export async function getStaticProps () {
-  const posts = await getAllPosts({ includePages: false })
+  const db = new Database(config.databaseId)
+  await db.syncAll()
+  const posts = db.posts.map(post => post.toJson())
   const postsToShow = posts.slice(0, clientConfig.postsPerPage)
-  const totalPosts = posts.length
-  const showNext = totalPosts > clientConfig.postsPerPage
   return {
     props: {
       page: 1, // current page is 1
       postsToShow,
-      showNext,
+      showNext: posts.length > clientConfig.postsPerPage,
     },
     revalidate: 1,
   }

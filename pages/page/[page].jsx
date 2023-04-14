@@ -1,14 +1,16 @@
-import { config } from '@/lib/server/config'
+import { config, clientConfig } from '@/lib/server/config'
+import Database from '@/lib/server/notion-api/database'
 
 import Container from '@/components/Container'
 import PostList from '@/components/PostList'
 import Pagination from '@/components/Pagination'
-import { getAllPosts } from 'lib/server/notion-api'
 
 export async function getStaticPaths () {
-  const posts = await getAllPosts({ includePages: false })
+  const db = new Database(config.databaseId)
+  await db.syncAll()
+  const posts = db.posts.map(post => post.toJson())
   const totalPosts = posts.length
-  const totalPages = Math.ceil(totalPosts / config.postsPerPage)
+  const totalPages = Math.ceil(totalPosts / clientConfig.postsPerPage)
   return {
     // remove first page, we 're not gonna handle that.
     paths: Array.from({ length: totalPages - 1 }, (_, i) => ({
@@ -18,15 +20,16 @@ export async function getStaticPaths () {
   }
 }
 
-export async function getStaticProps (context) {
-  const { page } = context.params // Get Current Page No.
-  const posts = await getAllPosts({ includePages: false })
+export async function getStaticProps ({ params: { page } }) {
+  const db = new Database(config.databaseId)
+  await db.syncAll()
+  const posts = db.posts.map(post => post.toJson())
   const postsToShow = posts.slice(
-    config.postsPerPage * (page - 1),
-    config.postsPerPage * page,
+    clientConfig.postsPerPage * (page - 1),
+    clientConfig.postsPerPage * page,
   )
   const totalPosts = posts.length
-  const showNext = page * config.postsPerPage < totalPosts
+  const showNext = page * clientConfig.postsPerPage < totalPosts
   return {
     props: {
       page, // Current Page

@@ -1,8 +1,10 @@
 import dynamic from 'next/dynamic'
+import Link from 'next/link'
 import { NotionRenderer as Renderer } from 'react-notion-x'
 import { getTextContent } from 'notion-utils'
 import { FONTS_SANS, FONTS_SERIF } from '@/consts'
 import { useConfig } from '@/lib/config'
+import { usePageMap } from '@/lib/pageMap'
 import Block from '@/components/notion-blocks'
 
 const customBlockRenderer = ({ block, children }) => <Block block={block}>{children}</Block>
@@ -92,12 +94,13 @@ const components = {
 
   /* Overrides */
 
+  PageLink: Link,
+
   toggle_osmium: customBlockRenderer,
   bulleted_list_osmium: customBlockRenderer,
   numbered_list_osmium: customBlockRenderer,
+  quote_osmium: customBlockRenderer,
 }
-
-const mapPageUrl = id => `https://www.notion.so/${id.replace(/-/g, '')}`
 
 /**
  * Notion page renderer
@@ -114,17 +117,27 @@ export default function NotionRenderer (props) {
     'serif': FONTS_SERIF,
   }[config.font]
 
-  // Mark block types to be custom rendered by appending a suffix
   if (props.recordMap) {
+    // Prevent page properties from being rendered
+    for (const it of Object.values(props.recordMap.collection)[0].value.format?.property_visibility || []) {
+      it.visibility = 'hide'
+    }
+    // Mark block types to be custom rendered by appending a suffix
     for (const { value: block } of Object.values(props.recordMap.block)) {
       switch (block?.type) {
         case 'toggle':
         case 'bulleted_list':
         case 'numbered_list':
+        case 'quote':
           block.type += '_osmium'
           break
       }
     }
+  }
+
+  const pageMap = usePageMap()
+  const mapPageUrl = id => {
+    return pageMap[id] || 'https://notion.so/' + id.replaceAll('-', '')
   }
 
   return (

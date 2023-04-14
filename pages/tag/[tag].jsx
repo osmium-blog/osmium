@@ -1,27 +1,28 @@
-import { getAllPosts, getAllTagsFromPosts } from 'lib/server/notion-api'
+import { config } from '@/lib/server/config'
+import Database from '@/lib/server/notion-api/database'
+
 import SearchLayout from '@/layouts/search'
 
 export async function getStaticPaths () {
-  const posts = await getAllPosts({ includePages: false })
-  const tags = getAllTagsFromPosts(posts)
+  const db = new Database(config.databaseId)
+  await db.syncAll()
+  const paths = Object.keys(db.tagMap).map(tag => ({ params: { tag } }))
   return {
-    paths: Object.keys(tags).map(tag => ({ params: { tag } })),
+    paths,
     fallback: true,
   }
 }
 
-export async function getStaticProps ({ params }) {
-  const currentTag = params.tag
-  const posts = await getAllPosts({ includePages: false })
-  const tags = getAllTagsFromPosts(posts)
-  const filteredPosts = posts.filter(
-    post => post && post.tags && post.tags.includes(currentTag),
-  )
+export async function getStaticProps ({ params: { tag } }) {
+  const db = new Database(config.databaseId)
+  await db.syncAll()
+  const posts = db.posts.map(post => post.toJson())
+  const tags = db.tagMap
   return {
     props: {
       tags,
-      posts: filteredPosts,
-      currentTag,
+      posts: posts.filter(post => post.tags?.includes(tag)),
+      currentTag: tag,
     },
     revalidate: 1,
   }

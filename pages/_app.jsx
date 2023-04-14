@@ -1,4 +1,5 @@
 import 'react-notion-x/src/styles.css'
+import { useEffect } from 'react'
 import App from 'next/app'
 import '@/styles/globals.scss'
 import '@/styles/notion.scss'
@@ -7,10 +8,10 @@ import { ConfigProvider } from '@/lib/config'
 import { LocaleProvider } from '@/lib/locale'
 import { SensorProvider } from '@/lib/sensor'
 import { ThemeProvider } from '@/lib/theme'
+import { PagesProvider } from '@/contexts/pages'
 import Analytics from '@/components/analytics'
-import { useEffect } from 'react'
 
-export default function MyApp ({ Component, pageProps, config, locale }) {
+export default function MyApp ({ Component, pageProps, config, locale, pages }) {
   useEffect(() => {
     document.body.classList.remove('fouc')
     document.body.addEventListener('transitionend', () => {
@@ -23,8 +24,10 @@ export default function MyApp ({ Component, pageProps, config, locale }) {
       <LocaleProvider value={locale}>
         <SensorProvider>
           <ThemeProvider>
-            {process.env.NODE_ENV === 'production' && <Analytics/>}
-            <Component {...pageProps}/>
+            <PagesProvider pages={pages}>
+              {process.env.NODE_ENV === 'production' && <Analytics/>}
+              <Component {...pageProps}/>
+            </PagesProvider>
           </ThemeProvider>
         </SensorProvider>
       </LocaleProvider>
@@ -39,9 +42,14 @@ MyApp.getInitialProps = async ctx => {
 
   const locale = await loadLocale('basic', config.lang)
 
+  const pages = typeof window === 'object'
+    ? await fetch('/api/pages').then(res => res.json())
+    : await import('@/pages/api/pages').then(module => module.action())
+
   return {
     ...App.getInitialProps(ctx),
     config,
     locale,
+    pages,
   }
 }

@@ -1,25 +1,32 @@
 import { extname, resolve } from 'node:path'
-import { promises as fs } from 'node:fs'
+import fs from 'node:fs'
+import { execSync } from 'node:child_process'
 import { loadEnvConfig } from '@next/env'
-import type { PageBlock, BlockMap, CodeBlock } from 'notion-types'
-import { NotionAPI } from 'notion-client'
-import { getTextContent } from 'notion-utils'
+import type { BlockMap, CodeBlock, CollectionViewPageBlock, PageBlock } from 'notion-types'
+import { getTextContent, parsePageId } from 'notion-utils'
 import { defaultMapImageUrl } from 'react-notion-x'
 import { ofetch } from 'ofetch'
 import * as cheerio from 'cheerio'
 import sharp from 'sharp'
+import destr from 'destr'
+
+import api from '../lib/server/notion-client'
 
 const ROOT = process.cwd()
+const CACHE_FILE = resolve(ROOT, 'osmium-cache.json')
+if (fs.existsSync(CACHE_FILE)) {
+  fs.unlinkSync(CACHE_FILE)
+}
 
 void async function main () {
   loadEnvConfig(ROOT)
-  const { NOTION_DATABASE_ID, NOTION_ACCESS_TOKEN } = process.env
+  const { NOTION_DATABASE_ID } = process.env
+  const databaseId = parsePageId(NOTION_DATABASE_ID)
 
-  if (!NOTION_DATABASE_ID) abort('NOTION_DATABASE_ID is not set!')
+  if (!databaseId) abort('NOTION_DATABASE_ID is not set or valid!')
 
   console.log('Fetching config...')
-  const api = new NotionAPI({ authToken: NOTION_ACCESS_TOKEN })
-  const everything = await api.getPage(NOTION_DATABASE_ID)
+  const everything = await api.getPage(databaseId)
 
   // Get the ID of database prop `type`
   const typeProp =
@@ -35,16 +42,20 @@ void async function main () {
   if (!configRecord) abort('Cannot find a remote config!')
   const [, { value: configPage }] = configRecord
 
-  const logo = await prepareLogo(configPage as PageBlock)
-
-  await prepareConfig(configPage as PageBlock, everything.block, { logo })
-
-  await prepareCache()
+  await prepareConfig(configPage as PageBlock, everything.block, {
+    databaseId,
+    collectionId: (everything.block[databaseId].value as CollectionViewPageBlock).collection_id!,
+    version: await prepareVersion(),
+    logo: await prepareLogo(configPage as PageBlock),
+  })
 }()
 
 const CONFIG_FILE = resolve(ROOT, 'osmium-config.json')
 
 type Extra = {
+  databaseId: string
+  collectionId: string
+  version?: string
   logo?: string
 }
 
@@ -65,14 +76,31 @@ async function prepareConfig (page: PageBlock, blockMap: BlockMap, extra: Extra)
 
   // Append extra entries
   Object.assign(config, {
-    logo: extra.logo,
+    // TODO: Should we validate the value?
+    since: config.since || new Date().getFullYear(),
+    ...extra,
   })
 
-  await fs.writeFile(
+  fs.writeFileSync(
     CONFIG_FILE,
     JSON.stringify(config, null, 2),
     'utf-8',
   )
+}
+
+const PACKAGE_FILE = resolve(ROOT, 'package.json')
+
+async function prepareVersion (): Promise<string | undefined> {
+  const pkg = destr(fs.readFileSync(PACKAGE_FILE, 'utf-8'))
+  if (!pkg.version) return
+  if (/^\d+\.\d+\.\d+$/.test(pkg.version)) return pkg.version
+
+  // If the version is not a valid semver, try to use current git commit hash instead
+  try {
+    return execSync('git log -1 --format=format:%h HEAD', { stdio: [null, null, 'ignore'], encoding: 'ascii' })
+  } catch {
+    return
+  }
 }
 
 async function prepareLogo (page: PageBlock) {
@@ -130,18 +158,12 @@ async function prepareLogo (page: PageBlock) {
   console.log('Fetching logo...')
   const filename = 'logo' + ext
   const data = await ofetch(url, { responseType: 'arrayBuffer' })
-  await fs.writeFile(resolve(ROOT, `public/${filename}`), Buffer.from(data))
+  fs.writeFileSync(resolve(ROOT, `public/${filename}`), Buffer.from(data))
 
   // Generate favicon from the logo
   await sharp(data).resize(32, 32).toFormat('png').toFile(resolve(ROOT, 'public/favicon.png'))
 
   return filename
-}
-
-const CACHE_FILE = resolve(ROOT, 'osmium-cache.json')
-
-async function prepareCache () {
-  await fs.writeFile(CACHE_FILE, '{}', 'utf-8')
 }
 
 function abort (message: string): never {

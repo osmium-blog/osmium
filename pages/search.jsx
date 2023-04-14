@@ -1,13 +1,15 @@
-import { getAllPosts, getAllTagsFromPosts } from 'lib/server/notion-api'
+import Database from '@/lib/server/notion-api/database'
+import { config } from '@/lib/server/config'
+
 import SearchLayout from '@/layouts/search'
 
 export async function getStaticProps () {
-  const posts = await getAllPosts({ includePages: false })
-  const tags = getAllTagsFromPosts(posts)
+  const db = new Database(config.databaseId)
+  await db.syncAll()
   return {
     props: {
-      tags,
-      posts,
+      tags: db.tagMap,
+      posts: db.posts.map(post => post.toJson()),
     },
     revalidate: 1,
   }

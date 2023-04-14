@@ -1,16 +1,17 @@
 import { Feed } from 'feed'
 import ReactDOMServer from 'react-dom/server'
 import { clientConfig, config } from '@/lib/server/config'
-import { getPostBlocks } from '@/lib/server/notion-api'
+import getPage from '@/lib/server/notion-api/getPage'
 import { ConfigProvider } from '@/lib/config'
 import NotionRenderer from '@/components/NotionRenderer'
 
 const createFeedContent = async post => {
   const content = ReactDOMServer.renderToString(
     <ConfigProvider value={clientConfig}>
-      <NotionRenderer recordMap={await getPostBlocks(post.id)}/>,
+      <NotionRenderer recordMap={await getPage(post.id)}/>,
     </ConfigProvider>
   )
+  // FIXME: Need a better solution
   const regexExp = /<div class="notion-collection-row"><div class="notion-collection-row-body"><div class="notion-collection-row-property"><div class="notion-collection-column-title"><svg.*?class="notion-collection-column-title-icon">.*?<\/svg><div class="notion-collection-column-title-body">.*?<\/div><\/div><div class="notion-collection-row-value">.*?<\/div><\/div><\/div><\/div>/g
   return content.replace(regexExp, '')
 }
@@ -20,6 +21,7 @@ export async function generateRss (posts) {
   const feed = new Feed({
     title: config.title,
     description: config.description,
+    // FIXME: Need to normalize
     id: `${config.link}/${config.path || ''}`,
     link: `${config.link}/${config.path || ''}`,
     language: config.lang,

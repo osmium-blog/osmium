@@ -3,6 +3,7 @@ module.exports = {
   description: 'Lorem ipsum dolor sit amet.',
   link: 'https://osmium-blog.vercel.app',
   since: 2023,
+  footerText: '',
   author: 'Osmium user',
   email: 'osmium@example.com',
   socialLink: '',
@@ -15,10 +16,10 @@ module.exports = {
   darkBackground: '#191919',
   postsPerPage: 7,
   sortByDate: false,
-  showAbout: true,
 
   path: '',
-  ogImageGenerateURL: 'https://og-image-craigary.vercel.app',
+  ogImageGenerateURL: '',
+  rss: true,
   seo: {
     keywords: ['Blog', 'Website', 'Notion'],
     googleSiteVerification: '',
