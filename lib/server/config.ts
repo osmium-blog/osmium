@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import { resolve } from 'node:path'
 import { createDefu } from 'defu'
+import { joinURL } from 'ufo'
 import { md5 } from './utils'
 
 const applyDefaults = createDefu((obj, key, value) => {
@@ -14,7 +15,7 @@ const config: Osmium.Config = applyDefaults(
   raw,
   {
     path: '/',
-    ogImageGenerateURL: `${raw.link}/api/og-image?title=$title`,
+    ogImageGenerateURL: joinURL(raw.link, raw.path, '/api/og-image?title={title}'),
     emailHash: raw.email && md5(raw.email),
     rss: true,
   },
