@@ -17,6 +17,9 @@
       "since": {
         "description": "站点创建年份"
       },
+      "footerText": {
+        "description": "站点页脚说明文本，使用说明请见<a href=\"https://osmium-blog.vercel.app/osmium-v1.1-zh#d43e9a909bfd4bd0a0d9323317dbf48f\" target=\"_blank\">这里</a>"
+      },
       "author": {
         "description": "作者名称"
       },
@@ -59,14 +62,14 @@
       "sortByDate": {
         "description": "按日期排序"
       },
-      "showAbout": {
-        "description": "显示“关于”链接"
-      },
       "path": {
         "description": "站点根路径，如果你想把站点挂载到其他站点的某个路径下则需要填写此项"
       },
       "ogImageGenerateURL": {
         "description": "OG 图像生成服务地址（结尾不要加斜线）"
+      },
+      "rss": {
+        "description": "启用 RSS"
       },
       "seo": {
         "description": "SEO 配置",
