@@ -97,6 +97,8 @@ export default class Page implements PageProps {
       Object.entries(properties || {})
         .map(([key, value]) => {
           const prop = schema[key]
+          if (!prop) return null as never
+
           let propValue: any
           switch (prop.type) {
             case 'title':
@@ -117,6 +119,7 @@ export default class Page implements PageProps {
           }
           return [prop.name, propValue]
         })
+        .filter(Boolean)
     )
   }
 
