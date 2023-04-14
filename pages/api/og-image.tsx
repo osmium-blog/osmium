@@ -29,8 +29,7 @@ export default (async function handler (req, res) {
 
   const hash = sha256(title)
   const logo = await resolveLogo()
-  const { author, email } = clientConfig
-  const emailHash = email && createHash('md5').update(email).digest('hex').trim().toLowerCase()
+  const { author, emailHash } = clientConfig
 
   const svg = await satori(
     <div style={{
