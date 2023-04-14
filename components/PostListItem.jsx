@@ -15,7 +15,7 @@ export default function PostListItem ({ post }) {
 
 function NormalPost ({ post }) {
   return (
-    <Link href={post.slug || post.hash}>
+    <Link href={'/' + (post.slug || post.hash)}>
       <article className="py-5">
         <header className="flex flex-col justify-between md:flex-row md:items-baseline">
           <h2 className="text-lg md:text-xl font-medium mb-2 cursor-pointer text-black dark:text-gray-100">
