@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic'
+import Link from 'next/link'
 import { NotionRenderer as Renderer } from 'react-notion-x'
 import { getTextContent } from 'notion-utils'
 import { FONTS_SANS, FONTS_SERIF } from '@/consts'
@@ -92,6 +93,8 @@ const components = {
   }),
 
   /* Overrides */
+
+  PageLink: Link,
 
   toggle_osmium: customBlockRenderer,
   bulleted_list_osmium: customBlockRenderer,
