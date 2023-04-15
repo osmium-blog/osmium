@@ -1,6 +1,8 @@
 import { config } from '@/lib/server/config'
 import Database from '@/lib/server/notion-api/database'
 
+import type { InferGetStaticPropsType } from 'next'
+
 import SearchLayout from '@/layouts/search'
 
 export async function getStaticPaths () {
@@ -13,7 +15,7 @@ export async function getStaticPaths () {
   }
 }
 
-export async function getStaticProps ({ params: { tag } }) {
+export async function getStaticProps ({ params: { tag } }: { params: Record<string, string> }) {
   const db = new Database(config.databaseId)
   await db.syncAll()
   const posts = db.posts.map(post => post.toJson())
@@ -28,6 +30,6 @@ export async function getStaticProps ({ params: { tag } }) {
   }
 }
 
-export default function PageTag ({ tags, posts, currentTag }) {
+export default function PageTag ({ tags, posts, currentTag }: InferGetStaticPropsType<typeof getStaticProps>) {
   return <SearchLayout tags={tags} posts={posts} currentTag={currentTag}/>
 }

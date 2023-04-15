@@ -1,6 +1,8 @@
 import { config, clientConfig } from '@/lib/server/config'
 import Database from '@/lib/server/notion-api/database'
 
+import type { InferGetStaticPropsType } from 'next'
+
 import Container from '@/components/Container'
 import PostList from '@/components/PostList'
 import Pagination from '@/components/Pagination'
@@ -20,19 +22,21 @@ export async function getStaticPaths () {
   }
 }
 
-export async function getStaticProps ({ params: { page } }) {
+export async function getStaticProps ({ params: { page } }: { params: Record<string, string> }) {
+  const pageNum = +page
+
   const db = new Database(config.databaseId)
   await db.syncAll()
   const posts = db.posts.map(post => post.toJson())
   const postsToShow = posts.slice(
-    clientConfig.postsPerPage * (page - 1),
-    clientConfig.postsPerPage * page,
+    clientConfig.postsPerPage * (pageNum - 1),
+    clientConfig.postsPerPage * pageNum,
   )
   const totalPosts = posts.length
-  const showNext = page * clientConfig.postsPerPage < totalPosts
+  const showNext = pageNum * clientConfig.postsPerPage < totalPosts
   return {
     props: {
-      page, // Current Page
+      page: pageNum, // Current Page
       postsToShow,
       showNext,
     },
@@ -40,7 +44,7 @@ export async function getStaticProps ({ params: { page } }) {
   }
 }
 
-export default function PagePage ({ postsToShow, page, showNext }) {
+export default function PagePage ({ postsToShow, page, showNext }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <Container>
       <PostList posts={postsToShow}/>

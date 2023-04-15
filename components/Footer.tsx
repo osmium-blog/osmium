@@ -2,7 +2,7 @@ import { useConfig } from '@/lib/config'
 import { execTemplate } from '@/lib/utils'
 
 type Props = {
-  fullWidth: boolean
+  fullWidth?: boolean
 }
 
 /**

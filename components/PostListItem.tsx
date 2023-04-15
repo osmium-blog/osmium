@@ -1,9 +1,15 @@
 import Link from 'next/link'
+
 import { useConfig } from '@/lib/config'
+import type { PageProps } from '@/lib/server/notion-api/page'
 import FormattedDate from '@/components/FormattedDate'
 import UserAvatar from '@/components/UserAvatar'
 
-export default function PostListItem ({ post }) {
+type Props = {
+  post: PageProps
+}
+
+export default function PostListItem ({ post }: Props) {
   const { hasContent } = post
   switch (hasContent) {
     case false:
@@ -13,7 +19,7 @@ export default function PostListItem ({ post }) {
   }
 }
 
-function NormalPost ({ post }) {
+function NormalPost ({ post }: Props) {
   return (
     <Link href={'/' + (post.slug || post.hash)}>
       <article className="py-5">
@@ -31,7 +37,7 @@ function NormalPost ({ post }) {
   )
 }
 
-function ProverbPost ({ post }) {
+function ProverbPost ({ post }: Props) {
   const { author } = useConfig()
 
   return (

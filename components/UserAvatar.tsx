@@ -8,7 +8,7 @@ type Props = {
 export default function UserAvatar ({ className }: Props) {
   const { author, emailHash } = useConfig()
 
-  if (!emailHash) return
+  if (!emailHash) return null
 
   const src = `https://gravatar.com/avatar/${emailHash}`
 

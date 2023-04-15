@@ -1,16 +1,27 @@
+import type { ReactNode } from 'react'
+import Head from 'next/head'
+import cn from 'classnames'
+
+import { useConfig } from '@/lib/config'
+import { execTemplate } from '@/lib/utils'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import { useConfig } from '@/lib/config'
-import Head from 'next/head'
-import PropTypes from 'prop-types'
-import cn from 'classnames'
-import { execTemplate } from '@/lib/utils'
 
-const Container = ({ children, layout, fullWidth, ...customMeta }) => {
+type Props = {
+  layout?: 'blog'
+  type?: 'article'
+  title?: string
+  description?: string
+  slug?: string
+  fullWidth?: boolean
+  children: ReactNode
+}
+
+export default function Container ({ children, layout, fullWidth, ...customMeta }: Props) {
   const BLOG = useConfig()
 
   const url = BLOG.path?.length ? `${BLOG.link}/${BLOG.path}` : BLOG.link
-  const meta = {
+  const meta: Record<string, string> = {
     title: BLOG.title,
     type: 'website',
     ...customMeta,
@@ -82,9 +93,3 @@ const Container = ({ children, layout, fullWidth, ...customMeta }) => {
     </div>
   )
 }
-
-Container.propTypes = {
-  children: PropTypes.node,
-}
-
-export default Container

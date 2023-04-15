@@ -1,6 +1,8 @@
 import Database from '@/lib/server/notion-api/database'
 import { config } from '@/lib/server/config'
 
+import type { InferGetStaticPropsType } from 'next'
+
 import SearchLayout from '@/layouts/search'
 
 export async function getStaticProps () {
@@ -15,6 +17,6 @@ export async function getStaticProps () {
   }
 }
 
-export default function PageSearch ({ tags, posts }) {
+export default function PageSearch ({ tags, posts }: InferGetStaticPropsType<typeof getStaticProps>) {
   return <SearchLayout tags={tags} posts={posts}/>
 }

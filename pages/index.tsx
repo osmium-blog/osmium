@@ -1,10 +1,12 @@
 import { clientConfig, config } from '@/lib/server/config'
 import Database from '@/lib/server/notion-api/database'
 
+import type { InferGetStaticPropsType } from 'next'
+
+import { useConfig } from '@/lib/config'
 import Container from '@/components/Container'
 import PostList from '@/components/PostList'
 import Pagination from '@/components/Pagination'
-import { useConfig } from '@/lib/config'
 
 export async function getStaticProps () {
   const db = new Database(config.databaseId)
@@ -21,7 +23,7 @@ export async function getStaticProps () {
   }
 }
 
-export default function PageIndex ({ postsToShow, page, showNext }) {
+export default function PageIndex ({ postsToShow, page, showNext }: InferGetStaticPropsType<typeof getStaticProps>) {
   const { title, description } = useConfig()
 
   return (
