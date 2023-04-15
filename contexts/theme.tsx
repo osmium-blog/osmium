@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect } from 'react'
 import type { ReactNode } from 'react'
 import { useMedia } from 'react-use'
-import { useConfig } from '@/lib/config'
+import { useConfig } from '@/contexts/config'
 
 const ThemeContext = createContext<{ dark: boolean | null }>({ dark: true })
 

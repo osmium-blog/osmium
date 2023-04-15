@@ -3,7 +3,7 @@ import Database from '@/lib/server/notion-api/database'
 
 import type { InferGetStaticPropsType } from 'next'
 
-import { useConfig } from '@/lib/config'
+import { useConfig } from '@/contexts/config'
 import Container from '@/components/Container'
 import PostList from '@/components/PostList'
 import Pagination from '@/components/Pagination'

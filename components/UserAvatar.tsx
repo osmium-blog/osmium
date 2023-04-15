@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { useConfig } from '@/lib/config'
+import { useConfig } from '@/contexts/config'
 
 type Props = {
   className?: string

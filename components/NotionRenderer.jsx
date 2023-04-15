@@ -3,8 +3,8 @@ import Link from 'next/link'
 import { NotionRenderer as Renderer } from 'react-notion-x'
 import { getTextContent } from 'notion-utils'
 import { FONTS_SANS, FONTS_SERIF } from '@/consts'
-import { useConfig } from '@/lib/config'
-import { usePageMap } from '@/lib/pageMap'
+import { useConfig } from '@/contexts/config'
+import { usePageMap } from '@/contexts/pageMap'
 import Block from '@/components/notion-blocks'
 
 const customBlockRenderer = ({ block, children }) => <Block block={block}>{children}</Block>

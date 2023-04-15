@@ -4,8 +4,8 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Image from 'next/image'
 import { joinURL, parseURL } from 'ufo'
-import { useConfig } from '@/lib/config'
-import { useLocale } from '@/lib/locale'
+import { useConfig } from '@/contexts/config'
+import { useLocale } from '@/contexts/locale'
 import { usePages } from '@/contexts/pages'
 
 type Props = {

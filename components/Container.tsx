@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import Head from 'next/head'
 import cn from 'classnames'
 
-import { useConfig } from '@/lib/config'
+import { useConfig } from '@/contexts/config'
 import { execTemplate } from '@/lib/utils'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'

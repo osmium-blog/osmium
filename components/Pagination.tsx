@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import cn from 'classnames'
 
-import { useConfig } from '@/lib/config'
-import { useLocale } from '@/lib/locale'
+import { useConfig } from '@/contexts/config'
+import { useLocale } from '@/contexts/locale'
 
 type Props = {
   page: string | number

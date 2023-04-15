@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
-import { useLocale } from '@/lib/locale'
+import { useLocale } from '@/contexts/locale'
 import PostList from '@/components/PostList'
 import Container from '@/components/Container'
 import Tags from '@/components/Tags'

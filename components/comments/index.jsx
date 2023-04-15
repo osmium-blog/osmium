@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic'
 import cn from 'classnames'
-import { useConfig } from '@/lib/config'
+import { useConfig } from '@/contexts/config'
 
 const requireModule = require.context('.', true, /^\.\/(?!index)([\w-]+)\.jsx?$/, 'lazy')
 

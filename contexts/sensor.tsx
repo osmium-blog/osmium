@@ -1,12 +1,14 @@
 import { createContext, useEffect } from 'react'
+import type { ReactNode } from 'react'
 import { useMeasure } from '@react-hookz/web'
+import type { Measures } from '@react-hookz/web'
 
 const SensorContext = createContext({
   contentWidth: 0,
 })
 
-export function SensorProvider ({ children }) {
-  const [measures = {}, sensor] = useMeasure()
+export function SensorProvider ({ children }: { children: ReactNode }) {
+  const [measures = {} as Measures, sensor] = useMeasure<HTMLDivElement>()
   const { width } = measures
 
   useEffect(

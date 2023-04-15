@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-import { useConfig } from '@/lib/config'
+import { useConfig } from '@/contexts/config'
 import type { PageProps } from '@/lib/server/notion-api/page'
 import FormattedDate from '@/components/FormattedDate'
 import UserAvatar from '@/components/UserAvatar'

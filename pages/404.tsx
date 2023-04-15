@@ -1,4 +1,4 @@
-import { useLocale } from '@/lib/locale'
+import { useLocale } from '@/contexts/locale'
 import Container from '@/components/Container'
 
 export default function Page404 () {

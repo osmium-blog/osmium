@@ -1,4 +1,4 @@
-import { useConfig } from '@/lib/config'
+import { useConfig } from '@/contexts/config'
 import { execTemplate } from '@/lib/utils'
 
 type Props = {
