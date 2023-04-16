@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { joinURL, parseURL } from 'ufo'
 import { useConfig } from '@/contexts/config'
 import { useLocale } from '@/contexts/locale'
-import { usePages } from '@/contexts/pages'
+import { useData } from '@/contexts/data'
 
 type Props = {
   navBarTitle?: string
@@ -102,7 +102,8 @@ function NavBar () {
   const { showAbout, rss } = useConfig()
   const locale = useLocale()
 
-  let userPages = usePages()
+  const { pages, entryMap } = useData()
+  let userPages = pages.map(id => entryMap[id])
   // Remove `/about` if user is using `showAbout` to avoid conflicts
   // TODO: Remove in v2.0
   if (typeof showAbout === 'boolean') {
