@@ -91,6 +91,8 @@
 
     @at-root {
       .site-title {
+        @apply whitespace-nowrap overflow-hidden;
+
         @at-root .site-description {
           @apply before:content-[',_'] font-normal opacity-0;
 
