@@ -5,10 +5,13 @@ import Database from '@/lib/server/notion-api/database'
 export async function action () {
   const db = new Database()
   await db.syncAll()
+  const entries = Object.values(db.pageMap)
   return {
     pages: db.pages.map(p => p.id),
     posts: db.posts.map(p => p.id),
-    entryMap: Object.fromEntries(Object.entries(db.pageMap).map(([id, page]) => [id, page.toJson()])),
+    entryMap: Object.fromEntries(entries.map(page => [page.id, page.toJson()])),
+    // For in-site navigation
+    slugMap: Object.fromEntries(entries.map(page => [page.id, page.slug || page.hash])),
   }
 }
 

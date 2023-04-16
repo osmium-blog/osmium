@@ -4,7 +4,7 @@ import { NotionRenderer as Renderer } from 'react-notion-x'
 import { getTextContent } from 'notion-utils'
 import { FONTS_SANS, FONTS_SERIF } from '@/consts'
 import { useConfig } from '@/contexts/config'
-import { usePageMap } from '@/contexts/pageMap'
+import { useData } from '@/contexts/data'
 import Block from '@/components/notion-blocks'
 
 const customBlockRenderer = ({ block, children }) => <Block block={block}>{children}</Block>
@@ -135,9 +135,9 @@ export default function NotionRenderer (props) {
     }
   }
 
-  const pageMap = usePageMap()
+  const { slugMap } = useData()
   const mapPageUrl = id => {
-    return pageMap[id] || 'https://notion.so/' + id.replaceAll('-', '')
+    return slugMap[id] || 'https://notion.so/' + id.replaceAll('-', '')
   }
 
   return (

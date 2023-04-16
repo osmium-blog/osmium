@@ -7,7 +7,6 @@ import Page from '@/lib/server/notion-api/page'
 import type { GetStaticPaths, InferGetStaticPropsType } from 'next'
 import { useRouter } from 'next/router'
 import type { PageBlock } from 'notion-types'
-import { PageMapProvider } from '@/contexts/pageMap'
 import Post from '@/components/Post'
 import Comments from '@/components/comments'
 
@@ -35,7 +34,6 @@ export const getStaticProps = async ({ params: { slug } }: { params: Params }) =
   let post
   let recordMap
   let db
-  let pageMap
 
   // If it's a UUID access
   if (id) {
@@ -63,28 +61,23 @@ export const getStaticProps = async ({ params: { slug } }: { params: Params }) =
 
   if (!post) return NOT_FOUND
 
-  pageMap = Object.fromEntries(Object.values(db.pageMap).map(post => [post.id, post.slug || post.hash]))
-
   return {
     props: {
       post: post.toJson(),
       recordMap,
-      pageMap,
     },
     revalidate: 1,
   }
 }
 
-export default function PagePost ({ post, recordMap, pageMap }: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function PagePost ({ post, recordMap }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter()
 
   // TODO: It would be better to render something
   if (router.isFallback) return null
 
   return <>
-    <PageMapProvider pageMap={pageMap}>
-      <Post post={post} recordMap={recordMap!}/>
-    </PageMapProvider>
+    <Post post={post} recordMap={recordMap!}/>
     <Comments post={post}/>
   </>
 }

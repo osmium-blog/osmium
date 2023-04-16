@@ -9,7 +9,7 @@ type Context = Data & {
   current?: PageProps
 }
 
-const DataContext = createContext<Context>({ pages: [], posts: [], entryMap: {} })
+const DataContext = createContext<Context>(undefined as any)
 
 type Props = {
   data: Data
