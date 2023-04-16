@@ -1,19 +1,15 @@
 import type { ReactNode } from 'react'
 import cn from 'classnames'
 
-import type { PageProps } from '@/lib/server/notion-api/page'
 import { useConfig } from '@/contexts/config'
+import { useData } from '@/contexts/data'
 import LayoutHead from './head'
 import Header from './header'
 import Footer from './footer'
 
-type Props = {
-  post?: PageProps
-  children: ReactNode
-}
-
-export default function BlogLayout ({ post, children }: Props) {
+export default function BlogLayout ({ children }: { children: ReactNode }) {
   const config = useConfig()
+  const { current: post } = useData()
 
   return <>
     <LayoutHead post={post}/>

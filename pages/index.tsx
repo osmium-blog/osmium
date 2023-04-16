@@ -4,7 +4,6 @@ import Database from '@/lib/server/notion-api/database'
 import type { InferGetStaticPropsType } from 'next'
 //
 import { useConfig } from '@/contexts/config'
-import BlogLayout from '@/layouts/blog'
 import PostList from '@/components/PostList'
 import Pagination from '@/components/Pagination'
 
@@ -26,10 +25,8 @@ export default function PageIndex ({ posts, total }: InferGetStaticPropsType<typ
 
   const showNext = total > config.postsPerPage
 
-  return (
-    <BlogLayout>
-      <PostList posts={posts}/>
-      {showNext && <Pagination page={1} showNext={showNext}/>}
-    </BlogLayout>
-  )
+  return <>
+    <PostList posts={posts}/>
+    {showNext && <Pagination page={1} showNext={showNext}/>}
+  </>
 }

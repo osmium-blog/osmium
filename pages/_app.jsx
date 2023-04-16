@@ -9,9 +9,11 @@ import { LocaleProvider } from '@/contexts/locale'
 import { SensorProvider } from '@/contexts/sensor'
 import { ThemeProvider } from '@/contexts/theme'
 import { PagesProvider } from '@/contexts/pages'
+import { DataProvider } from '@/contexts/data'
+import { LayoutProvider } from '@/contexts/layout'
 import Analytics from '@/components/analytics'
 
-export default function MyApp ({ Component, pageProps, config, locale, pages }) {
+export default function MyApp ({ Component, pageProps, config, locale, pages, data }) {
   useEffect(() => {
     document.body.classList.remove('fouc')
     document.body.addEventListener('transitionend', () => {
@@ -21,12 +23,16 @@ export default function MyApp ({ Component, pageProps, config, locale, pages }) 
 
   return (
     <ConfigProvider value={config}>
+      {process.env.NODE_ENV === 'production' && <Analytics/>}
       <LocaleProvider value={locale}>
         <SensorProvider>
           <ThemeProvider>
             <PagesProvider pages={pages}>
-              {process.env.NODE_ENV === 'production' && <Analytics/>}
-              <Component {...pageProps}/>
+              <DataProvider data={data}>
+                <LayoutProvider>
+                  <Component {...pageProps}/>
+                </LayoutProvider>
+              </DataProvider>
             </PagesProvider>
           </ThemeProvider>
         </SensorProvider>
@@ -46,10 +52,15 @@ MyApp.getInitialProps = async ctx => {
     ? await fetch('/api/pages').then(res => res.json())
     : await import('@/pages/api/pages').then(module => module.action())
 
+  const data = typeof window === 'object'
+    ? await fetch('/api/data').then(res => res.json())
+    : await import('@/pages/api/data').then(module => module.action())
+
   return {
     ...App.getInitialProps(ctx),
     config,
     locale,
     pages,
+    data,
   }
 }

@@ -1,0 +1,36 @@
+.layout {
+  --nav-width: 300px;
+
+  @apply h-screen flex flex-col;
+}
+
+.layout_header {
+  @apply flex-none;
+}
+
+.layout_main {
+  @apply flex-grow overflow-visible grid;
+  grid-template:
+    ' nav              content aside ' 1fr
+    / var(--nav-width) 1fr     300px;
+}
+
+.layout_nav {
+  @apply fixed inset-0 top-[65px] overflow-y-auto;
+  width: var(--nav-width);
+  padding-right: 16px;
+  height: calc(100vh - 65px);
+}
+
+.page_content {
+  @apply justify-self-center max-w-2xl;
+  grid-area: content;
+}
+
+.page_aside {
+  grid-area: aside;
+
+  > aside {
+    @apply sticky top-[65px] bottom-0 bg-emerald-100;
+  }
+}

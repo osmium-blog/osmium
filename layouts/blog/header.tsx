@@ -1,14 +1,17 @@
 import { useCallback, useEffect, useRef } from 'react'
 import type { MouseEvent } from 'react'
+import cn from 'classnames'
 
 import SiteTitle from './site-title'
 import SiteNav from './site-nav'
 
 type Props = {
   title?: string
+  full?: boolean
+  className?: string
 }
 
-export default function Header ({ title }: Props) {
+export default function Header ({ title, full, className }: Props) {
   const navRef = useRef<HTMLDivElement | null>(null)
   const sentinelRef = useRef<HTMLDivElement | null>(null)
   const handler = useCallback<IntersectionObserverCallback>(([entry]) => {
@@ -34,11 +37,15 @@ export default function Header ({ title }: Props) {
   }
 
   return <>
-    <div className="observer-element h-4 md:h-12" ref={sentinelRef}></div>
+    {!full && <div className="observer-element h-4 md:h-12" ref={sentinelRef}></div>}
     <div
       ref={navRef}
       id="sticky-nav"
-      className={`sticky-nav group m-auto w-full px-4 h-6 flex flex-row justify-between items-center mb-2 md:mb-12 py-8 bg-opacity-60`}
+      className={cn(
+        className,
+        'sticky-nav group m-auto w-full px-4 h-6 flex flex-row justify-between items-center mb-2 md:mb-12 py-8 bg-opacity-60',
+        { 'sticky-nav-full': full }
+      )}
       onClick={handleClickHeader}
     >
       <svg

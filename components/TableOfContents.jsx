@@ -2,10 +2,10 @@ import PropTypes from 'prop-types'
 import { getPageTableOfContents } from 'notion-utils'
 import cn from 'classnames'
 
-export default function TableOfContents ({ blockMap, className, style }) {
-  const collectionId = Object.keys(blockMap.collection)[0]
-  const page = Object.values(blockMap.block).find(block => block.value.parent_id === collectionId).value
-  const nodes = getPageTableOfContents(page, blockMap)
+export default function TableOfContents ({ recordMap, className, style }) {
+  const collectionId = Object.keys(recordMap.collection)[0]
+  const page = Object.values(recordMap.block).find(block => block.value.parent_id === collectionId).value
+  const nodes = getPageTableOfContents(page, recordMap)
 
   if (!nodes.length) return null
 
@@ -47,5 +47,5 @@ export default function TableOfContents ({ blockMap, className, style }) {
 }
 
 TableOfContents.propTypes = {
-  blockMap: PropTypes.object.isRequired,
+  recordMap: PropTypes.object.isRequired,
 }
