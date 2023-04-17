@@ -3,12 +3,12 @@ import { config } from '@/lib/server/config'
 import getPage from '@/lib/server/notion-api/getPage'
 import Database from '@/lib/server/notion-api/database'
 import Page from '@/lib/server/notion-api/page'
-
+//
 import type { GetStaticPaths, InferGetStaticPropsType } from 'next'
 import { useRouter } from 'next/router'
 import type { PageBlock } from 'notion-types'
-import Post from '@/components/Post'
-import Comments from '@/components/comments'
+
+import { useLayout } from '@/contexts/layout'
 
 type Params = {
   slug: string
@@ -72,12 +72,10 @@ export const getStaticProps = async ({ params: { slug } }: { params: Params }) =
 
 export default function PagePost ({ post, recordMap }: InferGetStaticPropsType<typeof getStaticProps>) {
   const router = useRouter()
+  const { Layout } = useLayout()
 
   // TODO: It would be better to render something
   if (router.isFallback) return null
 
-  return <>
-    <Post post={post} recordMap={recordMap!}/>
-    <Comments post={post}/>
-  </>
+  return <Layout.Post post={post} recordMap={recordMap}/>
 }

@@ -1,0 +1,58 @@
+.post_layout {
+  @apply grid;
+  grid-template:
+    ' title   ' auto
+    ' info    ' auto
+    ' toc     ' auto
+    ' content ' auto
+    / 1fr;
+  @media (min-width: theme('screens.lg')) {
+    grid-template:
+      ' .   title   .   ' auto
+      ' .   info    .   ' auto
+      ' .   content toc ' auto
+      / 1fr 42rem   1fr;
+
+    &.fullwidth {
+      --content-area-width: minmax(0, calc(var(--content-width) - 80px * 2));
+      grid-template:
+        ' .    title                     .                   ' auto
+        ' .    info                      .                   ' auto
+        ' .    content                   toc                 ' auto
+        / 80px var(--content-area-width) minmax(160px, 320px);
+    }
+  }
+
+  > article {
+    @apply contents;
+
+    @at-root .post_title {
+      grid-area: title;
+    }
+
+    @at-root .post_info {
+      grid-area: info;
+    }
+
+    @at-root .post_content {
+      grid-area: content;
+    }
+  }
+
+  > aside {
+    @apply px-4 lg:px-0;
+    grid-area: toc;
+  }
+}
+
+.post_title {
+  @apply px-4 text-3xl font-bold text-black dark:text-white;
+}
+
+.post_info {
+  @apply px-4 mt-7 text-neutral-500 dark:text-neutral-400 flex items-start;
+}
+
+.post_content {
+  @apply px-4;
+}
