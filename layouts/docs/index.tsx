@@ -13,10 +13,8 @@ export default function DocsLayout ({ children }: { children: ReactNode }) {
         <nav className={css.layout_nav}>
           <LayoutNav/>
         </nav>
-        <article className={css.page_content}>
+        <div className={css.layout_page}>
           {children}
-        </article>
-        <div className={css.page_aside}>
         </div>
       </main>
     </div>

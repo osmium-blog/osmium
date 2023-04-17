@@ -17,7 +17,7 @@ type Context = {
 const LayoutContext = createContext<Context>(undefined as any)
 
 export function LayoutProvider ({ children }: { children: ReactNode }) {
-  const [layout, setLayout] = useState('blog')
+  const [layout, setLayout] = useState('docs')
   const Layout = loadLayout(layout)
 
   return (
