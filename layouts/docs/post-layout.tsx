@@ -30,6 +30,7 @@ export default function PostLayout ({ post, recordMap }: Props) {
         {type !== 'Page' && (
           <div className={css.post_info}>
             <div className="mr-2 mb-4 md:ml-0">
+              Last updated:&nbsp;
               <FormattedDate date={date}/>
             </div>
           </div>

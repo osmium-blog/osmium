@@ -7,9 +7,8 @@ export async function action () {
   await db.syncAll()
   const entries = Object.values(db.pageMap)
   return {
-    pages: db.pages.map(p => p.id),
-    posts: db.posts.map(p => p.id),
-    entryMap: Object.fromEntries(entries.map(page => [page.id, page.toJson()])),
+    pages: entries.map(page => page.meta),
+    pageMap: Object.fromEntries(entries.map(page => [page.id, page.meta])),
     // For in-site navigation
     slugMap: Object.fromEntries(entries.map(page => [page.id, page.slug || page.hash])),
   }

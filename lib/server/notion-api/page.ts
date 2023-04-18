@@ -30,6 +30,26 @@ export interface PageProps {
   hasContent: boolean
 }
 
+export type PageProperties = {
+  title?: string
+  type?: PageType
+  slug?: string
+  summary?: string
+  tags?: string[]
+  status?: PageStatus
+
+  // Docs mode
+  parent?: string[]
+  child?: string[]
+}
+export type PageMeta = PageProperties & {
+  id: string
+  hash: string
+  date: number
+  hasContent: boolean
+  fullWidth: boolean
+}
+
 export default class Page implements PageProps {
   id: string
   hash: string
@@ -43,16 +63,26 @@ export default class Page implements PageProps {
   hasContent: boolean = true
   status?: PageStatus
 
+  properties?: PageProperties
+  meta: PageMeta
   recordMap?: ExtendedRecordMap
 
   constructor (public block: PageBlock, public schema: CollectionPropertySchemaMap) {
     this.id = block.id
     this.hash = hash(block.id)
     this.init()
+    this.meta = {
+      ...this.properties,
+      id: this.id,
+      hash: this.hash,
+      date: this.date,
+      hasContent: this.hasContent,
+      fullWidth: this.fullWidth,
+    }
   }
 
   init (block: PageBlock = this.block, schema: CollectionPropertySchemaMap = this.schema) {
-    const props = Page.simplifyProperties(block.properties, schema)
+    const props = this.properties = Page.simplifyProperties(block.properties, schema)
 
     VALID_TYPES.includes(props.type) && (this.type = props.type)
     if (!this.type) return
@@ -116,6 +146,13 @@ export default class Page implements PageProps {
               }
               break
             }
+            case 'relation':
+              // TODO: Complete the type check later
+              // @ts-ignore
+              propValue = value.filter(it => it[0] === '‣').map(it => it[1][0][1])
+              break
+            default:
+              debugger
           }
           return [prop.name, propValue]
         })

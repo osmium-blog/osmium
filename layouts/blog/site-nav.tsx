@@ -9,19 +9,19 @@ export default function SiteNav () {
   const config = useConfig()
   const locale = useLocale()
 
-  const { pages, entryMap } = useData()
-  let userPages = pages.map(id => entryMap[id])
+  const { pages} = useData()
+  let favorites = pages.filter(page => page.type === 'Page')
   // Remove `/about` if user is using `showAbout` to avoid conflicts
   // TODO: Remove in v2.0
   if (typeof config.showAbout === 'boolean') {
-    userPages = userPages.filter(p => p.slug !== 'about')
+    favorites = favorites.filter(p => p.slug !== 'about')
   }
 
   type NavLink = { name: string, to: string, external?: boolean }
   const links: NavLink[] = [
     { name: locale.NAV.INDEX, to: '/' },
     config.showAbout && { name: locale.NAV.ABOUT, to: '/about' },
-    ...userPages.map(p => {
+    ...favorites.map(p => {
       const external = Boolean(parseURL(p.slug).protocol)
       return {
         name: p.title!,

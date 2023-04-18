@@ -102,8 +102,8 @@ function NavBar () {
   const { showAbout, rss } = useConfig()
   const locale = useLocale()
 
-  const { pages, entryMap } = useData()
-  let userPages = pages.map(id => entryMap[id])
+  const { pages } = useData()
+  let userPages = pages.filter(page => page.type === 'Page')
   // Remove `/about` if user is using `showAbout` to avoid conflicts
   // TODO: Remove in v2.0
   if (typeof showAbout === 'boolean') {

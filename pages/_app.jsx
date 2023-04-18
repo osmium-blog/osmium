@@ -12,6 +12,8 @@ import { DataProvider } from '@/contexts/data'
 import { LayoutProvider } from '@/contexts/layout'
 import Analytics from '@/components/analytics'
 
+const PROD = process.env.NODE_ENV === 'production'
+
 export default function MyApp ({ Component, pageProps, config, locale, data }) {
   useEffect(() => {
     document.body.classList.remove('fouc')
@@ -22,7 +24,7 @@ export default function MyApp ({ Component, pageProps, config, locale, data }) {
 
   return (
     <ConfigProvider value={config}>
-      {process.env.NODE_ENV === 'production' && <Analytics/>}
+      {PROD && <Analytics/>}
       <LocaleProvider value={locale}>
         <SensorProvider>
           <ThemeProvider>

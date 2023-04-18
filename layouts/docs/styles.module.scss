@@ -21,9 +21,8 @@
 }
 
 .layout_nav {
-  @apply fixed inset-0 top-[65px] overflow-y-auto;
+  @apply fixed inset-0 top-[65px] overflow-y-auto border-r border-neutral-200;
   width: var(--nav-width);
-  padding-right: 16px;
   height: calc(100vh - 65px);
 }
 
@@ -32,6 +31,67 @@
 
   > aside {
     @apply sticky top-[65px] bottom-0 bg-emerald-100;
+  }
+}
+
+/* Left Nav */
+
+.nav_root {
+  @apply px-8 my-10;
+}
+
+.nav_item {
+  &:has(> .is_active) {
+    @apply -mx-8 px-8 bg-neutral-300/50 dark:bg-neutral-600/50 border-0;
+  }
+}
+
+.nav_item_label {
+  @apply block py-1 text-sm;
+
+  @at-root span#{&} {
+    @apply text-neutral-500;
+
+    &:has(+ ul) {
+      @apply font-bold uppercase;
+    }
+  }
+
+  @at-root a#{&} {
+    @apply hover:text-black dark:hover:text-white;
+  }
+
+  &.is_active {
+    @apply text-black dark:text-white;
+  }
+
+  &.is_external {
+    @apply flex items-center;
+
+    &::after {
+      @apply ml-auto text-neutral-400 dark:text-neutral-500;
+      content: '↗︎';
+    }
+  }
+}
+
+.nav_group {
+  @apply my-4;
+
+  ul {
+    @apply border-l border-neutral-300 dark:border-neutral-600;
+
+    ul {
+      @apply -ml-px;
+    }
+  }
+
+  li {
+    @apply -ml-px border-l border-transparent;
+
+    &:has(> a):not(:has(li:hover)):hover {
+      @apply border-black dark:border-white;
+    }
   }
 }
 

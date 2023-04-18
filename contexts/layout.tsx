@@ -5,7 +5,10 @@ import dynamic from 'next/dynamic'
 const requireLayout = (require as any).context('@/layouts', true, /^\.\/\w+\/(index|post-layout)\.tsx$/, 'lazy')
 const loadLayout = (name: string) => ({
   Root: dynamic<{ children: ReactNode }>(() => requireLayout(`./${name}/index.tsx`)),
-  Post: dynamic<any>(() => requireLayout(`./${name}/post-layout.tsx`)),
+  Post: dynamic<any>(() => {
+    const key = `./${name}/post-layout.tsx`
+    return requireLayout.keys().includes(key) && requireLayout(key)
+  }),
 })
 
 type Context = {

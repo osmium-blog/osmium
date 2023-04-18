@@ -19,7 +19,7 @@ type Props = {
 export function DataProvider ({ data, children }: Props) {
   const router = useRouter()
   const slug = router.query.slug
-  const current: Context['current'] = slug ? Object.values(data.entryMap).find(it => (it.slug || it.hash) === slug) : undefined
+  const current: Context['current'] = slug ? Object.values(data.pageMap).find(it => (it.slug || it.hash) === slug) : undefined
   const value: Context = {
     ...data,
     current,
