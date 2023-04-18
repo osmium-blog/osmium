@@ -26,14 +26,6 @@
   height: calc(100vh - 65px);
 }
 
-.page_aside {
-  grid-area: aside;
-
-  > aside {
-    @apply sticky top-[65px] bottom-0 bg-emerald-100;
-  }
-}
-
 /* Left Nav */
 
 .nav_root {
@@ -98,37 +90,93 @@
 /* Post */
 
 .post_layout {
+  --article-width: 708px;
+
   @apply grid;
   grid-template:
+    ' title    info  ' auto
+    ' summary  info  ' auto
     ' content  aside ' auto
     ' comments .     ' auto
     / 1fr      300px;
 
   > article {
-    @apply justify-self-center;
-    grid-area: content;
-    max-width: 708px;
+    @apply contents;
   }
 
   > aside {
+    @apply pt-8 pr-8;
     grid-area: aside;
   }
 
-  @at-root .post_comments {
-    @apply justify-self-center;
-    grid-area: comments;
-    max-width: 708px;
+  @at-root {
+    .post_title {
+      @apply justify-self-center mx-8;
+      grid-area: title;
+      width: var(--article-width);
+    }
+
+    .post_summary {
+      @apply justify-self-center mx-8;
+      grid-area: summary;
+      width: var(--article-width);
+    }
+
+    .post_info {
+      @apply self-end;
+      grid-area: info;
+    }
+
+    .post_content {
+      @apply justify-self-center mx-8;
+      grid-area: content;
+      width: var(--article-width);
+    }
+
+    .post_comments {
+      @apply justify-self-center mx-8;
+      grid-area: comments;
+      width: var(--article-width);
+    }
   }
 }
 
 .post_title {
-  @apply px-4 text-3xl font-bold text-black dark:text-white;
+  @apply pb-8 text-4xl font-bold text-black dark:text-white border-b border-neutral-300;
+
+  &:has(+ .post_summary) {
+    @apply pb-4 border-0;
+  }
+}
+
+.post_summary {
+  @apply pb-8 text-neutral-500 border-b border-neutral-300;
 }
 
 .post_info {
-  @apply px-4 mt-7 text-neutral-500 dark:text-neutral-400 flex items-start;
+  @apply pt-4 pb-8 mr-8 text-sm text-neutral-500 dark:text-neutral-400 border-b border-neutral-300 flex items-start;
+
+  @at-root {
+    .post_update_time {
+      @apply flex items-center;
+
+      &::before {
+        @apply w-4 h-4 mr-1;
+        content: '';
+        background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23737373"%3E%3Cpath d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM13 12H17V14H11V7H13V12Z"%3E%3C/path%3E%3C/svg%3E');
+      }
+    }
+  }
 }
 
 .post_content {
-  @apply px-4;
+  @apply py-8;
+}
+
+.post_toc {
+  @apply sticky;
+  // 65px is the height of expanded nav, plus 16px to keep margin
+  // TODO: Remove the magic number
+  top: 65px + 16px;
+  bottom: 0;
 }
