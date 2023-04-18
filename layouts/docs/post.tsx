@@ -17,7 +17,7 @@ type Props = {
   recordMap: ExtendedRecordMap
 }
 
-export default function PostLayout ({ post, recordMap }: Props) {
+export default function SlugLayout ({ post, recordMap }: Props) {
   const config = useConfig()
   const { dark } = useTheme()
 
