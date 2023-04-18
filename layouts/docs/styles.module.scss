@@ -1,7 +1,7 @@
 .layout {
   --nav-width: 300px;
 
-  @apply h-screen flex flex-col;
+  @apply min-h-screen flex flex-col;
 }
 
 .layout_header {
@@ -98,7 +98,7 @@
     ' summary  info  ' auto
     ' content  aside ' auto
     ' comments .     ' auto
-    / 1fr      300px;
+    / 1fr      var(--nav-width);
 
   > article {
     @apply contents;
