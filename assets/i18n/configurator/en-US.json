@@ -29,6 +29,13 @@
       "socialLink": {
         "description": "Author’s social account link, will become the link address of the author’s avatar"
       },
+      "mode": {
+        "description": "Site layout",
+        "option": {
+          "blog": "Blog",
+          "docs": "Documentation"
+        }
+      },
       "lang": {
         "description": "Site language"
       },

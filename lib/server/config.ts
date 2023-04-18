@@ -15,6 +15,7 @@ const config: Osmium.Config = applyDefaults(
   raw,
   {
     path: '/',
+    mode: 'blog',
     ogImageGenerateURL: joinURL(raw.link, raw.path, '/api/og-image?title={title}'),
     emailHash: raw.email && md5(raw.email),
     rss: true,

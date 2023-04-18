@@ -8,6 +8,7 @@ module.exports = {
   email: 'osmium@example.com',
   socialLink: '',
 
+  mode: 'docs',
   lang: 'en-US',
   timezone: 'Asia/Shanghai',
   appearance: 'auto',

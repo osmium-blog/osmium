@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic'
 import type { ExtendedRecordMap } from 'notion-types'
 
 import type { PageMeta } from '@/lib/server/notion-api/page'
+import { useConfig } from '@/contexts/config'
 
 const requireLayout = (require as any).context('@/layouts', true, /^\.\/\w+\/(root|index|post)\.tsx$/, 'lazy')
 const loadLayout = (name: string) => {
@@ -30,7 +31,8 @@ type Context = {
 const LayoutContext = createContext<Context>(undefined as any)
 
 export function LayoutProvider ({ children }: { children: ReactNode }) {
-  const [layout, setLayout] = useState('docs')
+  const config = useConfig()
+  const [layout, setLayout] = useState(config.mode)
   const Layout = loadLayout(layout)
 
   return (
