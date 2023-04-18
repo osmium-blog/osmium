@@ -63,7 +63,7 @@ export const getStaticProps = async ({ params: { slug } }: { params: Params }) =
 
   return {
     props: {
-      post: post.toJson(),
+      post: post.meta,
       recordMap,
     },
     revalidate: 1,

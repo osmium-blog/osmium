@@ -3,9 +3,7 @@ import Database from '@/lib/server/notion-api/database'
 //
 import type { InferGetStaticPropsType } from 'next'
 //
-import { useConfig } from '@/contexts/config'
-import PostList from '@/components/PostList'
-import Pagination from '@/components/Pagination'
+import { useLayout } from '@/contexts/layout'
 
 export async function getStaticProps () {
   const db = new Database()
@@ -13,20 +11,15 @@ export async function getStaticProps () {
 
   return {
     props: {
-      posts: db.posts.slice(0, clientConfig.postsPerPage).map(post => post.toJson()),
+      posts: db.posts.slice(0, clientConfig.postsPerPage).map(post => post.meta),
       total: db.posts.length,
     },
     revalidate: 1,
   }
 }
 
-export default function PageIndex ({ posts, total }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const config = useConfig()
+export default function PageIndex (props: InferGetStaticPropsType<typeof getStaticProps>) {
+  const { Layout } = useLayout()
 
-  const showNext = total > config.postsPerPage
-
-  return <>
-    <PostList posts={posts}/>
-    {showNext && <Pagination page={1} showNext={showNext}/>}
-  </>
+  return <Layout.Index {...props}/>
 }
