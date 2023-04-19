@@ -77,6 +77,26 @@
   }
 }
 
+/* Site Title */
+
+.site_title {
+  @apply flex items-center;
+}
+
+.site_logo {
+  @apply mr-2;
+}
+
+.site_name {
+  @apply hidden sm:inline whitespace-nowrap;
+  @apply font-medium text-black dark:text-white;
+}
+
+.site_description {
+  @apply hidden lg:inline truncate;
+  @apply before:content-[',_'] font-normal text-neutral-600 dark:text-neutral-300;
+}
+
 /* Left Nav */
 
 .nav_root {

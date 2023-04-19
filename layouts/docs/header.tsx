@@ -1,7 +1,7 @@
 import type { MouseEvent } from 'react'
 
 import css from './styles.module.scss'
-import SiteTitle from '@/layouts/blog/site-title'
+import SiteTitle from './site-title'
 import { stopPropa } from '@/lib/utils'
 
 export default function Header ({ className }: BasicProps) {
