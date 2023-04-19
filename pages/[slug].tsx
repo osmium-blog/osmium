@@ -1,8 +1,8 @@
 import { parsePageId } from 'notion-utils'
 import { config } from '@/lib/server/config'
-import getPage from '@/lib/server/notion-api/getPage'
-import Database from '@/lib/server/notion-api/database'
-import Page from '@/lib/server/notion-api/page'
+import api from '@/lib/server/notion-client'
+import Database from '@/lib/server/database'
+import Page from '@/lib/server/page'
 //
 import type { GetStaticPaths, InferGetStaticPropsType } from 'next'
 import { useRouter } from 'next/router'
@@ -18,9 +18,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
   if (process.env.NODE_ENV === 'development') return { paths: [], fallback: true }
 
   const db = new Database()
-  await db.syncAll()
+  await db.sync()
   // TODO: Pre-building only latest posts should be enough
-  const paths = Object.values(db.pageMap).map(page => ({ params: { slug: page.slug || page.hash } }))
+  const paths = [...db.all.values()].map(page => ({ params: { slug: page.slug || page.hash } }))
   return {
     paths,
     fallback: true,
@@ -37,7 +37,7 @@ export const getStaticProps = async ({ params: { slug } }: { params: Params }) =
 
   // If it's a UUID access
   if (id) {
-    recordMap = await getPage(id)
+    recordMap = await api.getPage(id)
     const pageBlock = recordMap.block[id].value as PageBlock
     if (!pageBlock) return NOT_FOUND
 
@@ -47,15 +47,15 @@ export const getStaticProps = async ({ params: { slug } }: { params: Params }) =
     const collection = recordMap.collection[collectionId].value
     post = new Page(pageBlock, collection.schema)
     db = new Database()
-    await db.syncAll()
+    await db.sync()
   }
   // It's a normal slug access
   else {
     db = new Database()
-    await db.syncAll()
-    post = Object.values(db.pageMap).find(page => (page.slug || page.hash) === slug)
+    await db.sync()
+    post = [...db.all.values()].find(page => (page.slug || page.hash) === slug)
     if (post) {
-      recordMap = await getPage(post.id)
+      recordMap = await api.getPage(post.id)
     }
   }
 
@@ -63,7 +63,7 @@ export const getStaticProps = async ({ params: { slug } }: { params: Params }) =
 
   return {
     props: {
-      post: post.meta,
+      post: post.json(),
       recordMap,
     },
     revalidate: 1,

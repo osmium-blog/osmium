@@ -1,7 +1,7 @@
 import type { ExtendedRecordMap } from 'notion-types'
 
 import css from './styles.module.scss'
-import type { PageMeta } from '@/lib/server/notion-api/page'
+import type { PageMeta } from '@/lib/server/page'
 import useTheme from '@/contexts/theme'
 import NotionRenderer from '@/components/NotionRenderer'
 import TableOfContents from '@/components/TableOfContents'
@@ -34,6 +34,7 @@ export default function SlugLayout ({ post, recordMap }: Props) {
         </div>
       </article>
       <aside>
+        {/* @ts-ignore */}
         <TableOfContents recordMap={recordMap} className={css.post_toc}/>
       </aside>
       <Comments post={post} className={css.post_comments}/>

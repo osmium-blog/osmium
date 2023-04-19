@@ -2,7 +2,7 @@ import type { ExtendedRecordMap } from 'notion-types'
 import cn from 'classnames'
 
 import css from './styles.module.scss'
-import type { PageProps } from '@/lib/server/notion-api/page'
+import type { PageMeta } from '@/lib/server/page'
 import { useConfig } from '@/contexts/config'
 import useTheme from '@/contexts/theme'
 import NotionRenderer from '@/components/NotionRenderer'
@@ -13,7 +13,7 @@ import TagItem from '@/components/TagItem'
 import Comments from '@/components/comments'
 
 type Props = {
-  post: PageProps
+  post: PageMeta
   recordMap: ExtendedRecordMap
 }
 
@@ -23,6 +23,7 @@ export default function PostLayout ({ post, recordMap }: Props) {
 
   const { title, type, date, tags, fullWidth } = post
 
+  // @ts-ignore
   return <>
     <div className={cn(css.post_layout, fullWidth && css.fullwidth)}>
       <article>
@@ -61,6 +62,7 @@ export default function PostLayout ({ post, recordMap }: Props) {
         />
       </aside>
     </div>
+    {/* @ts-ignore */}
     <Comments post={post}/>
   </>
 }

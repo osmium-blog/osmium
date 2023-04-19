@@ -1,17 +1,16 @@
-import Database from '@/lib/server/notion-api/database'
-import { config } from '@/lib/server/config'
+import Database from '@/lib/server/database'
 
 import type { InferGetStaticPropsType } from 'next'
 
 import SearchLayout from '@/layouts/search'
 
 export async function getStaticProps () {
-  const db = new Database(config.databaseId)
-  await db.syncAll()
+  const db = new Database()
+  await db.sync()
   return {
     props: {
-      tags: db.tagMap,
-      posts: db.posts.map(post => post.toJson()),
+      tags: db.tagStats,
+      posts: [...db.posts.values()].map(post => post.json()),
     },
     revalidate: 1,
   }

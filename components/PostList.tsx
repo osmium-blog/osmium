@@ -1,8 +1,8 @@
-import type { PageProps } from '@/lib/server/notion-api/page'
+import type { PageMeta } from '@/lib/server/page'
 import PostListItem from '@/components/PostListItem'
 
 type Props = {
-  posts?: PageProps[]
+  posts?: PageMeta[]
 }
 
 export default function PostList ({ posts }: Props) {

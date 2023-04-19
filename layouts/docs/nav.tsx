@@ -1,7 +1,7 @@
 import Link from 'next/link'
 
 import css from './styles.module.scss'
-import type { PageMeta } from '@/lib/server/notion-api/page'
+import type { PageMeta } from '@/lib/server/page'
 import cn from 'classnames'
 import { useRouter } from 'next/router'
 

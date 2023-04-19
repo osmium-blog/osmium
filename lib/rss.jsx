@@ -1,14 +1,14 @@
 import { Feed } from 'feed'
 import ReactDOMServer from 'react-dom/server'
 import { clientConfig, config } from '@/lib/server/config'
-import getPage from '@/lib/server/notion-api/getPage'
+import api from '@/lib/server/notion-client'
 import { ConfigProvider } from '@/contexts/config'
 import NotionRenderer from '@/components/NotionRenderer'
 
 const createFeedContent = async post => {
   const content = ReactDOMServer.renderToString(
     <ConfigProvider value={clientConfig}>
-      <NotionRenderer recordMap={await getPage(post.id)}/>,
+      <NotionRenderer recordMap={await api.getPage(post.id)}/>,
     </ConfigProvider>
   )
   // FIXME: Need a better solution

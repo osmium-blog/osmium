@@ -1,4 +1,4 @@
-import type { PageMeta } from '@/lib/server/notion-api/page'
+import type { PageMeta } from '@/lib/server/page'
 import { useConfig } from '@/contexts/config'
 import PostList from '@/components/PostList'
 import Pagination from '@/components/Pagination'

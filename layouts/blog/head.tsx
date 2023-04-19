@@ -1,15 +1,15 @@
 import Head from 'next/head'
 import { joinURL } from 'ufo'
 
-import type { PageProps } from '@/lib/server/notion-api/page'
+import type { PageMeta } from '@/lib/server/page'
 import { execTemplate } from '@/lib/utils'
 import { useConfig } from '@/contexts/config'
 
 type Props = {
-  post?: PageProps
+  post?: PageMeta
 }
 
-export default function LayoutHead ({ post = {} as PageProps }: Props) {
+export default function LayoutHead ({ post = {} as PageMeta }: Props) {
   const config = useConfig()
 
   const title = post.title || config.title
@@ -50,7 +50,7 @@ export default function LayoutHead ({ post = {} as PageProps }: Props) {
       {post.id && <>
         <meta property="og:type" content="article"/>
         <meta property="article:author" content={config.author}/>
-        <meta property="article:published_time" content={new Date(post.date).toISOString()}/>
+        {post.date && <meta property="article:published_time" content={new Date(post.date).toISOString()}/>}
       </>}
     </Head>
   )

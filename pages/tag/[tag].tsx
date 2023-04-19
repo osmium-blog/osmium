@@ -1,14 +1,13 @@
-import { config } from '@/lib/server/config'
-import Database from '@/lib/server/notion-api/database'
+import Database from '@/lib/server/database'
 
 import type { InferGetStaticPropsType } from 'next'
 
 import SearchLayout from '@/layouts/search'
 
 export async function getStaticPaths () {
-  const db = new Database(config.databaseId)
-  await db.syncAll()
-  const paths = Object.keys(db.tagMap).map(tag => ({ params: { tag } }))
+  const db = new Database()
+  await db.sync()
+  const paths = Object.keys(db.tagStats).map(tag => ({ params: { tag } }))
   return {
     paths,
     fallback: true,
@@ -16,10 +15,10 @@ export async function getStaticPaths () {
 }
 
 export async function getStaticProps ({ params: { tag } }: { params: Record<string, string> }) {
-  const db = new Database(config.databaseId)
-  await db.syncAll()
-  const posts = db.posts.map(post => post.toJson())
-  const tags = db.tagMap
+  const db = new Database()
+  await db.sync()
+  const posts = [...db.posts.values()].map(post => post.json())
+  const tags = db.tagStats
   return {
     props: {
       tags,

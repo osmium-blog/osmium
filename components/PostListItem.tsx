@@ -1,12 +1,12 @@
 import Link from 'next/link'
 
 import { useConfig } from '@/contexts/config'
-import type { PageProps } from '@/lib/server/notion-api/page'
+import type { PageMeta } from '@/lib/server/page'
 import FormattedDate from '@/components/FormattedDate'
 import UserAvatar from '@/components/UserAvatar'
 
 type Props = {
-  post: PageProps
+  post: PageMeta
 }
 
 export default function PostListItem ({ post }: Props) {

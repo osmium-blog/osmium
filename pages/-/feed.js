@@ -1,11 +1,11 @@
 import { config } from '@/lib/server/config'
-import Database from '@/lib/server/notion-api/database'
+import Database from '@/lib/server/database'
 import { generateRss } from '@/lib/rss'
 
 const NOTHING = { props: {} }
 
 export async function getServerSideProps ({ res }) {
-  const { databaseId, rss } = config
+  const { rss } = config
 
   if (!rss) {
     res.statusCode = 204
@@ -13,10 +13,10 @@ export async function getServerSideProps ({ res }) {
     return NOTHING
   }
 
-  const db = new Database(databaseId)
-  await db.syncAll()
+  const db = new Database()
+  await db.sync()
 
-  const posts = db.posts.map(post => post.toJson())
+  const posts = [...db.posts.values()].map(post => post.json())
   const xmlFeed = await generateRss(posts.slice(0, 10))
   res.setHeader('Content-Type', 'text/xml')
   res.write(xmlFeed)

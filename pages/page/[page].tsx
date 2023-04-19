@@ -1,5 +1,5 @@
 import { config, clientConfig } from '@/lib/server/config'
-import Database from '@/lib/server/notion-api/database'
+import Database from '@/lib/server/database'
 
 import type { InferGetStaticPropsType } from 'next'
 
@@ -8,8 +8,8 @@ import Pagination from '@/components/Pagination'
 
 export async function getStaticPaths () {
   const db = new Database(config.databaseId)
-  await db.syncAll()
-  const posts = db.posts.map(post => post.toJson())
+  await db.sync()
+  const posts = [...db.posts.values()].map(post => post.json())
   const totalPosts = posts.length
   const totalPages = Math.ceil(totalPosts / clientConfig.postsPerPage)
   return {
@@ -25,8 +25,8 @@ export async function getStaticProps ({ params: { page } }: { params: Record<str
   const pageNum = +page
 
   const db = new Database(config.databaseId)
-  await db.syncAll()
-  const posts = db.posts.map(post => post.toJson())
+  await db.sync()
+  const posts = [...db.posts.values()].map(post => post.json())
   const postsToShow = posts.slice(
     clientConfig.postsPerPage * (pageNum - 1),
     clientConfig.postsPerPage * pageNum,

@@ -2,11 +2,11 @@ import { createContext, useContext } from 'react'
 import type { ReactNode } from 'react'
 import { useRouter } from 'next/router'
 
-import type { PageProps } from '@/lib/server/notion-api/page'
+import type { PageMeta } from '@/lib/server/page'
 import type { Data } from '@/pages/api/data'
 
 type Context = Data & {
-  current?: PageProps
+  current?: PageMeta
 }
 
 const DataContext = createContext<Context>(undefined as any)

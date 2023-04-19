@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 
-import type { PageMeta } from '@/lib/server/notion-api/page'
+import type { PageMeta } from '@/lib/server/page'
 
 export default function IndexLayout ({ posts }: { posts: PageMeta[] }) {
   const firstPage = posts.find(p =>

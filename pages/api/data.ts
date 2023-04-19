@@ -1,14 +1,14 @@
 import type { NextApiHandler } from 'next'
 
-import Database from '@/lib/server/notion-api/database'
+import Database from '@/lib/server/database'
 
 export async function action () {
   const db = new Database()
-  await db.syncAll()
-  const entries = Object.values(db.pageMap)
+  await db.sync()
+  const entries = [...db.all.values()]
   return {
-    pages: entries.map(page => page.meta),
-    pageMap: Object.fromEntries(entries.map(page => [page.id, page.meta])),
+    pages: entries.map(page => page.json()),
+    pageMap: Object.fromEntries(entries.map(page => [page.id, page.json()])),
     // For in-site navigation
     slugMap: Object.fromEntries(entries.map(page => [page.id, page.slug || page.hash])),
   }

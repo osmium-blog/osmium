@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 import dynamic from 'next/dynamic'
 import type { ExtendedRecordMap } from 'notion-types'
 
-import type { PageMeta } from '@/lib/server/notion-api/page'
+import type { PageMeta } from '@/lib/server/page'
 import { useConfig } from '@/contexts/config'
 
 const requireLayout = (require as any).context('@/layouts', true, /^\.\/\w+\/(root|index|post)\.tsx$/, 'lazy')
