@@ -147,6 +147,8 @@ pre[class*='language-'] {
 }
 
 .notion-asset-wrapper-image {
+  max-width: 100vw;
+
   &.notion-asset-wrapper-full {
     @apply max-w-full;
 

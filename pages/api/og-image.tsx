@@ -40,7 +40,6 @@ export default (async function handler (req, res) {
       height: '100%',
       backgroundColor: '#000',
       backgroundImage: `linear-gradient(153.4349488229deg, #${hash.slice(0, 6)}80, #${hash.slice(6, 12)}80)`,
-      backgroundSize: '100% 162%',
     }}>
       {logo && (
         // eslint-disable-next-line @next/next/no-img-element,jsx-a11y/alt-text

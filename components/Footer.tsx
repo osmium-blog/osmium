@@ -14,7 +14,7 @@ export default function Footer ({ fullWidth }: Props) {
   let text: string
   // If user defined `footerText`, use it as a template
   if (footerText) {
-    text = execTemplate(footerText, { since })
+    text = execTemplate(footerText, { since: getSinceText(since) })
   }
   // If not, generate a simple version
   else {
