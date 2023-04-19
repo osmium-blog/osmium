@@ -50,6 +50,12 @@
 
 .notion {
   overflow-wrap: break-word;
+
+  // Remove the top margin of the first content block since it doesn't make sense.
+  // The first and second elements are empty divs, so contents start from the third.
+  > :nth-child(3) {
+    @apply mt-0;
+  }
 }
 
 .notion,
@@ -57,7 +63,6 @@
 .notion-quote,
 .notion-h-title {
   @apply p-0;
-  @apply my-2;
   line-height: var(--no-leading);
 }
 

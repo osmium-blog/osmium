@@ -1,35 +1,25 @@
-import { clientConfig, config } from '@/lib/server/config'
+import { clientConfig } from '@/lib/server/config'
 import Database from '@/lib/server/notion-api/database'
-
+//
 import type { InferGetStaticPropsType } from 'next'
-
-import { useConfig } from '@/contexts/config'
-import Container from '@/components/Container'
-import PostList from '@/components/PostList'
-import Pagination from '@/components/Pagination'
+//
+import { useLayout } from '@/contexts/layout'
 
 export async function getStaticProps () {
-  const db = new Database(config.databaseId)
+  const db = new Database()
   await db.syncAll()
-  const posts = db.posts.map(post => post.toJson())
-  const postsToShow = posts.slice(0, clientConfig.postsPerPage)
+
   return {
     props: {
-      page: 1, // current page is 1
-      postsToShow,
-      showNext: posts.length > clientConfig.postsPerPage,
+      posts: db.posts.slice(0, clientConfig.postsPerPage).map(post => post.meta),
+      total: db.posts.length,
     },
     revalidate: 1,
   }
 }
 
-export default function PageIndex ({ postsToShow, page, showNext }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const { title, description } = useConfig()
+export default function PageIndex (props: InferGetStaticPropsType<typeof getStaticProps>) {
+  const { Layout } = useLayout()
 
-  return (
-    <Container title={title} description={description}>
-      <PostList posts={postsToShow}/>
-      {showNext && <Pagination page={page} showNext={showNext}/>}
-    </Container>
-  )
+  return <Layout.Index {...props}/>
 }

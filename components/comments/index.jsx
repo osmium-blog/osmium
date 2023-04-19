@@ -11,7 +11,7 @@ const modules = Object.fromEntries(
   })
 )
 
-export default function Comments ({ post }) {
+export default function Comments ({ post, className }) {
   const { fullWidth = false } = post
 
   const { comment = {} } = useConfig()
@@ -20,7 +20,7 @@ export default function Comments ({ post }) {
   const Provider = modules[provider]
 
   return Provider && (
-    <div className={cn('px-4 font-medium text-gray-500 dark:text-gray-400 my-5', fullWidth ? 'md:px-24' : 'mx-auto max-w-2xl')}>
+    <div className={cn(className, 'px-4 font-medium text-gray-500 dark:text-gray-400 my-5', fullWidth ? 'md:px-24' : 'mx-auto max-w-2xl')}>
       {/* Prefer `foo` over `fooConfig` */}
       <Provider config={comment[provider] || comment[provider + 'Config']} post={post}/>
     </div>

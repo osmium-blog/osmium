@@ -29,6 +29,13 @@
       "socialLink": {
         "description": "作者的社交账号链接，会成为作者头像的链接地址"
       },
+      "mode": {
+        "description": "布局模式",
+        "option": {
+          "blog": "博客",
+          "docs": "文档"
+        }
+      },
       "lang": {
         "description": "站点语言"
       },

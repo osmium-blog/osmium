@@ -21,6 +21,13 @@ const overrides = {
   lightBackground: { type: 'color' },
   darkBackground: { type: 'color' },
   lang: { type: 'select', options: langs },
+  mode: {
+    type: 'select',
+    options: [
+      ['blog', 'configurator.entry.mode.option.blog'],
+      ['docs', 'configurator.entry.mode.option.docs'],
+    ],
+  },
   footerText: { richText: true },
   appearance: {
     type: 'select',

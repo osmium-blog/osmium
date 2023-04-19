@@ -1,3 +1,5 @@
+type JsonValue = null | number | string | boolean | Record<string, JsonValue> | JsonValue[]
+
 type BasicProps = {
   className?: string
   style?: Record<string, number | string>

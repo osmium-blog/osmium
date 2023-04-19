@@ -3,7 +3,6 @@ import Database from '@/lib/server/notion-api/database'
 
 import type { InferGetStaticPropsType } from 'next'
 
-import Container from '@/components/Container'
 import PostList from '@/components/PostList'
 import Pagination from '@/components/Pagination'
 
@@ -45,10 +44,8 @@ export async function getStaticProps ({ params: { page } }: { params: Record<str
 }
 
 export default function PagePage ({ postsToShow, page, showNext }: InferGetStaticPropsType<typeof getStaticProps>) {
-  return (
-    <Container>
-      <PostList posts={postsToShow}/>
-      <Pagination page={page} showNext={showNext}/>
-    </Container>
-  )
+  return <>
+    <PostList posts={postsToShow}/>
+    <Pagination page={page} showNext={showNext}/>
+  </>
 }
