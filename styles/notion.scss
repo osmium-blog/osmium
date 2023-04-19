@@ -152,7 +152,7 @@ pre[class*='language-'] {
 }
 
 .notion-asset-wrapper-image {
-  max-width: 100vw;
+  max-width: calc(100vw - 2rem);
 
   &.notion-asset-wrapper-full {
     @apply max-w-full;
