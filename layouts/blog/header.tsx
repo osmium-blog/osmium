@@ -7,11 +7,10 @@ import SiteNav from './site-nav'
 
 type Props = {
   title?: string
-  full?: boolean
   className?: string
 }
 
-export default function Header ({ title, full, className }: Props) {
+export default function Header ({ title, className }: Props) {
   const navRef = useRef<HTMLDivElement | null>(null)
   const sentinelRef = useRef<HTMLDivElement | null>(null)
   const handler = useCallback<IntersectionObserverCallback>(([entry]) => {
@@ -37,14 +36,13 @@ export default function Header ({ title, full, className }: Props) {
   }
 
   return <>
-    {!full && <div className="observer-element h-4 md:h-12" ref={sentinelRef}></div>}
+    <div className="observer-element h-4 md:h-12" ref={sentinelRef}/>
     <div
       ref={navRef}
       id="sticky-nav"
       className={cn(
         className,
         'sticky-nav group m-auto w-full px-4 h-6 flex flex-row justify-between items-center mb-2 md:mb-12 py-8 bg-opacity-60',
-        { 'sticky-nav-full': full }
       )}
       onClick={handleClickHeader}
     >
@@ -58,7 +56,7 @@ export default function Header ({ title, full, className }: Props) {
         />
       </svg>
       <SiteTitle pageTitle={title}/>
-      <SiteNav/>
+      <SiteNav className="flex-shrink-0 ml-4"/>
     </div>
   </>
 }

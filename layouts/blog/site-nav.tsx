@@ -1,11 +1,15 @@
+import { useRef } from 'react'
 import Link from 'next/link'
 import { parseURL } from 'ufo'
+import cn from 'classnames'
 
+import css from './styles.module.scss'
 import { useConfig } from '@/contexts/config'
 import { useLocale } from '@/contexts/locale'
 import { useData } from '@/contexts/data'
+import { stopPropa } from '@/lib/utils'
 
-export default function SiteNav () {
+export default function SiteNav ({ className }: BasicProps) {
   const config = useConfig()
   const locale = useLocale()
 
@@ -33,21 +37,27 @@ export default function SiteNav () {
     { name: locale.NAV.SEARCH, to: '/search' },
   ].filter(Boolean)
 
+  const root = useRef<HTMLElement>(null)
+
+  function toggleMenu () {
+    if (!root.current) return
+    if (root.current.dataset.menuOpen) {
+      delete root.current.dataset.menuOpen
+    } else {
+      root.current.dataset.menuOpen = 'true'
+    }
+  }
+
   return (
-    <nav className="flex-shrink-0 ml-4">
-      <ul className="flex flex-row space-x-4">
+    <nav ref={root} className={cn(className, css.site_nav)}>
+      <ul className={css.site_nav_list}>
         {links.map((link, idx) => (
-          <li key={idx} className="block text-black dark:text-gray-50 nav">
-            <Link
-              href={link.to}
-              target={link.external ? '_blank' : undefined}
-              className="hover:underline underline-offset-4"
-            >
-              {link.name}
-            </Link>
+          <li key={idx} className={css.site_nav_item}>
+            <Link href={link.to} target={link.external ? '_blank' : undefined}>{link.name}</Link>
           </li>
         ))}
       </ul>
+      <button type="button" className={css.site_nav_more} onClick={stopPropa(toggleMenu)}/>
     </nav>
   )
 }

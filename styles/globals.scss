@@ -75,7 +75,7 @@
     > span {
       @apply hidden ml-2 font-medium text-gray-600 dark:text-gray-300;
 
-      @media (min-width: theme('screens.md')) {
+      @media (min-width: theme('screens.sm')) {
         @apply grid grid-rows-1 grid-cols-1;
       }
 
@@ -139,11 +139,6 @@
         @apply opacity-100;
       }
     }
-  }
-
-  // Site header: nav
-  .sticky-nav-full .nav {
-    @apply text-gray-600 dark:text-gray-300;
   }
 
   /* Post list */
