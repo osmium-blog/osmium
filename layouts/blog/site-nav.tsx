@@ -33,8 +33,6 @@ export default function SiteNav ({ className }: BasicProps) {
         external,
       }
     }),
-    config.rss && { name: locale.NAV.RSS, to: '/-/feed', external: true },
-    { name: locale.NAV.SEARCH, to: '/search' },
   ].filter(Boolean)
 
   const root = useRef<HTMLElement>(null)
@@ -57,6 +55,10 @@ export default function SiteNav ({ className }: BasicProps) {
           </li>
         ))}
       </ul>
+      {config.rss && (
+        <Link href="/-/feed" title={locale.NAV.RSS} target="_blank" className={css.site_nav_feed}/>
+      )}
+      <Link href="/search" title={locale.NAV.SEARCH} className={css.site_nav_search}/>
       <button type="button" className={css.site_nav_more} onClick={stopPropa(toggleMenu)}/>
     </nav>
   )
