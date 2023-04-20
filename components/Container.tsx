@@ -75,10 +75,7 @@ export default function Container ({ children, layout, fullWidth, ...customMeta 
           </>
         )}
       </Head>
-      <div
-        className={`wrapper ${BLOG.font === 'serif' ? 'font-serif' : 'font-sans'
-        }`}
-      >
+      <div className="wrapper">
         <Header navBarTitle={layout === 'blog' ? meta.title : undefined}/>
         <main
           className={cn(

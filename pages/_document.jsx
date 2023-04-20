@@ -1,7 +1,13 @@
 import { Head, Html, Main, NextScript } from 'next/document'
 import cn from 'classnames'
+
+import { FONTS_SANS, FONTS_SERIF } from '@/consts'
 import tailwindConfig from '@/tailwind.config'
 import { config } from '@/lib/server/config'
+
+const fontFamily = ['sans-serif', 'serif'].includes(config.font)
+  ? { 'sans-serif': FONTS_SANS.join(','), 'serif': FONTS_SERIF.join(',') }[config.font]
+  : config.font
 
 export default function MyDocument () {
   const initialColorScheme = {
@@ -50,7 +56,7 @@ export default function MyDocument () {
           `}
         </style>
       </Head>
-      <body className="fouc fouc-transition bg-day dark:bg-night">
+      <body className="fouc fouc-transition bg-day dark:bg-night" style={{ fontFamily }}>
         <Main/>
         <NextScript/>
       </body>

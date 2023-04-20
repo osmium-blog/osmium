@@ -2,6 +2,7 @@ import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { NotionRenderer as Renderer } from 'react-notion-x'
 import { getTextContent } from 'notion-utils'
+
 import { FONTS_SANS, FONTS_SERIF } from '@/consts'
 import { useConfig } from '@/contexts/config'
 import { useData } from '@/contexts/data'
@@ -112,10 +113,9 @@ const components = {
 export default function NotionRenderer (props) {
   const config = useConfig()
 
-  const font = {
-    'sans-serif': FONTS_SANS,
-    'serif': FONTS_SERIF,
-  }[config.font]
+  const fontFamily = ['sans-serif', 'serif'].includes(config.font)
+    ? { 'sans-serif': FONTS_SANS.join(','), 'serif': FONTS_SERIF.join(',') }[config.font]
+    : config.font
 
   if (props.recordMap) {
     // Prevent page properties from being rendered
@@ -145,7 +145,7 @@ export default function NotionRenderer (props) {
       <style jsx global>
         {`
           .notion {
-            --notion-font: ${font};
+            --notion-font: ${fontFamily};
           }
         `}
       </style>
