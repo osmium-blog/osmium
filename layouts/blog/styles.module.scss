@@ -48,6 +48,44 @@
   }
 }
 
+/* Search */
+
+.search_input {
+  @apply flex items-center;
+  @apply text-black dark:text-white bg-day dark:bg-night border border-night dark:border-day rounded transition duration-100;
+  &:focus-within {
+    @apply ring-1 ring-black dark:ring-white shadow-md;
+  }
+
+  > input {
+    @apply flex-1 px-3 py-2 bg-transparent outline-none;
+  }
+
+  > button {
+    @apply flex-none w-10 h-6 bg-no-repeat bg-center;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3E%3Cpath d='M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z'%3E%3C/path%3E%3C/svg%3E");
+
+    @at-root .dark & {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M18.031 16.6168L22.3137 20.8995L20.8995 22.3137L16.6168 18.031C15.0769 19.263 13.124 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2C15.968 2 20 6.032 20 11C20 13.124 19.263 15.0769 18.031 16.6168ZM16.0247 15.8748C17.2475 14.6146 18 12.8956 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18C12.8956 18 14.6146 17.2475 15.8748 16.0247L16.0247 15.8748Z'%3E%3C/path%3E%3C/svg%3E");
+    }
+  }
+}
+
+.search_tag_list {
+  @apply my-4 overflow-x-auto flex space-x-3;
+  @apply pb-4 border-b border-neutral-300 dark:border-neutral-600;
+}
+
+.search_tag_link {
+  @apply block px-3 py-2 whitespace-nowrap border rounded;
+  @apply text-neutral-600 bg-neutral-100 border-transparent;
+  @apply dark:text-neutral-400 dark:bg-night dark:border-neutral-600;
+
+  &.active {
+    @apply text-day bg-night dark:bg-neutral-500 dark:border-transparent;
+  }
+}
+
 /* Post */
 
 .post_layout {

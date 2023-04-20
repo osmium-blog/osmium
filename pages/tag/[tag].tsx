@@ -1,8 +1,8 @@
 import Database from '@/lib/server/database'
-
+//
 import type { InferGetStaticPropsType } from 'next'
 
-import SearchLayout from '@/layouts/search'
+import { useLayout } from '@/contexts/layout'
 
 export async function getStaticPaths () {
   const db = new Database()
@@ -23,12 +23,14 @@ export async function getStaticProps ({ params: { tag } }: { params: Record<stri
     props: {
       tags,
       posts: posts.filter(post => post.tags?.includes(tag)),
-      currentTag: tag,
+      activeTag: tag,
     },
     revalidate: 1,
   }
 }
 
-export default function PageTag ({ tags, posts, currentTag }: InferGetStaticPropsType<typeof getStaticProps>) {
-  return <SearchLayout tags={tags} posts={posts} currentTag={currentTag}/>
+export default function PageTag ({ tags, posts, activeTag }: InferGetStaticPropsType<typeof getStaticProps>) {
+  const { Layout } = useLayout()
+
+  return <Layout.Search tags={tags} posts={posts} activeTag={activeTag}/>
 }

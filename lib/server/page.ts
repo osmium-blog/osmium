@@ -8,7 +8,7 @@ const PUBLISHABLE_TYPES: PostType[] = ['Post', 'Doc', 'Page']
 type PostStatus = 'Published'
 const PUBLISHABLE_STATUSES: PostStatus[] = ['Published']
 
-export interface PageMeta {
+export interface PageMetaRaw {
   id: string
   hash: string
   type?: PostType
@@ -26,7 +26,9 @@ export interface PageMeta {
   child?: string[]
 }
 
-export default class Page implements PageMeta {
+export type PageMeta = PageMetaRaw & { title: string }
+
+export default class Page implements PageMetaRaw {
   data: NotionPage
 
   constructor (id: string)
