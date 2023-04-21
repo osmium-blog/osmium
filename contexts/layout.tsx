@@ -9,7 +9,9 @@ import type { Props as SearchLayoutProps } from '@/layouts/blog/search'
 
 const requireLayout = (require as any).context('@/layouts', true, /^\.\/\w+\/(root|index|post|search)\.tsx$/, 'lazy')
 const loadLayout = (name: string) => {
-  const _require = (key: string) => requireLayout.keys().includes(key) && requireLayout(key)
+  const _require = (key: string) => requireLayout.keys().includes(key)
+    ? requireLayout(key)
+    : Promise.resolve(() => null)
   return {
     Root: dynamic<BasicProps>(() => requireLayout(`./${name}/root.tsx`)),
     Index: dynamic<Partial<{
