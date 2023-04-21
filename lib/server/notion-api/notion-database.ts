@@ -1,13 +1,20 @@
 import { parsePageId } from 'notion-utils'
-import type { CollectionViewPageBlock, ExtendedRecordMap, PageBlock } from 'notion-types'
+import type {
+  CollectionPropertySchemaMap,
+  CollectionViewPageBlock,
+  ExtendedRecordMap,
+  PageBlock,
+} from 'notion-types'
 
 import api from '../notion-client'
 import NotionPage from './notion-page'
 
 export default class NotionDatabase {
   id: string
-  recordMap?: ExtendedRecordMap
   records: Map<string, NotionPage> = new Map()
+
+  recordMap?: ExtendedRecordMap
+  schema?: CollectionPropertySchemaMap
 
   constructor (id: string) {
     this.id = parsePageId(id)
@@ -31,6 +38,7 @@ export default class NotionDatabase {
 
     const collectionId = (blockMap[this.id].value as CollectionViewPageBlock).collection_id!
     const collection = collectionMap[collectionId].value
+    this.schema = collection.schema
 
     // Every page ID contained in the database
     const pageIds = [...new Set(
@@ -48,7 +56,7 @@ export default class NotionDatabase {
       const block = blockMap[id].value as PageBlock
       if (!block) continue
 
-      this.records.set(id, new NotionPage(block, collection.schema))
+      this.records.set(id, new NotionPage(block, this.schema))
     }
   }
 }

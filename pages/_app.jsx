@@ -11,6 +11,7 @@ import { ThemeProvider } from '@/contexts/theme'
 import { DataProvider } from '@/contexts/data'
 import { LayoutProvider } from '@/contexts/layout'
 import Analytics from '@/components/analytics'
+import UserStyle from '@/components/user-style'
 
 const PROD = process.env.NODE_ENV === 'production'
 
@@ -25,6 +26,7 @@ export default function MyApp ({ Component, pageProps, config, locale, data }) {
   return (
     <ConfigProvider value={config}>
       {PROD && <Analytics/>}
+      <UserStyle/>
       <LocaleProvider value={locale}>
         <SensorProvider>
           <ThemeProvider>

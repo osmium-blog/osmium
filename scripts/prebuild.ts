@@ -2,7 +2,12 @@ import { extname, resolve } from 'node:path'
 import fs from 'node:fs'
 import { execSync } from 'node:child_process'
 import { loadEnvConfig } from '@next/env'
-import type { BlockMap, CodeBlock, CollectionViewPageBlock } from 'notion-types'
+import type {
+  BlockMap,
+  CollectionPropertySchemaMap,
+  CollectionViewPageBlock,
+  PageBlock,
+} from 'notion-types'
 import { getTextContent } from 'notion-utils'
 import { defaultMapImageUrl } from 'react-notion-x'
 import { ofetch } from 'ofetch'
@@ -11,7 +16,7 @@ import sharp from 'sharp'
 import destr from 'destr'
 
 import NotionDatabase from '../lib/server/notion-api/notion-database'
-import type NotionPage from '../lib/server/notion-api/notion-page'
+import NotionPage from '../lib/server/notion-api/notion-page'
 
 const ROOT = process.cwd()
 const CACHE_FILE = resolve(ROOT, 'osmium-cache.json')
@@ -31,22 +36,49 @@ void async function main () {
   if (!db.recordMap) abort('Failed to get recordMap')
 
   // Get the ID of database prop `type`
-  const typeProp =
-    Object.entries(Object.values(db.recordMap.collection)[0].value.schema)
-      .find(([id, value]) => value.name === 'type')
+  const typeProp = Object.values(db.schema!).find(value => value.name === 'type')
   if (!typeProp) abort('Cannot find a `type` prop!')
 
   // Get the first page whose `type` is `Config`
   const configPage = [...db.records.values()].find(page => page.properties.type === 'Config')
   if (!configPage) abort('Cannot find a remote config!')
 
-  await prepareConfig(configPage, db.recordMap.block, {
+  const configPage2 = new ConfigPage(db.recordMap.block, configPage.block!, db.schema!)
+
+  await prepareConfig(configPage2.codeBlocks.config, {
     databaseId: db.id,
     collectionId: (db.recordMap.block[db.id].value as CollectionViewPageBlock).collection_id!,
     version: await prepareVersion(),
     logo: await prepareLogo(configPage),
+    userStyle: configPage2.codeBlocks.style,
   })
 }()
+
+class ConfigPage extends NotionPage {
+  codeBlocks: Record<string, string> = {}
+
+  constructor (blockMap: BlockMap, block: PageBlock, schema: CollectionPropertySchemaMap) {
+    super(block, schema)
+
+    for (const id of this.content) {
+      const block = blockMap[id].value
+      switch (block?.type) {
+        case 'code': {
+          const content = getTextContent(block.properties.title)
+          const language = getTextContent(block.properties.language)
+          switch (language) {
+            case 'CSS':
+              this.codeBlocks.style ??= content
+              break
+            default:
+              this.codeBlocks.config ??= content
+          }
+          break
+        }
+      }
+    }
+  }
+}
 
 const CONFIG_FILE = resolve(ROOT, 'osmium-config.json')
 
@@ -55,16 +87,13 @@ type Extra = {
   collectionId: string
   version?: string
   logo?: string
+  userStyle?: string
 }
 
-async function prepareConfig (page: NotionPage, blockMap: BlockMap, extra: Extra) {
-  // We only treat the first code block as config source
-  const configCodeBlockId = page.content.find(id => blockMap[id].value?.type === 'code')
-  if (!configCodeBlockId) abort('Cannot find a code block!')
+async function prepareConfig (raw: string = '', extra: Extra) {
+  if (!raw) abort('Cannot find a code block!')
 
-  const configCodeBlock = blockMap[configCodeBlockId].value as CodeBlock
   const config = (() => {
-    const raw = getTextContent(configCodeBlock.properties.title)
     try {
       return eval(`(module => { ${/^[\s\n]*\{/.test(raw) ? 'module.exports =' : ''} ${raw}; return module.exports })({})`)
     } catch {
