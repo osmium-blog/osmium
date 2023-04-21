@@ -89,7 +89,7 @@
 
 .site_name {
   @apply hidden sm:inline whitespace-nowrap;
-  @apply font-medium text-black dark:text-white;
+  @apply font-semibold text-black dark:text-white;
 }
 
 .site_description {
