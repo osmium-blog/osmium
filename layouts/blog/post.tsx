@@ -4,7 +4,7 @@ import cn from 'classnames'
 import css from './styles.module.scss'
 import type { PageMeta } from '@/lib/server/page'
 import { useConfig } from '@/contexts/config'
-import useTheme from '@/contexts/theme'
+import { useTheme } from '@/contexts/theme'
 import NotionRenderer from '@/components/NotionRenderer'
 import TableOfContents from '@/components/TableOfContents'
 import UserAvatar from '@/components/UserAvatar'
@@ -19,7 +19,7 @@ type Props = {
 
 export default function PostLayout ({ post, recordMap }: Props) {
   const config = useConfig()
-  const { dark } = useTheme()
+  const { scheme } = useTheme()
 
   const { title, type, date, tags, fullWidth } = post
 
@@ -48,7 +48,7 @@ export default function PostLayout ({ post, recordMap }: Props) {
             )}
           </div>}
         <div className={css.post_content}>
-          <NotionRenderer recordMap={recordMap} fullPage={false} darkMode={dark}/>
+          <NotionRenderer recordMap={recordMap} fullPage={false} darkMode={scheme === 'dark'}/>
         </div>
       </article>
       <aside>

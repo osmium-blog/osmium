@@ -14,6 +14,7 @@ const raw = JSON.parse(fs.readFileSync(resolve(process.cwd(), 'osmium-config.jso
 const config: Osmium.Config = applyDefaults(
   raw,
   {
+    appearance: 'auto',
     path: '/',
     mode: 'blog',
     ogImageGenerateURL: joinURL(raw.link, raw.path, '/api/og-image?title={title}'),
