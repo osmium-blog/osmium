@@ -23,13 +23,13 @@ export default function LayoutNav ({ pages }: { pages: PageMeta[] }) {
     } else {
       node = nodeMap[page.id] = { ...page }
     }
-    if (page.parent?.length) {
-      let parent = nodeMap[page.parent[0]]
+    if (page.parent) {
+      let parent = nodeMap[page.parent]
       if (parent) {
         parent.children ??= []
         parent.children.push(node)
       } else {
-        nodeMap[page.parent[0]] = { children: [node] } as any
+        nodeMap[page.parent] = { children: [node] } as any
       }
     } else {
       roots.push(node)
