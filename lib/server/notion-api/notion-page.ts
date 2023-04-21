@@ -1,7 +1,7 @@
 import { getDateValue, getTextContent } from 'notion-utils'
 import type { CollectionPropertySchemaMap, ExtendedRecordMap, PageBlock } from 'notion-types'
 
-import { withTimezone } from '@/lib/dayjs'
+import { withTimezone } from '../../dayjs'
 import { config } from '../config'
 import api from '../notion-client'
 
@@ -13,9 +13,14 @@ export default class NotionPage {
   parentId!: string
   parentTable!: string
   createdTime!: number
+  /** @deprecated Use `content` instead */
   hasContent!: boolean
+  /** @deprecated Use `format` instead */
   fullWidth!: boolean
+
+  format: Partial<ReturnType<typeof NotionPage['parseFormat']>> = {}
   properties: Record<string, JsonValue> = {}
+  content: string[] = []
 
   block?: PageBlock
   schema?: CollectionPropertySchemaMap
@@ -45,13 +50,24 @@ export default class NotionPage {
     this.createdTime = block.created_time
     this.hasContent = Boolean(block.content?.length)
     this.fullWidth = block.format?.page_full_width ?? false
+
+    this.format = NotionPage.parseFormat(block.format)
     this.properties = NotionPage.parseProperties(block.properties, schema)
+    this.content = block.content ?? []
   }
 
   async sync () {
     this.recordMap = await api.getPage(this.id)
     const block = this.recordMap.block[this.id].value as PageBlock
     this.init(block, this.recordMap.collection[block.parent_id].value.schema)
+  }
+
+  static parseFormat (format?: PageBlock['format']) {
+    format ??= {}
+    return {
+      icon: format.page_icon,
+      fullWidth: Boolean(format.page_full_width),
+    }
   }
 
   static parseProperties (properties: PageBlock['properties'], schema: CollectionPropertySchemaMap): Record<string, JsonValue> {

@@ -2,15 +2,16 @@ import { extname, resolve } from 'node:path'
 import fs from 'node:fs'
 import { execSync } from 'node:child_process'
 import { loadEnvConfig } from '@next/env'
-import type { BlockMap, CodeBlock, CollectionViewPageBlock, PageBlock } from 'notion-types'
-import { getTextContent, parsePageId } from 'notion-utils'
+import type { BlockMap, CodeBlock, CollectionViewPageBlock } from 'notion-types'
+import { getTextContent } from 'notion-utils'
 import { defaultMapImageUrl } from 'react-notion-x'
 import { ofetch } from 'ofetch'
 import * as cheerio from 'cheerio'
 import sharp from 'sharp'
 import destr from 'destr'
 
-import api from '../lib/server/notion-client'
+import NotionDatabase from '../lib/server/notion-api/notion-database'
+import type NotionPage from '../lib/server/notion-api/notion-page'
 
 const ROOT = process.cwd()
 const CACHE_FILE = resolve(ROOT, 'osmium-cache.json')
@@ -21,32 +22,29 @@ if (fs.existsSync(CACHE_FILE)) {
 void async function main () {
   loadEnvConfig(ROOT)
   const { NOTION_DATABASE_ID } = process.env
-  const databaseId = parsePageId(NOTION_DATABASE_ID)
 
-  if (!databaseId) abort('NOTION_DATABASE_ID is not set or valid!')
+  const db = new NotionDatabase(NOTION_DATABASE_ID || '')
+  if (!db.id) abort('NOTION_DATABASE_ID is not set or valid!')
 
   console.log('Fetching config...')
-  const everything = await api.getPage(databaseId)
+  await db.sync()
+  if (!db.recordMap) abort('Failed to get recordMap')
 
   // Get the ID of database prop `type`
   const typeProp =
-    Object.entries(Object.values(everything.collection)[0].value.schema)
+    Object.entries(Object.values(db.recordMap.collection)[0].value.schema)
       .find(([id, value]) => value.name === 'type')
   if (!typeProp) abort('Cannot find a `type` prop!')
-  const typePropId = typeProp[0]
 
   // Get the first page whose `type` is `Config`
-  const configRecord =
-    Object.entries(everything.block)
-      .find(([id, { value }]) => getTextContent(value?.properties?.[typePropId]) === 'Config')
-  if (!configRecord) abort('Cannot find a remote config!')
-  const [, { value: configPage }] = configRecord
+  const configPage = [...db.records.values()].find(page => page.properties.type === 'Config')
+  if (!configPage) abort('Cannot find a remote config!')
 
-  await prepareConfig(configPage as PageBlock, everything.block, {
-    databaseId,
-    collectionId: (everything.block[databaseId].value as CollectionViewPageBlock).collection_id!,
+  await prepareConfig(configPage, db.recordMap.block, {
+    databaseId: db.id,
+    collectionId: (db.recordMap.block[db.id].value as CollectionViewPageBlock).collection_id!,
     version: await prepareVersion(),
-    logo: await prepareLogo(configPage as PageBlock),
+    logo: await prepareLogo(configPage),
   })
 }()
 
@@ -59,9 +57,9 @@ type Extra = {
   logo?: string
 }
 
-async function prepareConfig (page: PageBlock, blockMap: BlockMap, extra: Extra) {
+async function prepareConfig (page: NotionPage, blockMap: BlockMap, extra: Extra) {
   // We only treat the first code block as config source
-  const configCodeBlockId = page.content?.find(id => blockMap[id].value?.type === 'code')
+  const configCodeBlockId = page.content.find(id => blockMap[id].value?.type === 'code')
   if (!configCodeBlockId) abort('Cannot find a code block!')
 
   const configCodeBlock = blockMap[configCodeBlockId].value as CodeBlock
@@ -103,8 +101,8 @@ async function prepareVersion (): Promise<string | undefined> {
   }
 }
 
-async function prepareLogo (page: PageBlock) {
-  const value = page.format?.page_icon
+async function prepareLogo (page: NotionPage) {
+  const value = page.format.icon
   // If no icon is set, assume user doesn't want a logo or is willing to use a local file
   if (!value) {
     console.log(`No icon is set`)
@@ -120,7 +118,7 @@ async function prepareLogo (page: PageBlock) {
   }
   // It's a user-uploaded image
   else if (value.startsWith('http')) {
-    const urlObj = new URL(defaultMapImageUrl(value, page)!)
+    const urlObj = new URL(defaultMapImageUrl(value, page.block!)!)
     ext = extname(urlObj.pathname)
     // Larger image won't help more
     urlObj.searchParams.set('width', '100')
