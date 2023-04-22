@@ -1,11 +1,7 @@
 import { getDateValue, getTextContent } from 'notion-utils'
 import type { CollectionPropertySchemaMap, ExtendedRecordMap, PageBlock } from 'notion-types'
 
-import { withTimezone } from '../../dayjs'
-import { config } from '../config'
 import api from '../notion-client'
-
-const dayjs = withTimezone(config.timezone)
 
 export default class NotionPage {
   id: string
@@ -93,7 +89,11 @@ export default class NotionPage {
             case 'date': {
               const { start_date, start_time, time_zone } = getDateValue(value as any) ?? {}
               if (start_date) {
-                propValue = dayjs.tz(`${start_date} ${start_time || '00:00'}`, time_zone).valueOf()
+                propValue = {
+                  startDate: start_date,
+                  startTime: start_time,
+                  timezone: time_zone,
+                }
               }
               break
             }

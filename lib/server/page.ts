@@ -1,6 +1,8 @@
 import type { CollectionPropertySchemaMap, PageBlock } from 'notion-types'
 import { hash } from 'ohash'
 
+import dayjs from '../dayjs'
+import { config } from './config'
 import NotionPage from './notion-api/notion-page'
 
 type PostType = 'Post' | 'Doc' | 'Page' | 'Config'
@@ -52,7 +54,15 @@ export default class Page implements PageMetaRaw {
   get slug (): string | undefined { return this.data.properties.slug }
   get summary (): string | undefined { return this.data.properties.summary }
   get tags (): string[] { return this.data.properties.tags ?? [] }
-  get date (): number { return this.data.properties.date ?? this.data.createdTime }
+  get date (): number {
+    if (this.data.properties.date) {
+      const { startDate, startTime = '00:00', timezone = config.timezone } = this.data.properties.date
+      const day = dayjs.tz(`${startDate} ${startTime}`, timezone)
+      return day.valueOf()
+    } else {
+      return this.data.createdTime
+    }
+  }
   get status (): PostStatus | undefined { return this.data.properties.status }
 
   get parent (): string | undefined { return this.data.properties.parent?.[0] }
