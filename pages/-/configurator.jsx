@@ -6,7 +6,6 @@ import { useCopyToClipboard } from 'react-use'
 import cn from 'classnames'
 import example from '@/assets/config-data'
 import loadLocale, { langs } from '@/assets/i18n'
-import Container from '@/components/Container'
 import Switch from '@/components/Switch'
 import Select from '@/components/Select'
 import TextInput from '@/components/TextInput'
@@ -125,17 +124,16 @@ export default function PageConfigurator ({ defaultLang, defaultLocale }) {
   }, [copyState])
 
   return (
-    <Container>
-      <LocaleContext.Provider value={locale}>
-        <ConfigContext.Provider value={{ config, setConfig }}>
-          <div className="text-night dark:text-day relative">
-            <header className="flex items-center">
-              <h1 className="text-3xl font-bold text-black dark:text-white">Configurator</h1>
-              <button
-                type="button"
-                className="box-content min-w-[1.5rem] px-3 py-1 ml-auto relative text-day dark:text-night bg-night dark:bg-day"
-                onClick={() => copyToClipboard(JSON.stringify(config, null, 2))}
-              >
+    <LocaleContext.Provider value={locale}>
+      <ConfigContext.Provider value={{ config, setConfig }}>
+        <div className="p-8 text-night dark:text-day relative">
+          <header className="flex items-center">
+            <h1 className="text-3xl font-bold text-black dark:text-white">Configurator</h1>
+            <button
+              type="button"
+              className="box-content min-w-[1.5rem] px-3 py-1 ml-auto relative text-day dark:text-night bg-night dark:bg-day"
+              onClick={() => copyToClipboard(JSON.stringify(config, null, 2))}
+            >
                 <span
                   className={cn(
                     'transition duration-100',
@@ -144,40 +142,39 @@ export default function PageConfigurator ({ defaultLang, defaultLocale }) {
                 >
                   {get(locale, 'configurator.action.generate')}
                 </span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  className={cn(
-                    'w-6 h-6 absolute inset-0 m-auto fill-current transition duration-100',
-                    copyStatus == null ? 'opacity-0' : 'opacity-100 delay-100',
-                  )}
-                >
-                  {copyStatus != null && (
-                    copyStatus
-                      ?
-                      <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.997-6l7.07-7.071-1.414-1.414-5.656 5.657-2.829-2.829-1.414 1.414L11.003 16z"/>
-                      : (
-                        <path
-                          d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-7v2h2v-2h-2zm0-8v6h2V7h-2z"
-                          className="fill-red-500 dark:fill-red-600"
-                        />
-                      )
-                  )}
-                </svg>
-              </button>
-            </header>
-            <Select value={lang} className="inline-block mt-4" onChange={value => setLang(value)}>
-              {langs.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
-            </Select>
-            <p className="my-7" dangerouslySetInnerHTML={{ __html: get(locale, 'configurator.description') }}/>
-            <ConfigEntryGroup entries={entries}/>
-            {process.env.NODE_ENV === 'development' && (
-              <pre className="absolute left-full top-0 p-2 text-xs leading-8">{JSON.stringify(config, null, 2)}</pre>
-            )}
-          </div>
-        </ConfigContext.Provider>
-      </LocaleContext.Provider>
-    </Container>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                className={cn(
+                  'w-6 h-6 absolute inset-0 m-auto fill-current transition duration-100',
+                  copyStatus == null ? 'opacity-0' : 'opacity-100 delay-100',
+                )}
+              >
+                {copyStatus != null && (
+                  copyStatus
+                    ?
+                    <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.997-6l7.07-7.071-1.414-1.414-5.656 5.657-2.829-2.829-1.414 1.414L11.003 16z"/>
+                    : (
+                      <path
+                        d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-7v2h2v-2h-2zm0-8v6h2V7h-2z"
+                        className="fill-red-500 dark:fill-red-600"
+                      />
+                    )
+                )}
+              </svg>
+            </button>
+          </header>
+          <Select value={lang} className="inline-block mt-4" onChange={value => setLang(value)}>
+            {langs.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+          </Select>
+          <p className="my-7" dangerouslySetInnerHTML={{ __html: get(locale, 'configurator.description') }}/>
+          <ConfigEntryGroup entries={entries}/>
+          {process.env.NODE_ENV === 'development' && (
+            <pre className="absolute left-full top-0 p-2 text-xs leading-8">{JSON.stringify(config, null, 2)}</pre>
+          )}
+        </div>
+      </ConfigContext.Provider>
+    </LocaleContext.Provider>
   )
 }
 
