@@ -45,7 +45,7 @@ export default function MyApp ({ Component, pageProps, config, locale, data }) {
 MyApp.getInitialProps = async ctx => {
   const config = typeof window === 'object'
     ? await fetch('/api/config').then(res => res.json())
-    : await import('@/lib/server/config').then(module => module.clientConfig)
+    : await import('@/pages/api/config').then(module => module.action())
 
   const locale = await loadLocale('basic', config.lang)
 
