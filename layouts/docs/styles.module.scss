@@ -189,10 +189,11 @@
 .post_layout {
   @apply grid;
   grid-template:
-    ' title   ' auto
-    ' summary ' auto
-    ' content ' auto
-    ' info    ' auto
+    ' title    ' auto
+    ' summary  ' auto
+    ' content  ' auto
+    ' info     ' auto
+    ' comments ' auto
     / 1fr;
 
   @media (min-width: theme('screens.xl')) {
@@ -275,4 +276,12 @@
   // TODO: Remove the magic number
   top: 65px + 16px;
   bottom: 0;
+}
+
+.post_comments {
+  @apply px-4 pb-4;
+
+  @media (min-width: theme('screens.xl')) {
+    @apply px-0 pb-8;
+  }
 }

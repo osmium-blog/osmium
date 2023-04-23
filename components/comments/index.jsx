@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic'
-import cn from 'classnames'
+
 import { useConfig } from '@/contexts/config'
 
 const requireModule = require.context('.', true, /^\.\/(?!index)([\w-]+)\.jsx?$/, 'lazy')
@@ -12,15 +12,13 @@ const modules = Object.fromEntries(
 )
 
 export default function Comments ({ post, className }) {
-  const { fullWidth = false } = post
-
   const { comment = {} } = useConfig()
   const { provider } = comment
 
   const Provider = modules[provider]
 
   return Provider && (
-    <div className={cn(className, 'px-4 font-medium text-gray-500 dark:text-gray-400 my-5', fullWidth ? 'md:px-24' : 'mx-auto max-w-2xl')}>
+    <div className={className}>
       {/* Prefer `foo` over `fooConfig` */}
       <Provider config={comment[provider] || comment[provider + 'Config']} post={post}/>
     </div>
