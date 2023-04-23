@@ -13,6 +13,14 @@
   }
 }
 
+/* Site Footer */
+
+.layout_footer {
+  :global(.site-footer-version) {
+    @apply ml-auto;
+  }
+}
+
 /* Search */
 
 .search_input {
