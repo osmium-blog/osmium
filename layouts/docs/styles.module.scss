@@ -239,7 +239,7 @@
 }
 
 .post_title {
-  @apply mx-4 xl:mx-0 py-4 xl:pt-0 pb-8 text-4xl font-bold text-black dark:text-white border-b border-neutral-300 dark:border-neutral-600;
+  @apply mx-4 xl:mx-0 py-4 xl:py-8 text-4xl font-bold text-black dark:text-white border-b border-neutral-300 dark:border-neutral-600;
 
   &:has(+ .post_summary) {
     @apply pb-4 border-0;
@@ -284,4 +284,10 @@
   @media (min-width: theme('screens.xl')) {
     @apply px-0 pb-8;
   }
+}
+
+/* 404 Page */
+
+.layout[data-page='/404'] .layout_page {
+  @apply pt-20;
 }
