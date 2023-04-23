@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react'
-import cn from 'classnames'
 
 import css from './styles.module.scss'
+import { useData } from '@/contexts/data'
 import Header from './header'
 import LayoutNav from './nav'
-import { useData } from '@/contexts/data'
+import LayoutFooter from './footer'
 
 export default function DocsLayout ({ children }: { children: ReactNode }) {
   const { pages } = useData()
@@ -19,6 +19,7 @@ export default function DocsLayout ({ children }: { children: ReactNode }) {
         </nav>
         <div className={css.layout_page}>
           {children}
+          <LayoutFooter/>
         </div>
       </main>
     </div>
