@@ -1,3 +1,5 @@
+@use '../assets/icons';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -141,6 +143,133 @@
     }
   }
 
+  // Site header: nav
+  .site-nav {
+    @apply relative flex items-center gap-x-4 text-black dark:text-gray-50;
+
+    a, button {
+      @apply w-full flex items-center gap-x-2;
+
+      > i {
+        @apply inline-block w-5 h-5 bg-contain;
+      }
+
+      > span {
+        @apply ml-auto;
+      }
+    }
+
+    a {
+      @apply hover:underline underline-offset-4
+    }
+
+    @mixin site-nav-button {
+      @apply box-content p-1 -m-1 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded transition duration-100;
+      @apply flex items-center gap-x-1;
+    }
+
+    @at-root {
+      .site-nav-list {
+        @apply px-4 py-2 absolute top-full right-0 mt-1.5 -mr-1 whitespace-nowrap flex flex-col gap-y-2;
+        @apply bg-day dark:bg-night border border-neutral-400/50 dark:border-neutral-500/50 rounded;
+
+        @at-root .site-nav:not([data-menu-open]) & {
+          @apply hidden;
+        }
+      }
+
+      .site-nav-item-feed {
+        i {
+          @include icons.rss(black, white);
+        }
+      }
+
+      .site-theme-switch {
+        > button {
+          @include site-nav-button;
+          @apply hidden;
+        }
+
+        &[data-theme=light], & [data-theme=light] {
+          > * > i { @include icons.sun(black, white); }
+          &[data-active] > * > i { @include icons.sun(white, black); }
+        }
+        &[data-theme=dark], & [data-theme=dark] {
+          > * > i { @include icons.moon(black, white); }
+          &[data-active] > * > i { @include icons.moon(white, black); }
+        }
+        &[data-theme=system], & [data-theme=system] {
+          > * > i { @include icons.computer(black, white); }
+          &[data-active] > * > i { @include icons.computer(white, black); }
+        }
+
+        @at-root {
+          .site-theme-list {
+            @apply pt-1 border-t border-neutral-300 dark:border-neutral-600 flex flex-col gap-y-px;
+
+            li {
+              @apply contents;
+
+              button {
+                @apply box-content w-full px-2 -mx-2 py-1 hover:bg-neutral-200 dark:hover:bg-neutral-700 rounded flex justify-between items-center gap-x-2;
+              }
+
+              &[data-active] button {
+                @apply text-white dark:text-black bg-black dark:bg-white;
+              }
+            }
+          }
+        }
+      }
+
+      .site-nav-item-more {
+        @include site-nav-button;
+
+        i {
+          @include icons.ellipsis-v(black, white);
+        }
+      }
+
+      @media (min-width: theme('screens.lg')) {
+        .site-nav {
+          @apply text-neutral-600 dark:text-neutral-300;
+        }
+
+        .site-nav-list {
+          @apply p-0 m-0 static bg-transparent border-0 flex-row items-center gap-x-4;
+          @apply flex #{!important};
+        }
+
+        .site-theme-switch {
+          @apply relative;
+
+          > button {
+            @apply flex;
+          }
+
+          @at-root {
+            .site-theme-list {
+              @apply hidden;
+            }
+          }
+
+          &[data-menu-open] .site-theme-list {
+            @apply flex flex-col gap-y-px px-3 py-1 absolute top-full mt-1.5 right-0 -mr-1 bg-day dark:bg-night border rounded;
+          }
+        }
+
+        .site-nav-item-feed {
+          @include site-nav-button;
+        }
+
+        .site-nav-item-feed span,
+        .site-nav-item-more {
+          @apply hidden #{!important};
+        }
+      }
+    }
+  }
+
   /* Post list */
 
   .post-list {
@@ -182,11 +311,6 @@
   }
 
   /* --- */
-
-  nav {
-    flex-wrap: wrap;
-    line-height: 1.5em;
-  }
 
   .article-tags::-webkit-scrollbar {
     width: 0 !important;

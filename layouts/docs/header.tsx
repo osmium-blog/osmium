@@ -1,6 +1,9 @@
 import type { MouseEvent } from 'react'
+import { parseURL } from 'ufo'
 
 import css from './styles.module.scss'
+import { useData } from '@/contexts/data'
+import SiteNav from '@/components/site-nav'
 import SiteTitle from './site-title'
 import { stopPropa } from '@/lib/utils'
 
@@ -17,6 +20,19 @@ export default function Header ({ className }: BasicProps) {
     }
   }
 
+  /* Site Nav */
+
+  const { pages } = useData()
+  const navItems = pages
+    .filter(p => p.type === 'Page')
+    .map(p => {
+      const external = Boolean(parseURL(p.slug).protocol)
+      return {
+        label: p.title,
+        href: external ? p.slug! : '/' + (p.slug || p.hash),
+      }
+    })
+
   return <>
     <div className={className} onClick={handleClickHeader}>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className={css.layout_header_caret}>
@@ -24,7 +40,7 @@ export default function Header ({ className }: BasicProps) {
       </svg>
       <button type="button" className={css.layout_header_burger} onClick={stopPropa(openMenu)}/>
       <SiteTitle/>
-      {/*<SiteNav/>*/}
+      <SiteNav items={navItems} className={css.layout_header_nav}/>
     </div>
   </>
 }

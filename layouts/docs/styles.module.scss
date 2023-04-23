@@ -36,6 +36,10 @@
   }
 }
 
+.layout_header_nav {
+  @apply ml-auto;
+}
+
 .layout_main {
   @apply flex;
 

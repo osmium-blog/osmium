@@ -1,9 +1,14 @@
 import { useCallback, useEffect, useRef } from 'react'
 import type { MouseEvent } from 'react'
+import Link from 'next/link'
+import { parseURL } from 'ufo'
 import cn from 'classnames'
 
+import css from './styles.module.scss'
+import { useData } from '@/contexts/data'
+import { useLocale } from '@/contexts/locale'
+import SiteNav from '@/components/site-nav'
 import SiteTitle from './site-title'
-import SiteNav from './site-nav'
 
 type Props = {
   title?: string
@@ -35,6 +40,23 @@ export default function Header ({ title, className }: Props) {
     }
   }
 
+  /* Nav Items */
+
+  const locale = useLocale()
+  const { pages } = useData()
+  const navItems = [
+    { label: locale.NAV.INDEX, href: '/' },
+    ...pages
+      .filter(p => p.type === 'Page')
+      .map(p => {
+        const external = Boolean(parseURL(p.slug).protocol)
+        return {
+          label: p.title,
+          href: external ? p.slug! : '/' + (p.slug || p.hash),
+        }
+      }),
+  ]
+
   return <>
     <div className="observer-element h-4 md:h-12" ref={sentinelRef}/>
     <div
@@ -56,7 +78,11 @@ export default function Header ({ title, className }: Props) {
         />
       </svg>
       <SiteTitle pageTitle={title}/>
-      <SiteNav className="flex-shrink-0 ml-4"/>
+      <SiteNav items={navItems} className="flex-shrink-0 ml-4">
+        <Link href="/search" title={locale.NAV.SEARCH} className={css.site_nav_search}>
+          <i/>
+        </Link>
+      </SiteNav>
     </div>
   </>
 }
