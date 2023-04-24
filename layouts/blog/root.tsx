@@ -12,7 +12,7 @@ export default function BlogLayout ({ children }: { children: ReactNode }) {
   return <>
     <LayoutHead post={post}/>
     <div className="wrapper">
-      <Header title={post?.title}/>
+      <Header title={post?.title} fullWidth={post?.fullWidth}/>
       <main className={cn(
         'flex-1 transition-all',
         { 'self-center px-4 w-full max-w-2xl': !post },

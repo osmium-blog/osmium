@@ -12,10 +12,11 @@ import SiteTitle from './site-title'
 
 type Props = {
   title?: string
+  fullWidth?: boolean
   className?: string
 }
 
-export default function Header ({ title, className }: Props) {
+export default function Header ({ title, fullWidth = false, className }: Props) {
   const navRef = useRef<HTMLDivElement | null>(null)
   const sentinelRef = useRef<HTMLDivElement | null>(null)
   const handler = useCallback<IntersectionObserverCallback>(([entry]) => {
@@ -64,7 +65,8 @@ export default function Header ({ title, className }: Props) {
       id="sticky-nav"
       className={cn(
         className,
-        'sticky-nav group m-auto w-full px-4 h-6 flex flex-row justify-between items-center mb-2 md:mb-12 py-8 bg-opacity-60',
+        'sticky-nav group w-full px-4 h-6 flex flex-row justify-between items-center mb-2 md:mb-12 py-8 bg-opacity-60',
+        fullWidth ? 'md:px-24' : 'max-w-3xl mx-auto',
       )}
       onClick={handleClickHeader}
     >

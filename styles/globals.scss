@@ -53,7 +53,7 @@
   /* Site header */
 
   .sticky-nav {
-    @apply max-w-3xl sticky top-0 z-10 bg-day/80 dark:bg-night/80 border-b-transparent backdrop-blur-lg;
+    @apply sticky top-0 z-10 bg-day/80 dark:bg-night/80 border-b-transparent backdrop-blur-lg;
     @apply transition-all duration-300 ease-in-out;
   }
 
@@ -61,7 +61,7 @@
     @apply border-b border-opacity-50 border-gray-200 dark:border-gray-600 dark:border-opacity-50 cursor-pointer;
 
     @media (min-width: theme('screens.md')) {
-      @apply max-w-full border-b border-opacity-50 border-gray-200 dark:border-gray-600 dark:border-opacity-50;
+      @apply max-w-full px-4 #{!important};
     }
   }
 
