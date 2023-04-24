@@ -19,6 +19,8 @@
   }
 
   body {
+    @apply bg-day dark:bg-night;
+
     scrollbar-width: thin;
     scrollbar-color: var(--thumbBG) var(--scrollbarBG);
 

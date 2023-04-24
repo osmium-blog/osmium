@@ -35,7 +35,7 @@ function readConfigRaw () {
 
 const PRIVATE_FIELDS = ['databaseId', 'collectionId', 'email']
 
-function readConfig () {
+function readConfig (): Osmium.Config {
   return omit(readConfigRaw(), PRIVATE_FIELDS)
 }
 

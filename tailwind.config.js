@@ -7,6 +7,7 @@ export default {
     './layouts/**/*.{js,jsx,tsx}',
     './lib/**/*.{js,jsx,tsx}',
     './pages/**/*.{js,jsx,tsx}',
+    './app/**/*.{js,jsx,tsx}',
   ],
   darkMode: 'class',
   theme: {
