@@ -1,3 +1,5 @@
+'use client'
+
 import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { useMedia } from 'react-use'
@@ -22,8 +24,6 @@ export function ThemeProvider ({ children }: Props) {
 
   const [theme, setTheme] = useState<Theme>(config.appearance === 'auto' ? 'system' : config.appearnce)
 
-  // `defaultState` should normally be a boolean. But it causes initial loading flashes in slow
-  // rendering. Setting it to `null` so that we can differentiate the initial loading phase
   const prefersDark = useMedia('(prefers-color-scheme: dark)', true)
   const [scheme, setScheme] = useState<Scheme>(theme === 'dark' || (theme === 'system' && prefersDark) ? 'dark' : 'light')
 
@@ -41,8 +41,8 @@ export function ThemeProvider ({ children }: Props) {
   const firstRender = useRef(true)
   useEffect(() => void (firstRender.current = false), [])
   useEffect(() => {
-    // Only decide color scheme after initial loading, i.e. when `dark` is really representing a
-    // media query result
+    // Only decide color scheme after initial load, i.e. when `dark` is really representing a media
+    // query result
     if (!firstRender.current) {
       document.documentElement.classList.toggle('dark', scheme === 'dark')
       document.documentElement.classList.remove('color-scheme-unset')

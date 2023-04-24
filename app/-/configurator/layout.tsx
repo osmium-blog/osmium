@@ -22,7 +22,7 @@ export default function ConfiguratorLayout ({ children }: BasicProps) {
     <ConfiguratorProvider>
       <LocaleProvider lang={config.lang}>
         <div className="min-h-screen flex flex-col">
-          <header className="p-4 flex items-center sticky top-0 z-10 bg-day/80 backdrop-blur-lg border-b border-neutral-300">
+          <header className="p-4 flex items-center sticky top-0 z-10 bg-day/80 dark:bg-night/80 backdrop-blur-lg border-b border-neutral-300 dark:border-neutral-600">
             <div className="flex items-center gap-2">
               <Image src={IMG_LOGO} alt="Osmium logo" width={32} height={32}/>
               <h1 className="text-2xl font-semi text-black dark:text-white">Configurator</h1>
@@ -31,7 +31,7 @@ export default function ConfiguratorLayout ({ children }: BasicProps) {
           </header>
           {children}
           {DEV && <Debugger/>}
-          <footer className="p-4 mt-auto border-t border-neutral-300">#FOOTER</footer>
+          <footer className="p-4 mt-auto border-t border-neutral-300 dark:border-neutral-600">#FOOTER</footer>
         </div>
       </LocaleProvider>
     </ConfiguratorProvider>

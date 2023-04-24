@@ -11,10 +11,19 @@
 
     font-size: 16px;
 
+    color-scheme: light dark;
     color: #37352f;
 
     @media (prefers-color-scheme: dark) {
       color: #ffffffcf;
+    }
+  }
+
+  .color-scheme-unset body {
+    @apply bg-day;
+
+    @media (prefers-color-scheme: dark) {
+      @apply bg-night;
     }
   }
 

@@ -1,17 +1,19 @@
 import '@/styles/globals.scss'
 import { ConfigProvider } from '@/contexts/config'
+import { ThemeProvider } from '@/contexts/theme'
 import { readConfig } from '@/lib/server/config'
 
 export default function RootLayout ({ children }: BasicProps) {
   return (
-    // TODO: Dynamic lang
-    // TODO: Dynamic color scheme
-    <html lang="en">
-      <body>
-        <ConfigProvider value={readConfig()}>
-          {children}
-        </ConfigProvider>
-      </body>
-    </html>
+    <ConfigProvider value={readConfig()}>
+      <ThemeProvider>
+        {/* TODO: Dynamic lang */}
+        <html lang="en" className="color-scheme-unset">
+          <body>
+            {children}
+          </body>
+        </html>
+      </ThemeProvider>
+    </ConfigProvider>
   )
 }
