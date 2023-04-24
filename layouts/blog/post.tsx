@@ -28,7 +28,8 @@ export default function PostLayout ({ post, recordMap }: Props) {
     <div className={cn(css.post_layout, fullWidth && css.fullwidth)}>
       <article>
         <h1 className={css.post_title}>{title}</h1>
-        {type !== 'Page' && <div className={css.post_info}>
+        {type !== 'Page' && (
+          <div className={css.post_info}>
             <div className="flex mb-4">
               <a href={config.socialLink || '#'} className="flex">
                 <UserAvatar className="rounded-full"/>
@@ -46,7 +47,8 @@ export default function PostLayout ({ post, recordMap }: Props) {
                 ))}
               </div>
             )}
-          </div>}
+          </div>
+        )}
         <div className={css.post_content}>
           <NotionRenderer recordMap={recordMap} fullPage={false} darkMode={scheme === 'dark'}/>
         </div>
