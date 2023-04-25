@@ -7,7 +7,7 @@ type Props = {
 
 export default function PostList ({ posts }: Props) {
   return (
-    <ul className="post-list divide-y divide-gray-300 dark:divide-gray-700">
+    <ul className="post-list divide-y divide-neutral-300 dark:divide-neutral-700">
       {posts?.map(post => (
         <li key={post.id}>
           <PostListItem post={post}/>

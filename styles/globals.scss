@@ -6,9 +6,6 @@
 
 @layer base {
   :root {
-    --scrollbarBG: #ffffff00;
-    --thumbBG: #b8b8b8;
-
     font-size: 16px;
 
     color-scheme: light dark;
@@ -19,30 +16,15 @@
     }
   }
 
-  .color-scheme-unset body {
-    @apply bg-day;
-
-    @media (prefers-color-scheme: dark) {
-      @apply bg-night;
-    }
-  }
-
   body {
     @apply bg-day dark:bg-night;
 
-    scrollbar-width: thin;
-    scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+    @at-root .color-scheme-unset & {
+      @apply bg-day;
 
-    &::-webkit-scrollbar {
-      width: 5px;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: var(--scrollbarBG);
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background-color: var(--thumbBG);
+      @media (prefers-color-scheme: dark) {
+        @apply bg-night;
+      }
     }
   }
 
@@ -301,7 +283,7 @@
         @apply relative;
       }
 
-      @apply grid grid-cols-1 md:grid-cols-2 auto-rows-auto gap-2;
+      @apply grid grid-cols-1 md:grid-cols-2 auto-rows-auto gap-3;
 
       .post-author {
         @apply text-neutral-500 dark:text-neutral-400 flex items-center;

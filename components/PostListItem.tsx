@@ -22,16 +22,16 @@ export default function PostListItem ({ post }: Props) {
 function NormalPost ({ post }: Props) {
   return (
     <Link href={'/' + (post.slug || post.hash)}>
-      <article className="py-5">
-        <header className="flex flex-col justify-between md:flex-row md:items-baseline">
-          <h2 className="text-lg md:text-xl font-medium mb-2 cursor-pointer text-black dark:text-gray-100">
-            {post.title}
-          </h2>
-          <FormattedDate date={post.date} className="flex-shrink-0 text-gray-600 dark:text-gray-400"/>
-        </header>
-        <p className="hidden md:block leading-8 text-gray-700 dark:text-gray-300">
-          {post.summary}
-        </p>
+      <article className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-3 py-5">
+        <h2 className="text-lg md:text-xl leading-6 font-medium text-black dark:text-neutral-100">
+          {post.title}
+        </h2>
+        <FormattedDate date={post.date} className="leading-6 text-neutral-600 dark:text-neutral-400"/>
+        {post.summary && (
+          <p className="col-span-full hidden md:block text-gray-700 dark:text-gray-300">
+            {post.summary}
+          </p>
+        )}
       </article>
     </Link>
   )
