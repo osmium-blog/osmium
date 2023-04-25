@@ -47,8 +47,8 @@ export default class Page implements PageMetaRaw {
   get id (): string { return this.data.id }
   get hash (): string { return hash(this.id) }
   get type (): PostType | undefined { return this.data.properties.type }
-  get hasContent (): boolean { return this.data.hasContent }
-  get fullWidth (): boolean { return this.data.fullWidth }
+  get hasContent (): boolean { return this.data.content.length > 0 }
+  get fullWidth (): boolean { return Boolean(this.data.format.fullWidth) }
 
   get title (): string | undefined { return this.data.properties.title }
   get slug (): string | undefined { return this.data.properties.slug }
@@ -97,7 +97,7 @@ export default class Page implements PageMetaRaw {
     return Object.fromEntries(
       keys
         .map(key => [key, this[key]])
-        .filter(([, value]) => Boolean(value))
+        .filter(([, value]) => value !== undefined)
     )
   }
 }
