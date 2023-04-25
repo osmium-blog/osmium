@@ -10,6 +10,7 @@ import Debugger from './debugger'
 
 import IMG_LOGO from '@/.github/logo.svg'
 import { readConfig } from '@/lib/server/config'
+import css from './layout.module.scss'
 import { ConfiguratorProvider } from './configurator.context'
 import { LocaleProvider } from './locale.context'
 import GenerateButton from './generate-button'
@@ -22,17 +23,17 @@ export default function ConfiguratorLayout ({ children }: BasicProps) {
   return (
     <ConfiguratorProvider>
       <LocaleProvider lang={config.lang}>
-        <div className="min-h-screen flex flex-col">
-          <header className="p-4 flex items-center sticky top-0 z-10 bg-day/80 dark:bg-night/80 backdrop-blur-lg border-b border-neutral-300 dark:border-neutral-600">
-            <div className="flex items-center gap-2">
+        <div className={css.layout}>
+          <header>
+            <div className={css.layout_title}>
               <Image src={IMG_LOGO} alt="Osmium logo" width={32} height={32}/>
-              <h1 className="text-2xl font-semi text-black dark:text-white">Configurator</h1>
+              <h1>Configurator</h1>
             </div>
-            <GenerateButton className="ml-auto"/>
+            <GenerateButton/>
           </header>
           {children}
           {DEV && <Debugger/>}
-          <footer className="p-4 mt-auto text-center text-neutral-500 dark:text-neutral-400 border-t border-neutral-300 dark:border-neutral-600">
+          <footer>
             <SiteFooterVersion/>
           </footer>
         </div>

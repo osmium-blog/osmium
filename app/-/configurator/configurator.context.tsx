@@ -12,14 +12,10 @@ type Context = {
 
 const ConfiguratorContext = createContext<Context>(undefined as any)
 
-type Props = BasicProps & Partial<Context>
-
-export function ConfiguratorProvider ({ config: configInit, setConfig: setConfigInit, children }: Props) {
-  const [config, _setConfig] = useState(configInit || defaultConfig())
-  const setConfig: Context['setConfig'] = setConfigInit || ((key, value) => {
-    _setConfig(prev => {
-      return set({ ...prev }, ([] as string[]).concat(key), value)
-    })
+export function ConfiguratorProvider ({ children }: BasicProps) {
+  const [config, _setConfig] = useState(defaultConfig())
+  const setConfig: Context['setConfig'] = ((key, value) => {
+    _setConfig(prev => set({ ...prev }, key, value))
   })
 
   return (

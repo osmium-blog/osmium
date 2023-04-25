@@ -9,7 +9,10 @@ type Props = BasicProps & {
 
 export default function LocaleText ({ t: key, tag: Tag, className, style }: Props) {
   const { t } = useLocale()
-  return Tag
-    ? <Tag className={className} style={style} dangerouslySetInnerHTML={{ __html: t(key) }}/>
-    : t(key)
+  const text = t(key)
+  return text
+    ? Tag
+      ? <Tag className={className} style={style} dangerouslySetInnerHTML={{ __html: text }}/>
+      : text
+    : null
 }

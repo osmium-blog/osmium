@@ -1,3 +1,58 @@
-.entry_description a {
-  @apply underline underline-offset-2;
+.page {
+  @apply p-4 sm:p-8 text-night dark:text-day relative;
+}
+
+$configurator-width: 708px;
+
+.configurator_header {
+  @apply mx-auto;
+  max-width: $configurator-width;
+}
+
+.configurator_lang_selector {
+  @apply inline-block;
+}
+
+.configurator_description {
+  @apply mt-4 mb-8;
+}
+
+.configurator {
+  @apply grid grid-cols-1 sm:grid-cols-[auto_minmax(0,1fr)] gap-x-8 gap-y-4 mx-auto;
+  max-width: $configurator-width;
+}
+
+.entry, .entry_group {
+  @apply contents;
+}
+
+.entry {
+  > code {
+    @apply text-sm text-violet-700 dark:text-violet-400;
+    @apply max-sm:pl-0 #{!important};
+  }
+
+  > div {
+    > p {
+      @apply -mt-4 sm:mt-0 mb-1 text-sm;
+
+      a {
+        @apply underline underline-offset-2;
+      }
+    }
+  }
+}
+
+.entry_group {
+  > .entry:first-child {
+    @apply font-medium text-neutral-500 dark:text-neutral-400 #{!important};
+
+    > * {
+      @apply pt-4;
+    }
+
+    > code {
+      color: inherit;
+    }
+  }
 }

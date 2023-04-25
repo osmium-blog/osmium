@@ -1,255 +1,126 @@
 'use client'
 
-import { useEffect } from 'react'
-import { clone, get } from 'lodash'
-import cn from 'classnames'
+import { get } from 'lodash'
 
 import css from './page.module.scss'
-import example from '@/assets/config-data'
-import { langs } from '@/assets/i18n'
-import Switch from '@/components/ui/switch'
-import Select from '@/components/ui/select'
+import type { Schema, SchemaEntryData } from './assets/config-schema'
 import TextInput from '@/components/ui/text-input'
 import NumberInput from '@/components/ui/number-input'
+import Switch from '@/components/ui/switch'
 import ColorInput from '@/components/ui/color-input'
-import { ConfiguratorProvider, useConfigurator } from './configurator.context'
-import { useLocale } from './locale.context'
+import Select from '@/components/ui/select'
+import { useConfigurator } from './configurator.context'
+import LocaleText from './locale-text'
 
-const INDENT = 20
-
-// Override some entries for special behaviors
-const overrides: Record<string, any> = {
-  lightBackground: { type: 'color' },
-  darkBackground: { type: 'color' },
-  lang: { type: 'select', options: langs },
-  mode: {
-    type: 'select',
-    options: [
-      ['blog', 'configurator.entry.mode.option.blog'],
-      ['docs', 'configurator.entry.mode.option.docs'],
-    ],
-  },
-  footerText: { richText: true },
-  appearance: {
-    type: 'select',
-    options: [
-      ['auto', 'configurator.entry.appearance.option.auto'],
-      ['light', 'configurator.entry.appearance.option.light'],
-      ['dark', 'configurator.entry.appearance.option.dark'],
-    ],
-  },
-  font: {
-    type: 'select',
-    options: [
-      ['sans-serif', 'configurator.entry.font.option.sans'],
-      ['serif', 'configurator.entry.font.option.serif'],
-    ],
-  },
-  'analytics.provider': {
-    type: 'select',
-    options: [
-      ['', 'configurator.entry.analytics.provider.option.null'],
-      ['ga', 'Google Analytics'],
-      ['ackee', 'Ackee'],
-      ['vercel', 'Vercel'],
-    ],
-  },
-  'analytics.gaConfig': { when: ['analytics.provider', 'ga'] },
-  'analytics.ackeeConfig': { when: ['analytics.provider', 'ackee'] },
-  'comment.provider': {
-    type: 'select',
-    options: [
-      ['', 'configurator.entry.comment.provider.option.null'],
-      ['gitalk', 'Gitalk'],
-      ['utterances', 'Utterances'],
-      ['cusdis', 'Cusdis'],
-    ],
-  },
-  'comment.gitalkConfig': { when: ['comment.provider', 'gitalk'] },
-  'comment.utterancesConfig': { when: ['comment.provider', 'utterances'] },
-  'comment.cusdisConfig': { when: ['comment.provider', 'cusdis'] },
+type Props = {
+  schema: Schema
 }
 
-export default function Configurator () {
-  const { config } = useConfigurator()
-  const entries = Object.entries(config)
-
+export default function Configurator ({ schema }: Props) {
   return (
-    <ConfigEntryGroup entries={entries}/>
-  )
-}
-
-type ConfigEntryGroupProps = {
-  entries: Array<[string, JsonValue]>
-  parent?: string[]
-}
-
-function ConfigEntryGroup ({ entries, parent = [] }: ConfigEntryGroupProps) {
-  return (
-    <div className="space-y-3">
-      {entries.map(entry => {
-        const name = entry[0]
-        return <ConfigEntry key={name} entry={entry} parent={parent}/>
-      })}
+    <div className={css.configurator}>
+      <EntryList prefix={[]} schema={schema}/>
     </div>
   )
 }
 
-function resolveType (value: JsonValue) {
-  const type = typeof value
-  if (type === 'object') {
-    switch (true) {
-      case Array.isArray(value):
-        return 'array'
-      case value === null:
-        return 'null'
-    }
-  }
-  return type
+type EntryListProps = {
+  prefix: string[]
+  schema: Schema
 }
 
-type ConfigEntryProps = {
-  entry: [string, JsonValue]
-  parent?: string[]
+function EntryList ({ prefix, schema }: EntryListProps) {
+  const { config } = useConfigurator()
+
+  const entries = Object.entries(schema)
+
+  return <>
+    {entries.map(([name, data]) => (
+      data.when && get(config, data.when[0]) !== data.when[1]
+        ? null
+        : data.type === 'group'
+          ? <EntryGroup key={name} path={prefix.concat(name)} data={data}/>
+          : <Entry key={name} path={prefix.concat(name)} data={data}/>
+    ))}
+  </>
 }
 
-function ConfigEntry ({ entry: [name, value], parent = [] }: ConfigEntryProps) {
-  const { config, setConfig } = useConfigurator()
-  const { t } = useLocale()
-  const level = parent.length
-  const keyPath = parent.concat(name).join('.')
-  const override = overrides[keyPath]
-  const exampleValue = clone(get(example, keyPath))
-  const valueType = override?.when && get(config, override.when[0]) !== override.when[1]
-    ? null
-    : override?.type ?? resolveType(exampleValue)
+const INDENT = 24
 
-  useEffect(
-    () => {
-      if (override?.when) {
-        if (valueType) {
-          if (get(config, keyPath) === undefined) {
-            setConfig(name, exampleValue)
-          }
-        } else {
-          setConfig(name, undefined)
-        }
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [keyPath, valueType],
+type EntryProps = {
+  path: string[]
+  data: SchemaEntryData
+}
+
+function Entry ({ path, data }: EntryProps) {
+  return <>
+    <div className={css.entry}>
+      <code style={{ paddingLeft: INDENT * (path.length - 1) }}>{path.at(-1)}</code>
+      <div>
+        {'description' in data && (
+          <p><LocaleText t={data.description!} tag={data.richText ? 'span' : undefined}/></p>
+        )}
+        <EntryEditor path={path} data={data}/>
+      </div>
+    </div>
+  </>
+}
+
+type EntryGroupProps = {
+  path: string[]
+  data: SchemaEntryData & { type: 'group' }
+}
+
+function EntryGroup ({ path, data }: EntryGroupProps) {
+  return (
+    <div className={css.entry_group}>
+      <Entry path={path} data={data}/>
+      <EntryList prefix={path} schema={data.schema}/>
+    </div>
   )
+}
 
-  let content: ReactNode | null = null
-  switch (valueType) {
+type EntryEditorProps = {
+  path: string | string[]
+  data: SchemaEntryData
+}
+function EntryEditor ({ path, data }: EntryEditorProps) {
+  const { config, setConfig } = useConfigurator()
+  const value = get(config, path)
+  const setter = (value: unknown) => setConfig(path, value)
+
+  switch (data.type) {
     case 'string':
-      content = (
-        <TextInput value={value} onChange={value => setConfig(name, value)}/>
-      )
-      break
+      return <TextInput value={value} onChange={setter}/>
     case 'number':
-      content = (
-        <NumberInput value={value} onChange={value => setConfig(name, value)}/>
-      )
-      break
+      return <NumberInput value={value} onChange={setter}/>
     case 'boolean':
-      content = (
-        <div className="h-8 flex items-center">
-          <Switch checked={Boolean(value)} onChange={checked => setConfig(name, checked)}/>
-        </div>
-      )
-      break
-    case 'array':
-      content = (
+      return <Switch checked={Boolean(value)} onChange={setter}/>
+    case 'list':
+      return (
         <TextInput
           value={value.join(', ')}
-          onChange={value => setConfig(name, value.split(/\s*,\s*/).filter(Boolean))}
+          onChange={value => setter(value.split(/\s*,\s*/).filter(Boolean))}
         />
       )
-      break
     case 'color':
-      content = (
-        <ColorInput value={value} onChange={value => setConfig(name, value)}/>
-      )
-      break
+      return <ColorInput value={value} onChange={setter}/>
     case 'select':
-      content = (
-        <Select value={value} onChange={value => setConfig(name, value)}>
-          {override.options.map((opt: string | [string, string]) => {
+      return (
+        <Select value={value} onChange={setter}>
+          {data.options.map(opt => {
             const [value, label] = typeof opt === 'string' ? [opt, opt] : opt
             return (
-              <option key={value} value={value}>{t(label)}</option>
+              <option key={value} value={value}>
+                <LocaleText t={label}/>
+              </option>
             )
           })}
         </Select>
       )
-      break
-    case 'object': {
-      const description = t(['configurator', 'entry', ...parent, name, 'description'])
-      const _setConfig = (key: string | string[], value: JsonValue) => setConfig(([] as string[]).concat(name, key), value)
-
-      return (
-        <ConfiguratorProvider config={config} setConfig={_setConfig}>
-          <div className="text-sm">
-            <code style={{ paddingLeft: INDENT * level + 'px' }}>{name}</code>
-            {description && (
-              <p
-                className={cn(css.entry_description, 'opacity-50')}
-                style={{ paddingLeft: INDENT * level + 'px' }}
-                dangerouslySetInnerHTML={override?.richText ? { __html: description } : undefined}
-              >
-                {override?.richText ? null : description}
-              </p>
-            )}
-          </div>
-          <ConfigEntryGroup
-            entries={Object.entries(value || exampleValue)}
-            parent={parent.concat(name)}
-          />
-        </ConfiguratorProvider>
-      )
-    }
+    case 'group':
+      return null
+    default:
+      return <pre>{JSON.stringify(data, null, 2)}</pre>
   }
-
-  return content && (
-    <ConfigEntryLayout
-      name={name}
-      parent={parent}
-      richText={override?.richText}
-    >
-      {content}
-    </ConfigEntryLayout>
-  )
-}
-
-type ConfigEntryLayoutProps = BasicProps & {
-  name: string
-  parent?: string[]
-  richText?: boolean
-}
-
-function ConfigEntryLayout ({ name, parent = [], richText = false, children }: ConfigEntryLayoutProps) {
-  const { t } = useLocale()
-  const description = t(['configurator', 'entry', ...parent, name, 'description'])
-  const level = parent.length
-
-  return (
-    <div className="flex">
-      <div className="flex-[1.5_1.5_0] text-sm">
-        <code style={{ paddingLeft: INDENT * level + 'px' }}>{name}</code>
-        {description && (
-          <p
-            className={cn(css.entry_description, 'pr-5 opacity-50')}
-            style={{ paddingLeft: INDENT * level + 'px' }}
-            dangerouslySetInnerHTML={richText ? { __html: description } : undefined}
-          >
-            {richText ? null : description}
-          </p>
-        )}
-      </div>
-      <div className="flex-1">
-        {children}
-      </div>
-    </div>
-  )
 }
