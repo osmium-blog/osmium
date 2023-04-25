@@ -1,3 +1,5 @@
+'use client'
+
 import { useConfig } from '@/contexts/config'
 
 export default function SiteFooterVersion () {

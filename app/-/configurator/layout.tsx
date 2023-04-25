@@ -5,6 +5,7 @@ export const metadata = {
 
 import Image from 'next/image'
 
+import SiteFooterVersion from '@/components/site-footer-version'
 import Debugger from './debugger'
 
 import IMG_LOGO from '@/.github/logo.svg'
@@ -31,7 +32,9 @@ export default function ConfiguratorLayout ({ children }: BasicProps) {
           </header>
           {children}
           {DEV && <Debugger/>}
-          <footer className="p-4 mt-auto border-t border-neutral-300 dark:border-neutral-600">#FOOTER</footer>
+          <footer className="p-4 mt-auto text-center text-neutral-500 dark:text-neutral-400 border-t border-neutral-300 dark:border-neutral-600">
+            <SiteFooterVersion/>
+          </footer>
         </div>
       </LocaleProvider>
     </ConfiguratorProvider>
