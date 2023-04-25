@@ -1,7 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState } from 'react'
-import dynamic from 'next/dynamic'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { get } from 'lodash'
 
 import loadLocale from '@/assets/i18n'
@@ -16,21 +15,20 @@ const LocaleContext = createContext<Context>(undefined as any)
 
 type Props = BasicProps & {
   lang: string
+  locale: Osmium.LocaleData
 }
 
-export const LocaleProvider = dynamic<Props>(async () => {
-  // eslint-disable-next-line react/display-name
-  return ({ lang: langInit, children }) => {
-    const [lang, setLang] = useState(langInit)
-    const Dynamic = dynamic(async () => {
-      const locale = await loadLocale('configurator', lang)
-      const context = { lang, setLang, locale }
-      // eslint-disable-next-line react/display-name
-      return () => <LocaleContext.Provider value={context}>{children}</LocaleContext.Provider>
-    })
-    return <Dynamic/>
-  }
-})
+export function LocaleProvider ({ lang: langInit, locale: localeInit, children }: Props) {
+  const [lang, setLang] = useState(langInit)
+  const [locale, setLocale] = useState(localeInit)
+
+  useEffect(() => {
+    loadLocale('configurator', lang).then(setLocale)
+  }, [lang])
+
+  const context = { lang, setLang, locale }
+  return <LocaleContext.Provider value={context}>{children}</LocaleContext.Provider>
+}
 
 export const useLocale = () => {
   const context = useContext(LocaleContext)
