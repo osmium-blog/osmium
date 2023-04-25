@@ -4,10 +4,6 @@
   > header {
     @apply p-4 flex items-center sticky top-0 z-10 bg-day/80 dark:bg-night/80 backdrop-blur-lg border-b border-neutral-300 dark:border-neutral-600;
 
-    h1 {
-      @apply hidden sm:block text-lg font-semibold text-black dark:text-white;
-    }
-
     button {
       @apply ml-auto;
     }
@@ -19,5 +15,38 @@
 }
 
 .layout_title {
-  @apply flex items-center gap-2;
+  @apply text-lg font-semibold text-black dark:text-white;
+
+  a {
+    @apply grid grid-cols-[auto_auto] grid-rows-1 items-center gap-2;
+
+    * {
+      @apply row-start-1;
+    }
+  }
+
+  span {
+    @apply max-sm:hidden;
+  }
+
+  @at-root {
+    .layout_title_name,
+    .layout_title_back {
+      @apply col-start-2;
+    }
+
+    .layout_title_back {
+      @apply invisible;
+    }
+
+    .layout_title:hover {
+      .layout_title_name {
+        @apply invisible;
+      }
+
+      .layout_title_back {
+        @apply visible;
+      }
+    }
+  }
 }

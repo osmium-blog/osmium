@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 export const metadata = {
   title: 'Osmium Configurator',
   description: 'The Osmium config generator',
@@ -27,10 +29,13 @@ export default async function ConfiguratorLayout ({ children }: BasicProps) {
       <LocaleProvider lang={config.lang} locale={locale}>
         <div className={css.layout}>
           <header>
-            <div className={css.layout_title}>
-              <Image src={IMG_LOGO} alt="Osmium logo" width={32} height={32}/>
-              <h1>Configurator</h1>
-            </div>
+            <h1 className={css.layout_title}>
+              <Link href="/" area-label="Back to home">
+                <Image src={IMG_LOGO} alt="Osmium logo" width={32} height={32}/>
+                <span className={css.layout_title_name}>Configurator</span>
+                <span className={css.layout_title_back}>← Back to Home</span>
+              </Link>
+            </h1>
             <GenerateButton/>
           </header>
           {children}
