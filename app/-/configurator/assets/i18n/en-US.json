@@ -92,10 +92,11 @@
         "provider": {
           "description": "Traffic statistics tool",
           "option": {
-            "null": "Disabled"
+            "null": "Disabled",
+            "vercel": "Vercel (No config needed)"
           }
         },
-        "ackeeConfig": {
+        "ackee": {
           "description": "Ackee configuration",
           "tracker": {
             "description": "Tracker address"
@@ -104,7 +105,7 @@
             "description": "Tracking server address (don’t add a slash at the end)"
           }
         },
-        "gaConfig": {
+        "ga": {
           "description": "Google Analytics configuration",
           "measurementId": {
             "description": "G-Tag"
@@ -119,7 +120,7 @@
             "null": "Disabled"
           }
         },
-        "gitalkConfig": {
+        "gitalk": {
           "description": "Gitalk configuration",
           "repo": {
             "description": "Repository name"
@@ -134,13 +135,13 @@
             "description": "Enable distraction-free mode"
           }
         },
-        "utterancesConfig": {
+        "utterances": {
           "description": "Utterances configuration",
           "repo": {
             "description": "Repository name"
           }
         },
-        "cusdisConfig": {
+        "cusdis": {
           "description": "Cusdis configuration",
           "host": {
             "description": "Service address, only need to modify when using self-hosted service"

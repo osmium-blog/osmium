@@ -1,6 +1,11 @@
 import cn from 'classnames'
 
-export default function Switch ({ checked, onChange, className, style }) {
+type Props = BasicProps & {
+  checked: boolean
+  onChange: (value: boolean) => void
+}
+
+export default function Switch ({ checked, onChange, className, style }: Props) {
   return (
     <span className={className} style={style}>
       <span className="flex relative">

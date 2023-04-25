@@ -1,6 +1,7 @@
-import { createContext, useContext, useEffect, useRef, useState } from 'react'
-import type { ReactNode } from 'react'
-import { useMedia } from 'react-use'
+'use client'
+
+import { createContext, useContext, useEffect, useState } from 'react'
+
 import { useConfig } from '@/contexts/config'
 
 type Theme = 'light' | 'dark' | 'system'
@@ -13,18 +14,17 @@ type Context = {
 
 const ThemeContext = createContext<Context>(undefined as any)
 
-type Props = {
-  children: ReactNode
-}
-
-export function ThemeProvider ({ children }: Props) {
+export function ThemeProvider ({ children }: BasicProps) {
   const config = useConfig()
 
   const [theme, setTheme] = useState<Theme>(config.appearance === 'auto' ? 'system' : config.appearnce)
 
-  // `defaultState` should normally be a boolean. But it causes initial loading flashes in slow
-  // rendering. Setting it to `null` so that we can differentiate the initial loading phase
-  const prefersDark = useMedia('(prefers-color-scheme: dark)', true)
+  const [prefersDark, setPrefersDark] = useState<boolean>()
+
+  // Media query is a pure client-side feature that doesn't make sense on server-side. Thus, it is
+  // easier to manage the state by avoiding running the detection on server
+  useEffect(() => onPrefersDark(setPrefersDark), [])
+
   const [scheme, setScheme] = useState<Scheme>(theme === 'dark' || (theme === 'system' && prefersDark) ? 'dark' : 'light')
 
   useEffect(() => {
@@ -38,16 +38,13 @@ export function ThemeProvider ({ children }: Props) {
   }, [theme, prefersDark])
 
 
-  const firstRender = useRef(true)
-  useEffect(() => void (firstRender.current = false), [])
   useEffect(() => {
-    // Only decide color scheme after initial loading, i.e. when `dark` is really representing a
-    // media query result
-    if (!firstRender.current) {
+    // `prefersDark` being undefined means the client-side detection has not yet started
+    if (typeof prefersDark === 'boolean') {
       document.documentElement.classList.toggle('dark', scheme === 'dark')
       document.documentElement.classList.remove('color-scheme-unset')
     }
-  }, [scheme])
+  }, [prefersDark, scheme])
 
   const data = {
     theme,
@@ -64,4 +61,10 @@ export function ThemeProvider ({ children }: Props) {
 
 export function useTheme () {
   return useContext(ThemeContext)
+}
+
+function onPrefersDark (handler: (prefersDark: boolean) => void) {
+  const mql = matchMedia('(prefers-color-scheme: dark)')
+  handler(mql.matches)
+  mql.addEventListener('change', ev => handler(ev.matches))
 }

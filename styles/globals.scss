@@ -11,6 +11,7 @@
 
     font-size: 16px;
 
+    color-scheme: light dark;
     color: #37352f;
 
     @media (prefers-color-scheme: dark) {
@@ -18,7 +19,17 @@
     }
   }
 
+  .color-scheme-unset body {
+    @apply bg-day;
+
+    @media (prefers-color-scheme: dark) {
+      @apply bg-night;
+    }
+  }
+
   body {
+    @apply bg-day dark:bg-night;
+
     scrollbar-width: thin;
     scrollbar-color: var(--thumbBG) var(--scrollbarBG);
 

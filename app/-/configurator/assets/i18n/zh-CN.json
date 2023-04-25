@@ -92,10 +92,11 @@
         "provider": {
           "description": "流量统计工具",
           "option": {
-            "null": "不使用"
+            "null": "不使用",
+            "vercel": "Vercel（无需配置）"
           }
         },
-        "ackeeConfig": {
+        "ackee": {
           "description": "Ackee 配置",
           "tracker": {
             "description": "追踪器地址"
@@ -104,7 +105,7 @@
             "description": "追踪服务器地址（结尾不要加斜线）"
           }
         },
-        "gaConfig": {
+        "ga": {
           "description": "Google Analytics 配置",
           "measurementId": {
             "description": "G-Tag"
@@ -119,7 +120,7 @@
             "null": "不使用"
           }
         },
-        "gitalkConfig": {
+        "gitalk": {
           "description": "Gitalk 配置",
           "repo": {
             "description": "仓库名"
@@ -134,13 +135,13 @@
             "description": "启用无干扰模式"
           }
         },
-        "utterancesConfig": {
+        "utterances": {
           "description": "Utterances 配置",
           "repo": {
             "description": "仓库名"
           }
         },
-        "cusdisConfig": {
+        "cusdis": {
           "description": "Cusdis 配置",
           "host": {
             "description": "服务地址，仅在使用自托管服务时需要修改"

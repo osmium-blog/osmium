@@ -1,7 +1,8 @@
-import { createContext, useContext } from 'react'
-import type { ReactNode } from 'react'
+'use client'
 
-const ConfigContext = createContext<Osmium.Config | undefined>(undefined)
+import { createContext, useContext } from 'react'
+
+const ConfigContext = createContext<Osmium.Config>(undefined as any)
 
 type Props = {
   value: Osmium.Config
