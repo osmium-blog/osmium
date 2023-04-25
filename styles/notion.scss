@@ -235,6 +235,10 @@ pre[class*='language-'] {
 
 /* react-notion-x code block */
 
+.notion-code {
+  max-width: calc(100vw - 2rem);
+}
+
 .notion-code-copy {
   top: 10px;
   right: 10px;
