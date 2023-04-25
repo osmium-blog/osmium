@@ -1,9 +1,9 @@
 'use client'
 
 import { createContext, useContext, useState } from 'react'
-import { clone, set } from 'lodash'
+import { set } from 'lodash'
 
-import example from '@/assets/config-data'
+import { defaultConfig } from './assets/config-schema'
 
 type Context = {
   config: Osmium.Config
@@ -15,7 +15,7 @@ const ConfiguratorContext = createContext<Context>(undefined as any)
 type Props = BasicProps & Partial<Context>
 
 export function ConfiguratorProvider ({ config: configInit, setConfig: setConfigInit, children }: Props) {
-  const [config, _setConfig] = useState(configInit || clone(example))
+  const [config, _setConfig] = useState(configInit || defaultConfig())
   const setConfig: Context['setConfig'] = setConfigInit || ((key, value) => {
     _setConfig(prev => {
       return set({ ...prev }, ([] as string[]).concat(key), value)

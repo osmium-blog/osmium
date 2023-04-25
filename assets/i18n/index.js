@@ -12,6 +12,7 @@ export default function loadLocale (section, lang) {
   return requireAsset(`./${section}/${lang}.json`)
 }
 
+/** @type {[string, string][]} */
 export const langs = [
   ['en-US', 'English'],
   ['zh-CN', '中文（中国大陆）'],
