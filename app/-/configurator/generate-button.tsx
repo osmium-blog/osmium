@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useCopyToClipboard } from 'react-use'
 import cn from 'classnames'
 
-import { useConfigurator } from './configurator.context'
+import { STORAGE_KEY, useConfigurator } from './configurator.context'
 import { useLocale } from './locale.context'
 
 export default function GenerateButton ({ className }: BasicProps) {
@@ -27,6 +27,12 @@ export default function GenerateButton ({ className }: BasicProps) {
     return () => clearTimeout(timer)
   }, [copyState])
 
+  function action () {
+    const data = JSON.stringify(config, null, 2)
+    copyToClipboard(data)
+    localStorage.setItem(STORAGE_KEY, data)
+  }
+
   return (
     <button
       type="button"
@@ -34,7 +40,7 @@ export default function GenerateButton ({ className }: BasicProps) {
         className,
         'box-content min-w-[1.5rem] px-2 py-1 relative text-day dark:text-night bg-night dark:bg-day',
       )}
-      onClick={() => copyToClipboard(JSON.stringify(config, null, 2))}
+      onClick={action}
     >
       <span className={cn(
         'transition duration-100',
