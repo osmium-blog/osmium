@@ -1,6 +1,6 @@
 import { get } from 'lodash'
 
-import { langs } from '@/assets/i18n'
+import { langs } from './i18n'
 
 export type SchemaEntryData = {
   when?: [string, string]
@@ -87,7 +87,7 @@ export const schema: Schema = {
   lang: {
     description: 'configurator.entry.lang.description',
     type: 'select',
-    options: langs as [string, string][],
+    options: langs,
     default: 'en-US',
   },
   timezone: {

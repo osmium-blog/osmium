@@ -1,7 +1,7 @@
 'use client'
 
-import { langs } from '@/assets/i18n'
 import Select from '@/components/ui/select'
+import { langs } from './assets/i18n'
 import { useLocale } from './locale.context'
 
 export default function LangSelect ({ className }: BasicProps) {

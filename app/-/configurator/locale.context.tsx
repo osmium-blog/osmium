@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { get } from 'lodash'
 
-import loadLocale from '@/assets/i18n'
+import { loadLocale } from './assets/i18n'
 
 type Context = {
   lang: string
@@ -23,7 +23,7 @@ export function LocaleProvider ({ lang: langInit, locale: localeInit, children }
   const [locale, setLocale] = useState(localeInit)
 
   useEffect(() => {
-    loadLocale('configurator', lang).then(setLocale)
+    loadLocale(lang).then(setLocale)
   }, [lang])
 
   const context = { lang, setLang, locale }

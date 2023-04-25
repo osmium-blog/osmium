@@ -6,9 +6,9 @@ export const metadata = {
 import Image from 'next/image'
 
 import IMG_LOGO from '@/.github/logo.svg'
-import loadLocale from '@/assets/i18n'
 import { readConfig } from '@/lib/server/config'
 import SiteFooterVersion from '@/components/site-footer-version'
+import { loadLocale } from './assets/i18n'
 import css from './layout.module.scss'
 import { ConfiguratorProvider } from './configurator.context'
 import { LocaleProvider } from './locale.context'
@@ -20,7 +20,7 @@ const DEV = process.env.NODE_ENV === 'development'
 const config = readConfig()
 
 export default async function ConfiguratorLayout ({ children }: BasicProps) {
-  const locale = await loadLocale('configurator', config.lang)
+  const locale = await loadLocale(config.lang)
 
   return (
     <ConfiguratorProvider>
