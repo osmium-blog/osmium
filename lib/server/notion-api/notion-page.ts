@@ -86,6 +86,9 @@ export default class NotionPage {
                 // Sometimes it could be an empty string, so we need to filter it out
                 .filter(Boolean)
               break
+            case 'number':
+              propValue = Number(getTextContent(value as any))
+              break
             case 'date': {
               const { start_date, start_time, time_zone } = getDateValue(value as any) ?? {}
               if (start_date) {
