@@ -46,14 +46,6 @@
   @at-root {
     .layout_nav {
       @apply hidden;
-
-      @at-root .layout[data-layout-menu-open] & {
-        @apply block;
-      }
-
-      @media (min-width: theme('screens.lg')) {
-        @apply block;
-      }
     }
 
     .layout_page {
@@ -61,6 +53,18 @@
 
       @media (min-width: theme('screens.lg')) {
         padding-left: var(--nav-width);
+      }
+    }
+  }
+
+  &:has(.nav_root) {
+    .layout_nav {
+      @at-root .layout[data-layout-menu-open] & {
+        @apply block;
+      }
+
+      @media (min-width: theme('screens.lg')) {
+        @apply block;
       }
     }
   }
@@ -173,17 +177,19 @@
 /* Site Footer */
 
 .layout_footer {
-  @apply mt-auto p-4 text-sm text-neutral-600 dark:text-neutral-400 border-t border-neutral-200 dark:border-neutral-700;
+  @apply mt-auto px-4;
+  margin-right: var(--nav-width);
 
   > div {
     @apply flex flex-col items-center;
+    @apply py-4 text-sm text-neutral-600 dark:text-neutral-400 border-t border-neutral-200 dark:border-neutral-700;
   }
 
   @media (min-width: theme('screens.xl')) {
     @apply grid px-0;
     grid-template:
-      ' .                 content                    .                 .               ' auto
-      / minmax(32px, 1fr) minmax(max-content, 708px) minmax(32px, 1fr) var(--nav-width);
+      ' .                 content                    .                ' auto
+      / minmax(32px, 1fr) minmax(max-content, 708px) minmax(32px, 1fr);
 
     > div {
       grid-area: content;

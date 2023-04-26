@@ -46,6 +46,8 @@ export default function LayoutNav () {
     ? roots.find(n => n.hash === currentRoot.hash)?.children ?? []
     : roots.filter(n => ['Post', 'Doc'].includes(n.type!))
 
+  if (!navNodes.length) return null
+
   return (
     <ul className={css.nav_root}>
       {navNodes.map(node => (
