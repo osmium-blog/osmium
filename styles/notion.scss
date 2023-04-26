@@ -78,6 +78,10 @@ svg + .notion-page-title-text {
   @apply border-b-0;
 }
 
+.notion-h {
+  @apply px-0;
+}
+
 .notion-callout {
   &.notion-gray_background_co { background-color: var(--notion-gray_background); }
   &.notion-brown_background_co { background-color: var(--notion-brown_background); }
