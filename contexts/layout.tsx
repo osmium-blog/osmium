@@ -36,7 +36,7 @@ const LayoutContext = createContext<Context>(undefined as any)
 
 export function LayoutProvider ({ children }: { children: ReactNode }) {
   const config = useConfig()
-  const [layout, setLayout] = useState(config.mode)
+  const [layout, setLayout] = useState(config.layout)
   const Layout = loadLayout(layout)
 
   return (

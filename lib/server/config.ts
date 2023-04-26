@@ -14,7 +14,7 @@ const defu = createDefu((obj, key, value) => {
 const applyDefaults = (raw: JsonValue) => defu(raw, {
   appearance: 'auto',
   path: '/',
-  mode: 'blog',
+  layout: 'blog',
   ogImageGenerateURL: joinURL(raw.link, raw.path, '/api/og-image?title={title}'),
   emailHash: raw.email && md5(raw.email),
   rss: true,

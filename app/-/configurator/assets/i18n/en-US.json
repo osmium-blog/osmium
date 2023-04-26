@@ -29,7 +29,7 @@
       "socialLink": {
         "description": "Author’s social account link, will become the link address of the author’s avatar"
       },
-      "mode": {
+      "layout": {
         "description": "Site layout",
         "option": {
           "blog": "Blog",

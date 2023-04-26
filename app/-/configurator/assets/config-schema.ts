@@ -75,12 +75,12 @@ export const schema: Schema = {
     type: 'string',
     default: '',
   },
-  mode: {
-    description: 'configurator.entry.mode.description',
+  layout: {
+    description: 'configurator.entry.layout.description',
     type: 'select',
     options: [
-      ['blog', 'configurator.entry.mode.option.blog'],
-      ['docs', 'configurator.entry.mode.option.docs'],
+      ['blog', 'configurator.entry.layout.option.blog'],
+      ['docs', 'configurator.entry.layout.option.docs'],
     ],
     default: 'blog',
   },
