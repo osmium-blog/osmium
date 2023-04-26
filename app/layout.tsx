@@ -3,7 +3,7 @@ import { ConfigProvider } from '@/contexts/config'
 import { ThemeProvider } from '@/contexts/theme'
 import { readConfig } from '@/lib/server/config'
 
-export default function RootLayout ({ children }: BasicProps) {
+export default function RootLayout ({ children }: { children: ReactNode }) {
   return (
     <ConfigProvider value={readConfig()}>
       <ThemeProvider>

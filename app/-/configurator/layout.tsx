@@ -1,10 +1,9 @@
-import Link from 'next/link'
-
 export const metadata = {
   title: 'Osmium Configurator',
   description: 'The Osmium config generator',
 }
 
+import Link from 'next/link'
 import Image from 'next/image'
 
 import IMG_LOGO from '@/.github/logo.svg'
@@ -21,7 +20,7 @@ const DEV = process.env.NODE_ENV === 'development'
 
 const config = readConfig()
 
-export default async function ConfiguratorLayout ({ children }: BasicProps) {
+export default async function ConfiguratorLayout ({ children }: { children: ReactNode }) {
   const locale = await loadLocale(config.lang)
 
   return (
