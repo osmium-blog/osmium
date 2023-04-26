@@ -120,7 +120,7 @@ const PACKAGE_FILE = resolve(ROOT, 'package.json')
 async function prepareVersion (): Promise<string | undefined> {
   const pkg = destr(fs.readFileSync(PACKAGE_FILE, 'utf-8'))
   if (!pkg.version) return
-  if (/^\d+\.\d+\.\d+$/.test(pkg.version)) return pkg.version
+  if (/^\d+\.\d+\.\d+/.test(pkg.version)) return pkg.version
 
   // If the version is not a valid semver, try to use current git commit hash instead
   try {
