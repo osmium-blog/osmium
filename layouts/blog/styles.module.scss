@@ -17,7 +17,7 @@
 
 .layout_footer {
   :global(.site-footer-version) {
-    @apply ml-auto;
+    @apply sm:ml-auto;
   }
 }
 
@@ -113,7 +113,7 @@
 }
 
 .post_info {
-  @apply px-4 mt-7 text-neutral-500 dark:text-neutral-400 flex items-start;
+  @apply px-4 mt-7 text-neutral-500 dark:text-neutral-400 flex flex-col sm:flex-row items-start gap-2;
 }
 
 .post_content {

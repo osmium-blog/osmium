@@ -279,17 +279,17 @@ pre[class*='language-'] {
 
 .osmium-list {
   > li {
-    @apply flex items-start;
+    @apply grid grid-cols-[1.5rem_1fr] gap-x-0.5 items-start;
 
     &::before {
-      @apply flex-none w-6 h-6 leading-none mr-0.5 flex justify-center items-center;
+      @apply justify-self-center leading-6 mt-px;
       font-size: 1.5em;
       font-family: Arial;
     }
 
     @at-root {
       .osmium-list-item {
-        @apply flex-1 min-w-0;
+        @apply min-w-0;
       }
     }
   }

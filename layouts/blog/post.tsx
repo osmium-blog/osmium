@@ -30,17 +30,15 @@ export default function PostLayout ({ post, recordMap }: Props) {
         <h1 className={css.post_title}>{title}</h1>
         {type !== 'Page' && (
           <div className={css.post_info}>
-            <div className="flex mb-4">
+            <div className="flex">
               <a href={config.socialLink || '#'} className="flex">
                 <UserAvatar className="rounded-full"/>
                 <p className="ml-2 md:block">{config.author}</p>
               </a>
-              <span className="block">&nbsp;/&nbsp;</span>
+              <span className="hidden sm:block ml-2">/</span>
             </div>
-            <div className="mr-2 mb-4 md:ml-0">
-              <FormattedDate date={date}/>
-            </div>
-            {tags && (
+            <FormattedDate date={date}/>
+            {tags.length && (
               <div className="flex flex-nowrap max-w-full overflow-x-auto article-tags">
                 {tags.map(tag => (
                   <TagItem key={tag} tag={tag}/>
