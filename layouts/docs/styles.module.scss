@@ -116,11 +116,19 @@
 .nav_item_label {
   @apply block py-1 text-sm;
 
+  span {
+    @apply block;
+  }
+
+  &:has(+ ul) {
+    @apply font-bold;
+  }
+
   @at-root span#{&} {
     @apply text-neutral-500 dark:text-neutral-400;
 
     &:has(+ ul) {
-      @apply font-bold uppercase;
+      @apply uppercase;
     }
   }
 

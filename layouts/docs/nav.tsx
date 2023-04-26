@@ -1,15 +1,18 @@
+import { useRouter } from 'next/router'
 import Link from 'next/link'
+import cn from 'classnames'
 
 import css from './styles.module.scss'
 import type { PageMeta } from '@/lib/server/page'
-import cn from 'classnames'
-import { useRouter } from 'next/router'
+import { useData } from '@/contexts/data'
 
 const INDENT = 24
 
 type Node = PageMeta & { children?: Node[] }
 
-export default function LayoutNav ({ pages }: { pages: PageMeta[] }) {
+export default function LayoutNav () {
+  const { current, pages, pageMap } = useData()
+
   type ReduceData = {
     nodeMap: Record<string, Node>
     roots: Node[]
@@ -38,15 +41,28 @@ export default function LayoutNav ({ pages }: { pages: PageMeta[] }) {
     return data
   }, { nodeMap: {}, roots: [] })
 
+  let currentRoot: PageMeta
+  const navNodes: Node[] = current && (currentRoot = getRoot(current, pageMap))
+    ? roots.find(n => n.hash === currentRoot.hash)?.children ?? []
+    : roots.filter(n => ['Post', 'Doc'].includes(n.type!))
+
   return (
     <ul className={css.nav_root}>
-      {roots.map(node => (
+      {navNodes.map(node => (
         <li key={node.id} className={cn(css.nav_item, { [css.nav_group]: node.children?.length })}>
           <NavItem node={node}/>
         </li>
       ))}
     </ul>
   )
+}
+
+function getRoot (page: PageMeta, pageMap: Record<string, PageMeta>): PageMeta {
+  let current = page
+  while (current.parent) {
+    current = pageMap[current.parent]
+  }
+  return current
 }
 
 type NavItemProps = {

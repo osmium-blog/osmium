@@ -7,6 +7,7 @@ export async function action () {
   await db.sync()
   const entries = [...db.all.values()]
   return {
+    /** @deprecated */
     pages: entries.map(page => page.json()),
     pageMap: Object.fromEntries(entries.map(page => [page.id, page.json()])),
     // For in-site navigation

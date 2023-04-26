@@ -6,6 +6,7 @@ import { useData } from '@/contexts/data'
 import SiteNav from '@/components/site-nav'
 import SiteTitle from './site-title'
 import { stopPropa } from '@/lib/utils'
+import { PageMeta } from '@/lib/server/page'
 
 export default function Header ({ className }: BasicProps) {
   function handleClickHeader (ev: MouseEvent) {
@@ -22,19 +23,16 @@ export default function Header ({ className }: BasicProps) {
 
   /* Site Nav */
 
-  const { pages } = useData()
+  const { pages, pageMap } = useData()
   const navItems = pages
     .filter(p => (
       p.type === 'Page' &&
       p.slug !== 'index'
     ))
-    .map(p => {
-      const external = Boolean(parseURL(p.slug).protocol)
-      return {
-        label: p.title,
-        href: external ? p.slug! : '/' + (p.slug || p.hash),
-      }
-    })
+    .map(p => ({
+      label: p.title,
+      href: resolveHref(p, pageMap),
+    }))
 
   return <>
     <div className={className} onClick={handleClickHeader}>
@@ -46,4 +44,33 @@ export default function Header ({ className }: BasicProps) {
       <SiteNav items={navItems} className={css.layout_header_nav}/>
     </div>
   </>
+}
+
+function resolveHref (page: PageMeta, pageMap: Record<string, PageMeta>): string {
+  function getFirstOpenableChild (page: PageMeta): PageMeta | null {
+    for (const id of page.child ?? []) {
+      const p = pageMap[id]
+      if (p.slug || p.hasContent) {
+        return p
+      } else if (p.child?.length) {
+        const found = getFirstOpenableChild(p)
+        if (found) {
+          return found
+        }
+      }
+    }
+    return null
+  }
+
+  // If it's an external link, use it
+  if (parseURL(page.slug).protocol) {
+    return page.slug!
+  }
+  // Otherwise, try to find an openable child
+  let firstOpenableChild: PageMeta | null
+  if (!page.hasContent && (firstOpenableChild = getFirstOpenableChild(page))) {
+    return '/' + (firstOpenableChild.slug || firstOpenableChild.hash)
+  }
+  // Finally, use the page itself no matter what
+  return '/' + (page.slug || page.hash)
 }

@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import Image from 'next/image'
 import { joinURL } from 'ufo'
 
@@ -8,7 +9,7 @@ export default function SiteTitle () {
   const config = useConfig()
 
   return (
-    <div className={css.site_title}>
+    <Link href="/" className={css.site_title}>
       {config.logo && (
         <Image
           src={joinURL(config.path, config.logo)}
@@ -20,6 +21,6 @@ export default function SiteTitle () {
       )}
       <span className={css.site_name}>{config.title}</span>
       <span className={css.site_description}>{config.description}</span>
-    </div>
+    </Link>
   )
 }
