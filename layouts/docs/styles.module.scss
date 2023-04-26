@@ -117,7 +117,7 @@
   @apply block py-1 text-sm;
 
   @at-root span#{&} {
-    @apply text-neutral-500;
+    @apply text-neutral-500 dark:text-neutral-400;
 
     &:has(+ ul) {
       @apply font-bold uppercase;
@@ -198,11 +198,11 @@
 
   @media (min-width: theme('screens.xl')) {
     grid-template:
-      ' .                 title                      .                 info            ' auto
-      ' .                 summary                    .                 info            ' auto
-      ' .                 content                    .                 aside           ' auto
-      ' .                 comments                   .                 .               ' auto
-      / minmax(32px, 1fr) minmax(min-content, 708px) minmax(32px, 1fr) var(--nav-width);
+      ' .                 title            .                 info            ' auto
+      ' .                 summary          .                 info            ' auto
+      ' .                 content          .                 aside           ' auto
+      ' .                 comments         .                 .               ' auto
+      / minmax(32px, 1fr) minmax(0, 708px) minmax(32px, 1fr) var(--nav-width);
   }
 
   > article {
