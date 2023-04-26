@@ -108,8 +108,8 @@
 }
 
 .nav_item {
-  &:has(> .is_active) {
-    @apply -mx-8 px-8 bg-neutral-300/50 dark:bg-neutral-600/50 border-0;
+  .is_active {
+    @apply -mx-8 px-8 bg-neutral-300/50 dark:bg-neutral-600/50;
   }
 }
 

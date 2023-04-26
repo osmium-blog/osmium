@@ -72,7 +72,7 @@ function NavItem ({ node, level = 0 }: NavItemProps) {
     [css.is_active]: router.asPath === href,
     [css.is_external]: isExternal,
   })
-  const style = { paddingLeft: INDENT * level }
+  const indentStyle = { paddingLeft: INDENT * level }
 
   const children = node.children?.length && (
     <ul>
@@ -86,8 +86,12 @@ function NavItem ({ node, level = 0 }: NavItemProps) {
 
   return <>
     {href
-      ? <Link href={href} target={isExternal ? '_blank': undefined} className={className} style={style}>{node.title}</Link>
-      : <span className={className} style={style}>{node.title}</span>
+      ? (
+        <Link href={href} target={isExternal ? '_blank': undefined} className={className}>
+          <span style={indentStyle}>{node.title}</span>
+        </Link>
+      )
+      : <span className={className} style={indentStyle}>{node.title}</span>
     }
     {children}
   </>
