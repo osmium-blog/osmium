@@ -1,6 +1,6 @@
 import { ReactCusdis } from 'react-cusdis'
 import { useRouter } from 'next/router'
-import { useConfig } from '@/lib/config'
+import { useConfig } from '@/contexts/config'
 
 export default function Cusdis ({ config, post }) {
   const router = useRouter()

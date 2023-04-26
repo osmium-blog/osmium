@@ -1,7 +1,11 @@
+type JsonValue = null | number | string | boolean | Record<string, JsonValue> | JsonValue[]
+
+type ReactNode = import('react').ReactNode
+
 type BasicProps = {
   className?: string
   style?: Record<string, number | string>
-  children?: import('react').ReactNode
+  children?: ReactNode
 }
 
 declare namespace Notion {
@@ -15,8 +19,8 @@ declare namespace Block {
 }
 
 declare namespace Osmium {
-  // FIXME: Replace this any
-  type Config = Record<string, any>
+  // FIXME: Replace with actual types
+  type Config = Record<string, JsonValue>
 
   type LocaleData = Record<string, string | LocaleData>
 }

@@ -50,6 +50,12 @@
 
 .notion {
   overflow-wrap: break-word;
+
+  // Remove the top margin of the first content block since it doesn't make sense.
+  // The first and second elements are empty divs, so contents start from the third.
+  > :nth-child(3) {
+    @apply mt-0;
+  }
 }
 
 .notion,
@@ -57,7 +63,6 @@
 .notion-quote,
 .notion-h-title {
   @apply p-0;
-  @apply my-2;
   line-height: var(--no-leading);
 }
 
@@ -147,7 +152,7 @@ pre[class*='language-'] {
 }
 
 .notion-asset-wrapper-image {
-  max-width: 100vw;
+  max-width: calc(100vw - 2rem);
 
   &.notion-asset-wrapper-full {
     @apply max-w-full;
@@ -229,6 +234,10 @@ pre[class*='language-'] {
 }
 
 /* react-notion-x code block */
+
+.notion-code {
+  max-width: calc(100vw - 2rem);
+}
 
 .notion-code-copy {
   top: 10px;

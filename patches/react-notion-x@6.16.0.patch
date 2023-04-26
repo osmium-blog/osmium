@@ -1,7 +1,22 @@
 diff --git a/build/index.js b/build/index.js
-index a18bcfde162936c6f9c95c1387369d9bb43b5fff..69e07f11eb10ba60914bb55cb81fc23a5267f54d 100644
+index a18bcfde162936c6f9c95c1387369d9bb43b5fff..f6b7c4ad799ea7c78c237a77f0bb578c1f2eb74a 100644
 --- a/build/index.js
 +++ b/build/index.js
+@@ -2270,12 +2270,12 @@ var Block = (props) => {
+         className: cs("notion-hr", blockId)
+       });
+     case "text": {
++      const blockColor = (_i = block.format) == null ? void 0 : _i.block_color;
+       if (!block.properties && !((_h = block.content) == null ? void 0 : _h.length)) {
+         return /* @__PURE__ */ React28.createElement("div", {
+-          className: cs("notion-blank", blockId)
++          className: cs("notion-blank", blockColor && `notion-${blockColor}`, blockId)
+         }, "\xA0");
+       }
+-      const blockColor = (_i = block.format) == null ? void 0 : _i.block_color;
+       return /* @__PURE__ */ React28.createElement("div", {
+         className: cs(
+           "notion-text",
 @@ -2606,6 +2606,9 @@ var Block = (props) => {
          className: blockId
        });
