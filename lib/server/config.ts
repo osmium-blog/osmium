@@ -13,6 +13,7 @@ const defu = createDefu((obj, key, value) => {
 })
 const applyDefaults = (raw: JsonValue) => defu(raw, {
   appearance: 'auto',
+  postsPerPage: 7,
   path: '/',
   layout: 'blog',
   ogImageGenerateURL: joinURL(raw.link, raw.path, '/api/og-image?title={title}'),
@@ -26,7 +27,9 @@ const raw = readConfigRaw()
 const config: Osmium.Config = applyDefaults(raw)
 
 // Stripe out some private fields
-const { databaseId, collectionId, email, ...clientConfig } = config
+const { databaseId, collectionId, email, ..._clientConfig } = config
+/** @deprecated */
+const clientConfig = _clientConfig
 
 function readConfigRaw () {
   const raw = JSON.parse(fs.readFileSync(resolve(process.cwd(), 'osmium-config.json'), 'utf-8'))

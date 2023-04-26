@@ -1,7 +1,7 @@
 import type { PageMeta } from '@/lib/server/page'
 import { useConfig } from '@/contexts/config'
 import PostList from '@/components/PostList'
-import Pagination from '@/components/Pagination'
+import Pagination from '@/components/pagination'
 
 type Props = {
   posts: PageMeta[]

@@ -1,51 +1,49 @@
-import { config, clientConfig } from '@/lib/server/config'
+import { readConfigRaw } from '@/lib/server/config'
 import Database from '@/lib/server/database'
 
 import type { InferGetStaticPropsType } from 'next'
 
 import PostList from '@/components/PostList'
-import Pagination from '@/components/Pagination'
+import Pagination from '@/components/pagination'
 
 export async function getStaticPaths () {
+  const config = readConfigRaw()
+
   const db = new Database(config.databaseId)
   await db.sync()
   const posts = [...db.posts.values()].map(post => post.json())
-  const totalPosts = posts.length
-  const totalPages = Math.ceil(totalPosts / clientConfig.postsPerPage)
+  const totalPages = Math.ceil(posts.length / config.postsPerPage)
+
   return {
-    // remove first page, we 're not gonna handle that.
-    paths: Array.from({ length: totalPages - 1 }, (_, i) => ({
-      params: { page: '' + (i + 2) },
+    paths: Array.from({ length: totalPages }, (_, idx) => ({
+      params: { page: String(idx + 1) },
     })),
     fallback: true,
   }
 }
 
 export async function getStaticProps ({ params: { page } }: { params: Record<string, string> }) {
+  const config = readConfigRaw()
+
   const pageNum = +page
 
   const db = new Database(config.databaseId)
   await db.sync()
-  const posts = [...db.posts.values()].map(post => post.json())
-  const postsToShow = posts.slice(
-    clientConfig.postsPerPage * (pageNum - 1),
-    clientConfig.postsPerPage * pageNum,
-  )
-  const totalPosts = posts.length
-  const showNext = pageNum * clientConfig.postsPerPage < totalPosts
+  const posts = [...db.posts.values()]
+    .slice(...[pageNum - 1, pageNum].map(n => n * config.postsPerPage))
+    .map(p => p.json())
+  console.log(db.posts.size, config.postsPerPage, posts.length)
+  const showNext = db.posts.size > pageNum * config.postsPerPage
+
   return {
-    props: {
-      page: pageNum, // Current Page
-      postsToShow,
-      showNext,
-    },
+    props: { posts, pageNum, showNext },
     revalidate: 1,
   }
 }
 
-export default function PagePage ({ postsToShow, page, showNext }: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function PagePage ({ posts, pageNum, showNext }: InferGetStaticPropsType<typeof getStaticProps>) {
   return <>
-    <PostList posts={postsToShow}/>
-    <Pagination page={page} showNext={showNext}/>
+    <PostList posts={posts}/>
+    <Pagination page={pageNum} showNext={showNext}/>
   </>
 }

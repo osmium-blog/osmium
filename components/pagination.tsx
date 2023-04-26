@@ -28,9 +28,9 @@ export default function Pagination ({ page, showNext }: Props) {
   }
 
   return (
-    <div className={cn('flex font-medium text-black dark:text-gray-100', additionalClassName)}>
+    <div className={cn('flex mt-5 font-medium text-black dark:text-gray-100', additionalClassName)}>
       {currentPage !== 1 && (
-        <Link href={currentPage - 1 === 1 ? `${config.path || '/'}` : `/page/${currentPage - 1}`}>
+        <Link href={`/page/${currentPage - 1}`}>
           <button rel="prev" className="block cursor-pointer">
             ← {locale.PAGINATION.PREV}
           </button>

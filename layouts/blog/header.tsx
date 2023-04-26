@@ -46,9 +46,12 @@ export default function Header ({ title, fullWidth = false, className }: Props) 
   const locale = useLocale()
   const { pages } = useData()
   const navItems = [
-    { label: locale.NAV.INDEX, href: '/' },
+    { label: locale.NAV.INDEX, href: '/page/1' },
     ...pages
-      .filter(p => p.type === 'Page')
+      .filter(p => (
+        p.type === 'Page' &&
+        p.slug !== 'index'
+      ))
       .map(p => {
         const external = Boolean(parseURL(p.slug).protocol)
         return {

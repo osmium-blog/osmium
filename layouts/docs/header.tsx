@@ -24,7 +24,10 @@ export default function Header ({ className }: BasicProps) {
 
   const { pages } = useData()
   const navItems = pages
-    .filter(p => p.type === 'Page')
+    .filter(p => (
+      p.type === 'Page' &&
+      p.slug !== 'index'
+    ))
     .map(p => {
       const external = Boolean(parseURL(p.slug).protocol)
       return {
