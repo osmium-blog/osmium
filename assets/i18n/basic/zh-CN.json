@@ -21,5 +21,15 @@
     "ERROR_404": {
       "MESSAGE": "什么也没有"
     }
+  },
+  "THEME": {
+    "LIGHT": "亮色主题",
+    "DARK": "暗色主题",
+    "SYSTEM": "跟随系统"
+  },
+  "DOCS": {
+    "POST": {
+      "LAST_UPDATE": "最后更新"
+    }
   }
 }

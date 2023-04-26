@@ -91,6 +91,8 @@ function ThemeSwitch ({ className }: BasicProps) {
     toggleMenu(false)
   }
 
+  const locale = useLocale()
+
   return (
     <li ref={root} data-theme={theme} className={cn(className, 'site-theme-switch')}>
       <button type="button" onClick={stopPropa(() => toggleMenu())}>
@@ -100,19 +102,19 @@ function ThemeSwitch ({ className }: BasicProps) {
         <li data-theme="light" data-active={theme === 'light' || null}>
           <button type="button" onClick={() => setTheme('light')}>
             <i/>
-            <span>Light</span>
+            <span>{locale.THEME.LIGHT}</span>
           </button>
         </li>
         <li data-theme="dark" data-active={theme === 'dark' || null}>
           <button type="button" onClick={() => setTheme('dark')}>
             <i/>
-            <span>Dark</span>
+            <span>{locale.THEME.DARK}</span>
           </button>
         </li>
         <li data-theme="system" data-active={theme === 'system' || null}>
           <button type="button" onClick={() => setTheme('system')}>
             <i/>
-            <span>System</span>
+            <span>{locale.THEME.SYSTEM}</span>
           </button>
         </li>
       </ul>

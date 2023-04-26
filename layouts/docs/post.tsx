@@ -3,6 +3,7 @@ import type { ExtendedRecordMap } from 'notion-types'
 import css from './styles.module.scss'
 import type { PageMeta } from '@/lib/server/page'
 import { useTheme } from '@/contexts/theme'
+import { useLocale } from '@/contexts/locale'
 import NotionRenderer from '@/components/NotionRenderer'
 import TableOfContents from '@/components/TableOfContents'
 import FormattedDate from '@/components/FormattedDate'
@@ -15,6 +16,7 @@ type Props = {
 
 export default function SlugLayout ({ post, recordMap }: Props) {
   const { scheme } = useTheme()
+  const locale = useLocale()
 
   const { title, type, date, tags } = post
 
@@ -25,7 +27,7 @@ export default function SlugLayout ({ post, recordMap }: Props) {
         {post.summary && <p className={css.post_summary}>{post.summary}</p>}
         <div className={css.post_info}>
           <div className={css.post_update_time}>
-            <span>Last update:&nbsp;</span>
+            <span>{locale.DOCS.POST.LAST_UPDATE}:&nbsp;</span>
             <FormattedDate date={date}/>
           </div>
         </div>
