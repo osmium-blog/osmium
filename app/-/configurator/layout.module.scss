@@ -1,0 +1,52 @@
+.layout {
+  @apply min-h-screen flex flex-col;
+
+  > header {
+    @apply p-4 flex items-center sticky top-0 z-10 bg-day/80 dark:bg-night/80 backdrop-blur-lg border-b border-neutral-300 dark:border-neutral-600;
+
+    button {
+      @apply ml-auto;
+    }
+  }
+
+  > footer {
+    @apply p-4 mt-auto text-center text-neutral-500 dark:text-neutral-400 border-t border-neutral-300 dark:border-neutral-600;
+  }
+}
+
+.layout_title {
+  @apply text-lg font-semibold text-black dark:text-white;
+
+  a {
+    @apply grid grid-cols-[auto_auto] grid-rows-1 items-center gap-2;
+
+    * {
+      @apply row-start-1;
+    }
+  }
+
+  span {
+    @apply max-sm:hidden;
+  }
+
+  @at-root {
+    .layout_title_name,
+    .layout_title_back {
+      @apply col-start-2;
+    }
+
+    .layout_title_back {
+      @apply invisible;
+    }
+
+    .layout_title:hover {
+      .layout_title_name {
+        @apply invisible;
+      }
+
+      .layout_title_back {
+        @apply visible;
+      }
+    }
+  }
+}

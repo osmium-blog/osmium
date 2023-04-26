@@ -1,0 +1,156 @@
+{
+  "configurator": {
+    "description": "这是用于生成 Osmium 配置数据的编辑器。<strong>它不能自动更新你的站点配置。</strong>你需要手动复制并粘贴它生成的内容到你的站点配置文件中。",
+    "action": {
+      "generate": "复制配置数据"
+    },
+    "entry": {
+      "title": {
+        "description": "站点标题"
+      },
+      "description": {
+        "description": "站点描述，会显示在站点标题旁边"
+      },
+      "link": {
+        "description": "站点网址"
+      },
+      "since": {
+        "description": "站点创建年份"
+      },
+      "footerText": {
+        "description": "站点页脚说明文本，使用说明请见<a href=\"https://osmium-blog.vercel.app/osmium-v1.1-zh#d43e9a909bfd4bd0a0d9323317dbf48f\" target=\"_blank\">这里</a>"
+      },
+      "author": {
+        "description": "作者名称"
+      },
+      "email": {
+        "description": "作者邮箱，会决定 Gravatar 返回的头像"
+      },
+      "socialLink": {
+        "description": "作者的社交账号链接，会成为作者头像的链接地址"
+      },
+      "mode": {
+        "description": "布局模式",
+        "option": {
+          "blog": "博客",
+          "docs": "文档"
+        }
+      },
+      "lang": {
+        "description": "站点语言"
+      },
+      "timezone": {
+        "description": "站点时区，会决定文章时间的时区（需使用 IANA 标识符格式）"
+      },
+      "appearance": {
+        "description": "站点外观",
+        "option": {
+          "auto": "自动",
+          "light": "亮色主题",
+          "dark": "暗色主题"
+        }
+      },
+      "font": {
+        "description": "站点字体",
+        "option": {
+          "sans": "非衬线体",
+          "serif": "衬线体"
+        }
+      },
+      "lightBackground": {
+        "description": "亮色模式背景色"
+      },
+      "darkBackground": {
+        "description": "暗色模式背景色"
+      },
+      "postsPerPage": {
+        "description": "文章列表每页文章数"
+      },
+      "sortByDate": {
+        "description": "按日期排序"
+      },
+      "path": {
+        "description": "站点根路径，如果你想把站点挂载到其他站点的某个路径下则需要填写此项"
+      },
+      "ogImageGenerateURL": {
+        "description": "OG 图像生成服务地址（结尾不要加斜线）"
+      },
+      "rss": {
+        "description": "启用 RSS"
+      },
+      "seo": {
+        "description": "SEO 配置",
+        "keywords": {
+          "description": "站点关键词，使用英文逗号分隔多个关键词"
+        },
+        "googleSiteVerification": {
+          "description": "Google 站点验证码"
+        }
+      },
+      "analytics": {
+        "description": "流量统计工具配置",
+        "provider": {
+          "description": "流量统计工具",
+          "option": {
+            "null": "不使用",
+            "vercel": "Vercel（无需配置）"
+          }
+        },
+        "ackee": {
+          "description": "Ackee 配置",
+          "tracker": {
+            "description": "追踪器地址"
+          },
+          "dataAckeeServer": {
+            "description": "追踪服务器地址（结尾不要加斜线）"
+          }
+        },
+        "ga": {
+          "description": "Google Analytics 配置",
+          "measurementId": {
+            "description": "G-Tag"
+          }
+        }
+      },
+      "comment": {
+        "description": "评论工具配置",
+        "provider": {
+          "description": "评论工具",
+          "option": {
+            "null": "不使用"
+          }
+        },
+        "gitalk": {
+          "description": "Gitalk 配置",
+          "repo": {
+            "description": "仓库名"
+          },
+          "owner": {
+            "description": "仓库所有者"
+          },
+          "admin": {
+            "description": "管理员"
+          },
+          "distractionFreeMode": {
+            "description": "启用无干扰模式"
+          }
+        },
+        "utterances": {
+          "description": "Utterances 配置",
+          "repo": {
+            "description": "仓库名"
+          }
+        },
+        "cusdis": {
+          "description": "Cusdis 配置",
+          "host": {
+            "description": "服务地址，仅在使用自托管服务时需要修改"
+          },
+          "scriptSrc": {
+            "description": "脚本地址，仅在使用自托管服务时需要修改"
+          }
+        }
+      }
+    }
+  }
+}
