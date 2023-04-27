@@ -31,7 +31,7 @@ export default function SiteTitle ({ pageTitle }: Props) {
         {pageTitle && <span className="page-title">{pageTitle}</span>}
         <span className="site-title">
           <span className="site-name">{config.title}</span>
-          <span className="site-description">{config.description}</span>
+          {config.description && <span className="site-description">{config.description}</span>}
         </span>
       </span>
     </Link>

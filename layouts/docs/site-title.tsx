@@ -20,7 +20,7 @@ export default function SiteTitle () {
         />
       )}
       <span className={css.site_name}>{config.title}</span>
-      <span className={css.site_description}>{config.description}</span>
+      {config.description && <span className={`site-description ${css.site_description}`}>{config.description}</span>}
     </Link>
   )
 }

@@ -102,6 +102,8 @@
 
 .site_description {
   @apply hidden lg:inline truncate;
+  // TODO: Move blog layout styles to CSS modules to avoid overriding
+  @apply opacity-100 #{!important};
   @apply before:content-[',_'] font-normal text-neutral-600 dark:text-neutral-300;
 }
 
