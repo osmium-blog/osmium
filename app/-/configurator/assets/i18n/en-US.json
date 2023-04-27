@@ -1,6 +1,6 @@
 {
   "configurator": {
-    "description": "This is an editor for generating Osmium configuration data. <strong>It cannot automatically update your site configuration.</strong> You need to manually copy and paste the content it generates into your site configuration file.",
+    "description": "This is an editor for generating Osmium site configuration. <strong>It cannot automatically update the configuration of your site.</strong> You need to manually copy the content it generates into the code block in your Config page.",
     "action": {
       "generate": "Copy configuration"
     },
@@ -21,13 +21,13 @@
         "description": "Site footer text. For detail usage, see <a href=\"https://osmium-blog.vercel.app/osmium-v1.1#f5c9e1c2b39a45cca68f832c1e225bc4\" target=\"_blank\">here</a>"
       },
       "author": {
-        "description": "Author name"
+        "description": "Post author name"
       },
       "email": {
-        "description": "Author email, will determine the avatar returned by Gravatar"
+        "description": "Post author email, will determine the avatar returned by Gravatar"
       },
       "socialLink": {
-        "description": "Author’s social account link, will become the link address of the author’s avatar"
+        "description": "Post author’s social account link, will become the link address of the author’s avatar"
       },
       "layout": {
         "description": "Site layout",
@@ -37,7 +37,7 @@
         }
       },
       "lang": {
-        "description": "Site language"
+        "description": "Site language, deciding the language of built-in UI texts"
       },
       "timezone": {
         "description": "Site time zone, will determine the time zone of article time (using IANA identifier format)"
@@ -73,7 +73,7 @@
         "description": "Site root path. If you want to mount the site under a certain path of another site, you need to fill in this item."
       },
       "ogImageGenerateURL": {
-        "description": "OG image generation service address (don’t add a slash at the end)"
+        "description": "OG image generation service address"
       },
       "rss": {
         "description": "Enable RSS"

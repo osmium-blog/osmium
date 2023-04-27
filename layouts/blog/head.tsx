@@ -18,7 +18,7 @@ export default function LayoutHead ({ post = {} as PageMeta }: Props) {
     config.ogImageGenerateURL === 'https://og-image-craigary.vercel.app'
       // Backward compatibility
       // TODO: remove in v2.0
-      ? `${config.ogImageGenerateURL}/${encodeURIComponent(title)}.png?theme=dark&md=1&fontSize=125px&images=https%3A%2F%2Fnobelium.vercel.app%2Flogo-for-dark-bg.svg`
+      ? joinURL(config.ogImageGenerateURL, `${encodeURIComponent(title)}.png?theme=dark&md=1&fontSize=125px&images=https%3A%2F%2Fnobelium.vercel.app%2Flogo-for-dark-bg.svg`)
       : execTemplate(config.ogImageGenerateURL, { title })
   )
 
