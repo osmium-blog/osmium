@@ -11,7 +11,7 @@
     color-scheme: light dark;
     color: #37352f;
 
-    @media (prefers-color-scheme: dark) {
+    &.dark {
       color: #ffffffcf;
     }
   }
