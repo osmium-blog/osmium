@@ -54,7 +54,7 @@ MyApp.getInitialProps = async ctx => {
     : await import('@/pages/api/data').then(module => module.action())
 
   return {
-    ...App.getInitialProps(ctx),
+    ...await App.getInitialProps(ctx),
     config,
     locale,
     data,
