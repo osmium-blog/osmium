@@ -129,11 +129,12 @@ export const schema: Schema = {
     type: 'number',
     default: 7,
   },
-  sortByDate: {
-    description: 'configurator.entry.sortByDate.description',
-    type: 'boolean',
-    default: false,
-  },
+  // TODO: Reimplement this in the future
+  // sortByDate: {
+  //   description: 'configurator.entry.sortByDate.description',
+  //   type: 'boolean',
+  //   default: false,
+  // },
   path: {
     description: 'configurator.entry.path.description',
     type: 'string',
