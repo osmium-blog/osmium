@@ -19,7 +19,7 @@ export default function LayoutHead ({ post = {} as PageMeta }: Props) {
       // Backward compatibility
       // TODO: remove in v2.0
       ? joinURL(config.ogImageGenerateURL, `${encodeURIComponent(title)}.png?theme=dark&md=1&fontSize=125px&images=https%3A%2F%2Fnobelium.vercel.app%2Flogo-for-dark-bg.svg`)
-      : execTemplate(config.ogImageGenerateURL, { title })
+      : execTemplate(config.ogImageGenerateURL, { title: encodeURIComponent(title) })
   )
 
   return (
