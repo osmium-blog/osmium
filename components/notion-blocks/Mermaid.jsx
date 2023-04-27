@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import mermaid from 'mermaid'
-import useTheme from '@/lib/theme'
+import { useTheme } from '@/contexts/theme'
 import { getTextContent } from 'notion-utils'
 
 export default function Mermaid ({ block }) {
-  const { dark } = useTheme()
+  const { scheme } = useTheme()
 
   useEffect(() => {
-    mermaid.initialize({ theme: dark ? 'dark' : 'neutral' })
-  }, [dark])
+    mermaid.initialize({ theme: scheme === 'dark' ? 'dark' : 'neutral' })
+  }, [scheme])
 
   const source = getTextContent(block.properties.title)
   const container = useRef(null)

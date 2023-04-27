@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { useConfig } from '@/lib/config'
+import { useConfig } from '@/contexts/config'
 
 export default function Utterances ({ config, post }) {
   const { appearance } = useConfig()

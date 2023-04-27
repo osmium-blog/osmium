@@ -1,3 +1,7 @@
 {
-  "recommendations": ["EditorConfig.EditorConfig"]
+  "recommendations": [
+    "EditorConfig.EditorConfig",
+    "seatonjiang.gitmoji-vscode",
+    "bradensawatsky.helpers-for-tailwindcss"
+  ]
 }

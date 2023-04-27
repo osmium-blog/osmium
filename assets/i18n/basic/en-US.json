@@ -21,5 +21,15 @@
     "ERROR_404": {
       "MESSAGE": "Nothing here"
     }
+  },
+  "THEME": {
+    "LIGHT": "Light",
+    "DARK": "Dark",
+    "SYSTEM": "System"
+  },
+  "DOCS": {
+    "POST": {
+      "LAST_UPDATE": "Last update"
+    }
   }
 }

@@ -1,3 +1,5 @@
+import type { UIEvent } from 'react'
+
 /**
  * A simplified version of `Lodash.get()`
  */
@@ -43,4 +45,24 @@ export function clone<O> (obj: O): O {
  */
 export function execTemplate (template: string, vars: Record<string, string>): string {
   return template.replaceAll(/\{(\S+?)}/g, (_, p) => vars[p] || p)
+}
+
+/**
+ * Auto-call `.preventDefault()`
+ */
+export function prevent<E extends UIEvent> (cb: (ev: E) => any) {
+  return (ev: E) => {
+    ev.preventDefault()
+    cb(ev)
+  }
+}
+
+/**
+ * Auto-call `.stopPropagation()`
+ */
+export function stopPropa<E extends UIEvent> (cb: (ev: E) => any) {
+  return (ev: E) => {
+    ev.stopPropagation()
+    cb(ev)
+  }
 }

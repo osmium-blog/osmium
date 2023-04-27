@@ -1,0 +1,156 @@
+{
+  "configurator": {
+    "description": "This is an editor for generating Osmium site configuration. <strong>It cannot automatically update the configuration of your site.</strong> You need to manually copy the content it generates into the code block in your Config page.",
+    "action": {
+      "generate": "Copy configuration"
+    },
+    "entry": {
+      "title": {
+        "description": "Site title"
+      },
+      "description": {
+        "description": "Site description, will be displayed next to the site title"
+      },
+      "link": {
+        "description": "Site URL"
+      },
+      "since": {
+        "description": "Site creation year"
+      },
+      "footerText": {
+        "description": "Site footer text. For detail usage, see <a href=\"https://osmium-blog.vercel.app/osmium-v1.1#f5c9e1c2b39a45cca68f832c1e225bc4\" target=\"_blank\">here</a>"
+      },
+      "author": {
+        "description": "Post author name"
+      },
+      "email": {
+        "description": "Post author email, will determine the avatar returned by Gravatar"
+      },
+      "socialLink": {
+        "description": "Post author’s social account link, will become the link address of the author’s avatar"
+      },
+      "layout": {
+        "description": "Site layout",
+        "option": {
+          "blog": "Blog",
+          "docs": "Documentation"
+        }
+      },
+      "lang": {
+        "description": "Site language, deciding the language of built-in UI texts"
+      },
+      "timezone": {
+        "description": "Site time zone, will determine the time zone of article time (using IANA identifier format)"
+      },
+      "appearance": {
+        "description": "Site appearance",
+        "option": {
+          "auto": "Auto",
+          "light": "Light theme",
+          "dark": "Dark theme"
+        }
+      },
+      "font": {
+        "description": "Site font<br>Configurator does not support custom font at the moment. Please modify the generated JSON manually if needed",
+        "option": {
+          "sans": "Sans-serif",
+          "serif": "Serif"
+        }
+      },
+      "lightBackground": {
+        "description": "Light mode background color"
+      },
+      "darkBackground": {
+        "description": "Dark mode background color"
+      },
+      "postsPerPage": {
+        "description": "Number of articles per page in article list"
+      },
+      "sortByDate": {
+        "description": "Sort by date"
+      },
+      "path": {
+        "description": "Site root path. If you want to mount the site under a certain path of another site, you need to fill in this item."
+      },
+      "ogImageGenerateURL": {
+        "description": "OG image generation service address"
+      },
+      "rss": {
+        "description": "Enable RSS"
+      },
+      "seo": {
+        "description": "SEO configuration",
+        "keywords": {
+          "description": "Site keywords, separated by commas"
+        },
+        "googleSiteVerification": {
+          "description": "Google site verification code"
+        }
+      },
+      "analytics": {
+        "description": "Traffic statistics tool configuration",
+        "provider": {
+          "description": "Traffic statistics tool",
+          "option": {
+            "null": "Disabled",
+            "vercel": "Vercel (No config needed)"
+          }
+        },
+        "ackee": {
+          "description": "Ackee configuration",
+          "tracker": {
+            "description": "Tracker address"
+          },
+          "dataAckeeServer": {
+            "description": "Tracking server address (don’t add a slash at the end)"
+          }
+        },
+        "ga": {
+          "description": "Google Analytics configuration",
+          "measurementId": {
+            "description": "G-Tag"
+          }
+        }
+      },
+      "comment": {
+        "description": "Comment tool configuration",
+        "provider": {
+          "description": "Comment tool",
+          "option": {
+            "null": "Disabled"
+          }
+        },
+        "gitalk": {
+          "description": "Gitalk configuration",
+          "repo": {
+            "description": "Repository name"
+          },
+          "owner": {
+            "description": "Repository owner"
+          },
+          "admin": {
+            "description": "Administrator"
+          },
+          "distractionFreeMode": {
+            "description": "Enable distraction-free mode"
+          }
+        },
+        "utterances": {
+          "description": "Utterances configuration",
+          "repo": {
+            "description": "Repository name"
+          }
+        },
+        "cusdis": {
+          "description": "Cusdis configuration",
+          "host": {
+            "description": "Service address, only need to modify when using self-hosted service"
+          },
+          "scriptSrc": {
+            "description": "Script address, only need to modify when using self-hosted service"
+          }
+        }
+      }
+    }
+  }
+}
