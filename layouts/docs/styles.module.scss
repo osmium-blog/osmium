@@ -78,7 +78,7 @@
 }
 
 .layout_page {
-  @apply flex flex-col transition duration-200;
+  @apply flex flex-col min-w-0 transition duration-200;
 
   @at-root .layout[data-layout-menu-open] & {
     @apply blur lg:blur-0;
@@ -179,7 +179,7 @@
 /* Site Footer */
 
 .layout_footer {
-  @apply mt-auto px-4;
+  @apply mt-auto w-full px-4;
   margin-right: var(--nav-width);
 
   > div {
@@ -188,7 +188,7 @@
   }
 
   @media (min-width: theme('screens.xl')) {
-    @apply grid px-0;
+    @apply grid px-0 w-auto;
     grid-template:
       ' .                 content                    .                ' auto
       / minmax(32px, 1fr) minmax(max-content, 708px) minmax(32px, 1fr);
