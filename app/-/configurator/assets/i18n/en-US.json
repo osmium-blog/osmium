@@ -51,7 +51,7 @@
         }
       },
       "font": {
-        "description": "Site font",
+        "description": "Site font<br>Configurator does not support custom font at the moment. Please modify the generated JSON manually if needed",
         "option": {
           "sans": "Sans-serif",
           "serif": "Serif"

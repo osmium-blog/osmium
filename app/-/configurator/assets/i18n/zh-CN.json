@@ -51,7 +51,7 @@
         }
       },
       "font": {
-        "description": "站点字体",
+        "description": "站点字体<br>Configurator 暂不支持自定义字体，若有需要请在生成 JSON 内容后手动修改",
         "option": {
           "sans": "非衬线体",
           "serif": "衬线体"

@@ -107,6 +107,7 @@ export const schema: Schema = {
   },
   font: {
     description: 'configurator.entry.font.description',
+    richText: true,
     type: 'select',
     options: [
       ['sans-serif', 'configurator.entry.font.option.sans'],
