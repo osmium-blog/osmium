@@ -7,13 +7,14 @@ import type { PageMeta } from '@/lib/server/page'
 import { useConfig } from '@/contexts/config'
 import type { Props as SearchLayoutProps } from '@/layouts/blog/search'
 
+const requireLayoutRoot = (require as any).context('@/layouts', true, /^\.\/\w+\/root\.tsx$/)
 const requireLayout = (require as any).context('@/layouts', true, /^\.\/\w+\/(root|index|post|search)\.tsx$/, 'lazy')
 const loadLayout = (name: string) => {
   const _require = (key: string) => requireLayout.keys().includes(key)
     ? requireLayout(key)
     : Promise.resolve(() => null)
   return {
-    Root: dynamic<BasicProps>(() => requireLayout(`./${name}/root.tsx`)),
+    Root: requireLayoutRoot(`./${name}/root.tsx`).default,
     Index: dynamic<Partial<{
       posts: PageMeta[]
       total: number

@@ -15,8 +15,6 @@ type Params = {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  if (process.env.NODE_ENV === 'development') return { paths: [], fallback: true }
-
   const db = new Database()
   await db.sync()
   // TODO: Pre-building only latest posts should be enough
