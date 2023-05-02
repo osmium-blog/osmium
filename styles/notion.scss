@@ -66,6 +66,10 @@
   line-height: var(--no-leading);
 }
 
+.notion-text + .notion-text {
+  @apply mt-3;
+}
+
 .notion-page-link {
   color: inherit;
 }
