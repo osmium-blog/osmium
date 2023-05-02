@@ -29,10 +29,15 @@
 
 .layout_header_burger {
   @apply w-6 h-6 mr-4;
+  @apply hidden;
   background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"%3E%3Cpath d="M3 4H21V6H3V4ZM3 11H21V13H3V11ZM3 18H21V20H3V18Z" fill="%23a3a3a3"%3E%3C/path%3E%3C/svg%3E');
 
+  @at-root .layout_header:has(+ .layout_main .layout_nav ul) & {
+    @apply block;
+  }
+
   @media (min-width: theme('screens.lg')) {
-    @apply hidden;
+    @apply hidden #{!important};
   }
 }
 
