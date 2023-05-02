@@ -1,3 +1,5 @@
+@use '../assets/icons';
+
 /* NOTION CSS OVERRIDE */
 
 :root {
@@ -248,21 +250,7 @@ pre[class*='language-'] {
 }
 
 .notion-code-copy {
-  top: 10px;
-  right: 10px;
-}
-
-.notion-code-copy-button {
-  padding: 5px;
-
-  svg {
-    @apply w-4 h-4;
-  }
-
-  @at-root .dark & {
-    color: inherit;
-    background: #424242;
-  }
+  @apply hidden #{!important};
 }
 
 @import './prismjs.scss';
@@ -389,5 +377,43 @@ pre[class*='language-'] {
 
   @at-root .osmium-quote-large {
     font-size: 1.2em;
+  }
+}
+
+/* Code block */
+
+.osmium-code {
+  @apply mt-2 p-0 relative;
+
+  .copy-button {
+    @apply p-1 bg-transparent hover:bg-white dark:hover:bg-black rounded;
+    @apply absolute top-2.5 right-2.5;
+
+    i {
+      @apply block w-5 h-5 bg-contain;
+      @include icons.copy(black, white);
+    }
+
+    &[data-success] i {
+      @include icons.check(black, white);
+    }
+
+    @media (hover: hover) {
+      @apply invisible;
+
+      @at-root .osmium-code:hover .copy-button {
+        @apply visible;
+      }
+    }
+  }
+
+  > pre {
+    @apply static;
+    @apply m-0 #{!important};
+    padding-top: calc(28px + 12px) !important;
+
+    @media (hover: hover) {
+      padding-top: 1em !important;
+    }
   }
 }
