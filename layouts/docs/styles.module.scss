@@ -1,3 +1,5 @@
+@use '@/assets/icons';
+
 .layout {
   --nav-width: 300px;
 
@@ -28,11 +30,20 @@
 }
 
 .layout_header_burger {
-  @apply w-6 h-6 mr-4;
-  background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"%3E%3Cpath d="M3 4H21V6H3V4ZM3 11H21V13H3V11ZM3 18H21V20H3V18Z" fill="%23a3a3a3"%3E%3C/path%3E%3C/svg%3E');
+  @apply w-6 h-6 mr-4 justify-center items-center;
+  @apply hidden;
+
+  i {
+    @apply inline-block w-5 h-5 bg-contain;
+    @include icons.menu-2(black, white);
+  }
+
+  @at-root .layout_header:has(+ .layout_main .layout_nav ul) & {
+    @apply flex;
+  }
 
   @media (min-width: theme('screens.lg')) {
-    @apply hidden;
+    @apply hidden #{!important};
   }
 }
 
