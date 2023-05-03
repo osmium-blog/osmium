@@ -85,7 +85,7 @@
   @apply fixed inset-0 top-[64px] z-10 overflow-y-auto bg-day dark:bg-night border-r border-neutral-200 dark:border-neutral-700;
   width: var(--nav-width);
   max-width: 100vw;
-  height: calc(100vh - 65px);
+  height: calc(100% - 65px);
 }
 
 .layout_page {
