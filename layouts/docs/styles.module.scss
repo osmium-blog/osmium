@@ -30,16 +30,15 @@
 }
 
 .layout_header_burger {
-  @apply w-6 h-6 mr-4 justify-center items-center;
-  @apply hidden;
+  @apply w-6 h-6 mr-4 flex justify-center items-center;
 
   i {
     @apply inline-block w-5 h-5 bg-contain;
     @include icons.menu-2(black, white);
   }
 
-  @at-root .layout_header:has(+ .layout_main .layout_nav ul) & {
-    @apply flex;
+  @at-root .layout[data-no-nav] & {
+    @apply hidden;
   }
 
   @media (min-width: theme('screens.lg')) {
@@ -57,6 +56,14 @@
   @at-root {
     .layout_nav {
       @apply hidden;
+
+      @at-root .layout[data-layout-menu-open] & {
+        @apply block;
+      }
+
+      @media (min-width: theme('screens.lg')) {
+        @apply block;
+      }
     }
 
     .layout_page {
@@ -67,18 +74,6 @@
       }
     }
   }
-
-  &:has(.nav_root) {
-    .layout_nav {
-      @at-root .layout[data-layout-menu-open] & {
-        @apply block;
-      }
-
-      @media (min-width: theme('screens.lg')) {
-        @apply block;
-      }
-    }
-  }
 }
 
 .layout_nav {
@@ -86,6 +81,10 @@
   width: var(--nav-width);
   max-width: 100vw;
   height: calc(100% - 65px);
+
+  @at-root .layout[data-no-nav] & {
+    @apply hidden #{!important};
+  }
 }
 
 .layout_page {
@@ -137,14 +136,14 @@
     @apply block;
   }
 
-  &:has(+ ul) {
+  [data-is-group] > & {
     @apply font-bold;
   }
 
   @at-root span#{&} {
     @apply text-neutral-500 dark:text-neutral-400;
 
-    &:has(+ ul) {
+    [data-is-group] > & {
       @apply uppercase;
     }
   }
@@ -167,7 +166,7 @@
   }
 }
 
-.nav_group {
+.nav_root > [data-is-group] {
   @apply my-4;
 
   ul {
