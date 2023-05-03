@@ -106,9 +106,9 @@ function NavItem ({ node, level = 0 }: NavItemProps) {
   })
   const indentStyle = { paddingLeft: INDENT * level }
 
-  const children = node.children?.length && (
+  const children = node.children?.length! > 0 && (
     <ul>
-      {node.children.map(child => (
+      {node.children!.map(child => (
         <li
           key={child.id}
           data-is-group={child.children?.length ? 'true' : null}
