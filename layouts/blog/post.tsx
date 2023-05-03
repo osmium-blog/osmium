@@ -38,7 +38,7 @@ export default function PostLayout ({ post, recordMap }: Props) {
               <span className="hidden sm:block ml-2">/</span>
             </div>
             <FormattedDate date={date}/>
-            {tags.length && (
+            {tags.length > 0 && (
               <div className="flex flex-nowrap max-w-full overflow-x-auto article-tags">
                 {tags.map(tag => (
                   <TagItem key={tag} tag={tag}/>

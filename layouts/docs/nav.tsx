@@ -1,3 +1,4 @@
+import { useEffect, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import cn from 'classnames'
@@ -5,6 +6,7 @@ import cn from 'classnames'
 import css from './styles.module.scss'
 import type { PageMeta } from '@/lib/server/page'
 import { useData } from '@/contexts/data'
+import { useLayoutState } from '@/layouts/docs/root'
 
 const INDENT = 24
 
@@ -41,17 +43,29 @@ export default function LayoutNav () {
     return data
   }, { nodeMap: {}, roots: [] })
 
-  let currentRoot: PageMeta
-  const navNodes: Node[] = current && (currentRoot = getRoot(current, pageMap))
-    ? roots.find(n => n.hash === currentRoot.hash)?.children ?? []
-    : roots.filter(n => ['Post', 'Doc'].includes(n.type!))
+  const navNodes = useMemo(() => {
+    let currentRoot: PageMeta
+    return current && (currentRoot = getRoot(current, pageMap))
+      ? roots.find(n => n.hash === currentRoot.hash)?.children ?? []
+      : roots.filter(n => ['Post', 'Doc'].includes(n.type!))
+  }, [current, pageMap, roots])
+
+  const { hasNav } = useLayoutState()
+
+  useEffect(() => {
+    hasNav(navNodes.length > 0)
+  }, [hasNav, navNodes])
 
   if (!navNodes.length) return null
 
   return (
     <ul className={css.nav_root}>
       {navNodes.map(node => (
-        <li key={node.id} className={cn(css.nav_item, { [css.nav_group]: node.children?.length })}>
+        <li
+          key={node.id}
+          data-is-group={node.children?.length ? 'true' : null}
+          className={css.nav_item}
+        >
           <NavItem node={node}/>
         </li>
       ))}
@@ -92,10 +106,14 @@ function NavItem ({ node, level = 0 }: NavItemProps) {
   })
   const indentStyle = { paddingLeft: INDENT * level }
 
-  const children = node.children?.length && (
+  const children = node.children?.length! > 0 && (
     <ul>
-      {node.children.map(child => (
-        <li key={child.id} className={css.nav_item}>
+      {node.children!.map(child => (
+        <li
+          key={child.id}
+          data-is-group={child.children?.length ? 'true' : null}
+          className={css.nav_item}
+        >
           <NavItem node={child} level={level + 1}/>
         </li>
       ))}

@@ -64,11 +64,11 @@
 .post_layout {
   @apply grid;
   grid-template:
-    ' title   ' auto
-    ' info    ' auto
-    ' toc     ' auto
-    ' content ' auto
-    / 1fr;
+    ' title         ' auto
+    ' info          ' auto
+    ' toc           ' auto
+    ' content       ' auto
+    / minmax(0, 1fr);
   @media (min-width: theme('screens.lg')) {
     grid-template:
       ' .   title   .   ' auto
