@@ -52,6 +52,8 @@ function resolveHref (page: PageMeta, pageMap: Record<string, PageMeta>): string
   function getFirstOpenableChild (page: PageMeta): PageMeta | null {
     for (const id of page.child ?? []) {
       const p = pageMap[id]
+      // Sometimes Notion saves inaccessible pages for whatever reason...
+      if (!p) continue
       if (p.slug || p.hasContent) {
         return p
       } else if (p.child?.length) {
