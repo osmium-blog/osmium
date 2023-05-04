@@ -42,7 +42,8 @@ export default class NotionDatabase {
 
     // Every page ID contained in the database
     const pageIds = [...new Set(
-      Object.values(collectionQuery[collection.id])
+      databasePage.view_ids
+        .map(viewId => collectionQuery[collectionId][viewId])
         .map(({ collection_group_results: results }) => {
           if (results?.hasMore) {
             console.error('Collection query result not complete!')
