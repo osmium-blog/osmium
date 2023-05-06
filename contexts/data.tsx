@@ -13,10 +13,16 @@ const DataContext = createContext<Context>(undefined as any)
 
 type Props = {
   data: Data
+  noRouter?: boolean
   children: ReactNode
 }
 
-export function DataProvider ({ data, children }: Props) {
+export function DataProvider ({ data, noRouter = false, children }: Props) {
+  if (noRouter) {
+    return <DataContext.Provider value={data}>{children}</DataContext.Provider>
+  }
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const router = useRouter()
   const slug = router.query.slug
   const current: Context['current'] = slug ? Object.values(data.pageMap).find(it => (it.slug || it.hash) === slug) : undefined
