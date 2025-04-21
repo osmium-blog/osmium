@@ -155,12 +155,12 @@ async function prepareLogo (page: NotionPage) {
   }
   // It's an emoji
   else {
-    const res = await ofetch.raw(`https://emojipedia.org/search/?q=${encodeURI(value)}`, {
+    const res = await ofetch.raw(`https://emojipedia.org/search?q=${encodeURI(value)}`, {
       responseType: 'text',
       redirect: 'manual',
     })
-    const name = res.status === 302
-      ? res.headers.get('location')!.slice(1, -1)
+    const name = [302, 307].includes(res.status)
+      ? res.headers.get('location')!.slice(1)
       : cheerio.load(res._data || '')('.search-results h2 a').eq(0).attr('href')?.slice(1, -1)
     if (!name) {
       console.warn('Failed to resolve the emoji name')
@@ -179,7 +179,7 @@ async function prepareLogo (page: NotionPage) {
     }, [] as number[])
 
     ext = '.png'
-    url = `https://em-content.zobj.net/thumbs/120/apple/354/${name}_${points.map(code => code.toString(16)).join('-')}.png`
+    url = `https://em-content.zobj.net/source/apple/419/${name}_${points.map(code => code.toString(16)).join('-')}.png`
   }
 
   console.log('Fetching logo...')
