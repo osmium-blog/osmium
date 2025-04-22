@@ -146,7 +146,7 @@ async function prepareLogo (page: NotionPage) {
     url = 'https://notion.so' + value
   }
   // It's a user-uploaded image
-  else if (value.startsWith('http')) {
+  else if (value.startsWith('attachment:')) {
     const urlObj = new URL(defaultMapImageUrl(value, page.block!)!)
     ext = extname(urlObj.pathname)
     // Larger image won't help more
