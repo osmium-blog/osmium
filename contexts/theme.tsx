@@ -17,7 +17,7 @@ const ThemeContext = createContext<Context>(undefined as any)
 export function ThemeProvider ({ children }: BasicProps) {
   const config = useConfig()
 
-  const [theme, setTheme] = useState<Theme>(config.appearance === 'auto' ? 'system' : config.appearnce)
+  const [theme, setTheme] = useState<Theme>(config.appearance === 'auto' ? 'system' : config.appearance)
 
   const [prefersDark, setPrefersDark] = useState<boolean>()
 
