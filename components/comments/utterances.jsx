@@ -1,13 +1,10 @@
 import { useEffect, useRef } from 'react'
-import { useConfig } from '@/contexts/config'
+import { useTheme } from '@/contexts/theme'
 
 export default function Utterances ({ config, post }) {
-  const { appearance } = useConfig()
-  const theme = {
-    auto: 'preferred-color-scheme',
-    light: 'github-light',
-    dark: 'github-dark',
-  }[appearance]
+  const { scheme } = useTheme()
+
+  const theme = scheme === 'dark' ? 'github-dark' : 'github-light'
 
   const container = useRef()
 
